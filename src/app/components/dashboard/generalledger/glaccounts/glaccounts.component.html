@@ -1,0 +1,83 @@
+<div class="position-relative">
+
+  <mat-card-title  class="boader--color d-flex justify-content-between position-absolute w-100" >
+    <span> {{'glaccounts.title' | translate }} </span>
+    <mat-icon class="p-2" (click)="cancel()">close</mat-icon>
+  </mat-card-title>
+
+    <mat-card-content class="pt-5 p-2 m-0 overflow-auto">
+       <form [formGroup]="modelFormData" autocomplete="off">
+  
+        <div class="d--flex">
+          <mat-form-field>
+            <mat-label>{{'glaccounts.accGroup' | translate }}</mat-label>
+            <mat-select formControlName="accGroup">
+              <mat-option *ngFor="let accGroup of glaccgrpList" [value]="accGroup.id">
+                {{accGroup.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.glcode.valid }" >
+          <input matInput placeholder="{{'glaccounts.glcode' | translate }}" disabled formControlName="glcode" appFocusOnEnter tabIndex="1">
+          <mat-error *ngIf="formControls.glcode.errors" class="help-block">
+            <div *ngIf="formControls.glcode.errors.required"> Code is required </div>
+          </mat-error>
+  
+        </mat-form-field>
+  
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.glaccountName.valid }">
+          <input matInput placeholder="{{'glaccounts.glaccountName' | translate }}" formControlName="glaccountName" appFocusOnEnter tabIndex="2">
+          <mat-error *ngIf="formControls.glaccountName.errors" class="help-block">
+            <div *ngIf="formControls.glaccountName.errors.required">Name is required</div>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="form-element" >
+          <input matInput placeholder="{{'glaccounts.accountNumber' | translate }}" formControlName="accountNumber" appFocusOnEnter tabIndex="3">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>{{'glaccounts.statementType' | translate }}</mat-label>
+          <mat-select formControlName="statementType">
+            <mat-option *ngFor="let stmtType of stmtTypeList" [value]="stmtType.id">
+              {{stmtType.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{'glaccounts.nactureofaccount' | translate }}</mat-label>
+          <mat-select formControlName="nactureofaccount">
+            <mat-option *ngFor="let natofAcc of natOfAccList" [value]="natofAcc.id">
+              {{natofAcc.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{'glaccounts.balanceType' | translate }}</mat-label>
+          <mat-select formControlName="balanceType">
+            <mat-option *ngFor="let balType of glAccBalType" [value]="balType.id">
+              {{balType.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-element" >
+          <input matInput placeholder="{{'glaccounts.openingBalance' | translate }}" formControlName="openingBalance" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+  
+        
+  
+      </form>
+  
+    </mat-card-content>
+    <div  class="form-element p-2 d-flex justify-content-end">
+      <button mat-raised-button   class="mr-1" class="button-color-red text-white" [translate]="'COMMON.CANCEL'" (click)="cancel()">Cancel</button>
+      <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1" [translate]="'COMMON.SAVE'" (click)="save()" > Save</button>
+    </div>
+  </div>
+  

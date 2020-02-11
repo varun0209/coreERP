@@ -1,0 +1,11 @@
+<div class="container pb-2">
+  <span>Are you sure you want to delete the role? </span>
+</div>
+
+<mat-divider></mat-divider>
+
+
+<div class="d-flex justify-content-end pt-2">
+  <button mat-raised-button class="button-color-red text-white" (click)="closeDialog()" [translate]="'COMMON.CANCEL'">Cancel</button>
+  <button mat-raised-button class="button-color-bule text-white ml-1" (click)="doAction()" color="primary" [translate]="'COMMON.OK'">Ok</button>
+</div>

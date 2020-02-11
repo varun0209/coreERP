@@ -1,0 +1,7 @@
+export { PayrollComponent } from './payroll.component'
+export { LeaveopeningbalancesComponent } from './leaveopeningbalances/leaveopeningbalances.component'
+export { LeavetypesComponent } from './leavetypes/leavetypes.component'
+export { LeaverequestComponent } from './leaverequest/leaverequest.component'
+//export { BrandComponent } from './brand/brand.component'
+//export { NumberAssignmentComponent } from './numberassignment/numberassignment.component'
+//export { MaterialGroupsComponent } from './materialgroups/materialgroups.component'

@@ -1,0 +1,124 @@
+<div >
+
+  <mat-card-content >
+    <form [formGroup]="formData" autocomplete="off">
+
+      <!-- <app-table-new [tableData]="companyList"></app-table-new> -->
+
+      <div class="d--flex">
+
+
+        <mat-form-field>
+          <mat-label>{{ 'Billing.branch' | translate }}</mat-label>
+          <mat-select formControlName="branch" appFocusOnEnter tabIndex="12" (selectionChange)="genarateBillNo()">
+            <mat-option *ngFor="let branch of getSalesBranchListArray" [value]="branch.id" >
+              {{branch.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput placeholder="{{ 'Billing.billNo' | translate }}" formControlName="billNo" appFocusOnEnter tabIndex="3">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Bill Data" formControlName="address2" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Name" formControlName="address3" appFocusOnEnter tabIndex="5">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Mobile1" formControlName="address4" appFocusOnEnter tabIndex="6">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Mobile2" formControlName="advanceAmount" appFocusOnEnter tabIndex="7">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Bank Account Number" formControlName="bankAccountNumber" appFocusOnEnter tabIndex="8">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Bank Branch" formControlName="bankBranch" appFocusOnEnter tabIndex="9">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Bank Name" formControlName="bankName" appFocusOnEnter tabIndex="10">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Building" formControlName="building" appFocusOnEnter tabIndex="11">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Email" formControlName="email" appFocusOnEnter tabIndex="13">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="GstNo" formControlName="gstNo" appFocusOnEnter tabIndex="14">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Ifsc Code" formControlName="ifsccode" appFocusOnEnter tabIndex="15">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Lease Amount" formControlName="leaseAmount" appFocusOnEnter tabIndex="16">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker1" placeholder="Lease Start Date" formControlName="leaseStartDate" appFocusOnEnter tabIndex="17">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <!--<mat-form-field class="form-element">
+    <input matInput placeholder="Lease Expiry Date" formControlName="leaseExpiryDate" appFocusOnEnter tabIndex="16">
+  </mat-form-field>-->
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker2" placeholder="leaseExpiryDate" formControlName="leaseExpiryDate" appFocusOnEnter tabIndex="18">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <!--<mat-form-field class="form-element">
+    <input matInput placeholder="Lease Start Date" formControlName="leaseStartDate" appFocusOnEnter tabIndex="17">
+  </mat-form-field>-->
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Owner Name" formControlName="ownerName" appFocusOnEnter tabIndex="19">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Phone No" formControlName="phoneNo" appFocusOnEnter tabIndex="20">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Phone1" formControlName="phone1" appFocusOnEnter tabIndex="21">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Phone2" formControlName="phone2" appFocusOnEnter tabIndex="22">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Phone3" formControlName="phone3" appFocusOnEnter tabIndex="23">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Active" formControlName="active" appFocusOnEnter tabIndex="24">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Place" formControlName="place" appFocusOnEnter tabIndex="25">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Select your State</mat-label>
+          <select matNativeControl id="state" appFocusOnEnter tabIndex="26">
+            <option value="" disabled selected></option>
+            <option value="AndharaPradesh">AndharaPradesh</option>
+            <option value="Telangana">Telangana</option>
+          </select>
+        </mat-form-field>
+        <!--<mat-form-field class="form-element">
+    <input matInput placeholder="State" formControlName="state" appFocusOnEnter tabIndex="25">
+  </mat-form-field>-->
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Pin Code" formControlName="pinCode" appFocusOnEnter tabIndex="27">
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="Company Code Navigation" formControlName="companyCodeNavigation" appFocusOnEnter tabIndex="28">
+        </mat-form-field>
+
+      </div>
+      <mat-divider></mat-divider>
+    </form>
+  </mat-card-content>
+
+  <div class="form-element p-2 d-flex justify-content-end">
+    <button mat-raised-button class="mr-1" class="button-color-red text-white" [translate]="'COMMON.CANCEL'" (click)="cancel()">Cancel</button>
+    <button mat-raised-button type="submit" class="button-color-bule text-white ml-1" [translate]="'COMMON.SAVE'" (click)="save()"> Save</button>
+  </div>
+</div>

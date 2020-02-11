@@ -1,0 +1,7 @@
+export { InventoryComponent } from './Inventory.component'
+export { BrandModelComponent } from './brandmodel/brandmodel.component'
+export { SizesComponent } from './sizes/sizes.component'
+export { AccountingClassComponent } from './accountingclass/accountingclass.component'
+export { BrandComponent } from './brand/brand.component'
+export { NumberAssignmentComponent } from './numberassignment/numberassignment.component'
+export { MaterialGroupsComponent } from './materialgroups/materialgroups.component'

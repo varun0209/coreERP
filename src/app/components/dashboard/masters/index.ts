@@ -1,0 +1,13 @@
+export { MastersComponent } from './masters.component';
+export { CompanyComponent } from './company/company.component';
+export { BranchesComponent } from './branches/branches.component';
+export { DivisionComponent } from './division/division.component';
+export { SegmentComponent } from './segment/segment.component';
+export { ProfitCenterComponent } from './profit-center/profit-center.component';
+export { PartnerCreationComponent } from './partner-creation/partner-creation.component';
+export { CostCenterComponent } from './cost-center/cost-center.component';
+export { NoSeriesComponent } from './no-series/no-series.component';
+export { PartnerTypeComponent } from './partner-type/partner-type.component';
+export { EmployeeInBranchComponent } from './employee-in-branch/employee-in-branch.component';
+export { EmployeeComponent } from './employee/employee.component';
+export { TaxMasterComponent } from './tax-master/tax-master.component';

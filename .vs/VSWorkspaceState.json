@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\components",
+    "\\src\\app\\components\\dashboard",
+    "\\src\\app\\components\\dashboard\\masters",
+    "\\src\\app\\services",
+    "\\src\\assets\\i18n",
+    "\\src\\environments"
+  ],
+  "SelectedNode": "\\src\\app\\components\\dashboard\\masters\\cost-center",
+  "PreviewInSolutionExplorer": false
+}

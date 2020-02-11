@@ -1,0 +1,72 @@
+<div class="position-relative">
+  <mat-card-title  class="boader--color d-flex justify-content-between position-absolute w-100" >
+    <span>  {{'taxintegration.title' | translate }} </span>
+    <mat-icon class="p-2" (click)="cancel()">close</mat-icon>
+  </mat-card-title>
+
+    <mat-card-content class="pt-5 p-2 m-0 overflow-auto">
+       <form [formGroup]="modelFormData" autocomplete="off">
+  
+        <div class="d--flex">
+          <mat-form-field>
+            <mat-label>T{{'taxintegration.taxCode' | translate }}</mat-label>
+            <mat-select formControlName="taxCode">
+              <mat-option *ngFor="let taxcodeList of taxcodeList" [value]="taxcodeList.id">
+                {{taxcodeList.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>{{'taxintegration.sgst' | translate }}</mat-label>
+            <mat-select formControlName="sgst">
+              <mat-option *ngFor="let taxcodeList of taxaccList" [value]="taxcodeList.id">
+                {{taxcodeList.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{'taxintegration.cgst' | translate }}</mat-label>
+          <mat-select formControlName="cgst">
+            <mat-option *ngFor="let taxcodeList of taxaccList" [value]="taxcodeList.id">
+              {{taxcodeList.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{'taxintegration.ugst' | translate }}</mat-label>
+          <mat-select formControlName="ugst">
+            <mat-option *ngFor="let taxcodeList of taxaccList" [value]="taxcodeList.id">
+              {{taxcodeList.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{'taxintegration.igst' | translate }}</mat-label>
+          <mat-select formControlName="igst">
+            <mat-option *ngFor="let taxcodeList of taxaccList" [value]="taxcodeList.id">
+              {{taxcodeList.text}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="form-element" >
+          <input matInput placeholder="Opening Balance" formControlName="openingBalance" appFocusOnEnter tabIndex="4">
+        </mat-form-field> -->
+      </div>
+      <mat-divider></mat-divider>
+  
+        
+  
+      </form>
+  
+    </mat-card-content>
+    <div  class="form-element p-2 d-flex justify-content-end">
+      <button mat-raised-button   class="mr-1" class="button-color-red text-white" [translate]="'COMMON.CANCEL'" (click)="cancel()">Cancel</button>
+      <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1" [translate]="'COMMON.SAVE'" (click)="save()" > Save</button>
+    </div>
+  </div>
+  
