@@ -7,3 +7,16 @@ mat-form-field {
   margin: 5px;
   flex: 0 0 24%;
 }
+
+
+.table-boarder {
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+
+.table-boarder-color {
+  padding: 0rem 1.25rem;
+      margin-bottom: 0;
+      background-color: rgba(0,0,0,.03);
+      border-bottom: 1px solid rgba(0,0,0,.125);
+}

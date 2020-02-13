@@ -14,9 +14,10 @@ import { StatusCodes } from '../../../../enums/common/common';
 })
 export class BillingComponent implements OnInit {
 
-  formData: FormGroup;
-  tableForm: FormGroup;
+  branchFormData: FormGroup;
+  modelFormData: FormGroup;
   getSalesBranchListArray: any;
+  tableData: any;
 
 
   constructor(
@@ -27,73 +28,133 @@ export class BillingComponent implements OnInit {
 
   ) {
 
-   this.formData  =  this.formBuilder.group({
+
+    this.branchFormData = this.formBuilder.group({
       branch: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
       billNo: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      billDate: [null],
+      name: [null],
+      mobile1: [null],
+      mobile2: [null],
       address1: [null],
       address2: [null],
       address3: [null],
-      address4: [null],
-      advanceAmount: [null],
-      bankAccountNumber: [null],
-      bankBranch: [null],
-      bankName: [null],
-      building: [null],
-      companyCode: [null],
-      email: [null],
-      ext1: [null],
-      ext2: [null],
       gstNo: [null],
-      ifsccode: [null],
-      leaseAmount: [null],
-      leaseExpiryDate: [null],
-      leaseStartDate: [null],
-      ownerName: [null],
-      phoneNo: [null],
-      phone1: [null],
-      phone2: [null],
-      phone3: [null],
-      active: ['Y'],
-      place: [null],
-      state: [null],
-      pinCode: [null],
-      companyCodeNavigation: [null]
+      email: [null],
+      billType: [null]
     });
 
-   this.formData.controls['billNo'].disable();
+    this.modelFormData = this.formBuilder.group({
+      modelForSale: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
+      cash: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      credit: [null],
+      rtgs: [null],
+      INTChanges: [null],
+      phonePay: [null],
+      paytm: [null],
+      check: [null],
+      financeAmount: [null],
+      financeName: [null],
+      cardAmt: [null],
+      cardType: [null],
+      netAmount: [null]
+    });
 
+    this.branchFormData.controls['billNo'].disable();
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!isNullOrUndefined(user)) {
+      this.genarateBillNo(user.branchCode);
+      // this.getEmployesList(user.branchCode);
+      // this.getcashAcctobranchAccountsList(user.branchCode);
+      // this.getModelList(user.branchCode);
+    }
+    // this.getCardTypeList();
+    // this.getGlaccountsList();
+    // this.getFinanceGlAccList();
+    // this.getTableData();
   }
 
   ngOnInit() {
     const getSalesBranchListUrl = String.Join('/', this.apiConfigService.getSalesBranchList);
-    this.apiCall(getSalesBranchListUrl, (data) => {
+    this.commonService.apiCall(getSalesBranchListUrl, (data) => {
       this.getSalesBranchListArray = data.BranchesList;
     });
   }
 
-  apiCall(url, callback) {
-    this.commonService.showSpinner();
-    this.apiService.apiGetRequest(url)
-      .subscribe(
-        response => {
-        const res = response.body;
-        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response)) {
-            callback(res.response);
-          }
-        }
-        this.commonService.hideSpinner();
-      }, error => {
+  getTableData() {
+    const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getBranchesBranchList);
+     this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
+       console.log(data);
+       this.tableData = data['branchesList'];
+     });
+   }
 
-      });
+  genarateBillNo(branch?) {
+    this.branchFormData.patchValue({
+      billNo : ''
+    })
+    var generateBillUrl;
+    if (!isNullOrUndefined(branch)) {
+      generateBillUrl = String.Join('/', this.apiConfigService.generateBillNo, branch);
+    } else {
+      generateBillUrl = String.Join('/', this.apiConfigService.generateBillNo, this.branchFormData.get('branch').value);
+    }
+    this.commonService.apiCall(generateBillUrl, (data) => {
+      console.log(data);
+      this.branchFormData.patchValue({
+        billNo : data['BillNo']
+      })
+    });
   }
 
-  genarateBillNo() {
-    const generateBillUrl = String.Join('/', this.apiConfigService.generateBillNo, this.formData.get('branch').value);
-    this.apiCall(generateBillUrl, (data) => {
+  getEmployesList(branch) {
+   const getEmployesListUrl = String.Join('/', this.apiConfigService.getEmployesList, branch);
+    this.commonService.apiCall(getEmployesListUrl, (data) => {
       console.log(data);
     });
   }
 
+
+  getcashAcctobranchAccountsList(branch) {
+   const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getcashAcctobranchAccountsList, branch);
+    this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+  getModelList(branch) {
+   const getModelListUrl = String.Join('/', this.apiConfigService.getModelList, branch);
+    this.commonService.apiCall(getModelListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+  getCardTypeList() {
+   const getCardTypeListUrl = String.Join('/', this.apiConfigService.getCardTypeList);
+    this.commonService.apiCall(getCardTypeListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+  getGlaccountsList() {
+   const getGlaccountsListUrl = String.Join('/', this.apiConfigService.getGlaccountsList);
+    this.commonService.apiCall(getGlaccountsListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+  getFinanceGlAccList() {
+   const getFinanceGlAccListUrl = String.Join('/', this.apiConfigService.getFinanceGlAccList);
+    this.commonService.apiCall(getFinanceGlAccListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+
+  // this.branchFormData.patchValue({
+  //   applyDate : this.commonService.formatDate(this.branchFormData.get('applyDate').value),
+  //   fromDate : this.commonService.formatDate(this.branchFormData.get('fromDate').value)
+  // })
 
 }

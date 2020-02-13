@@ -271,7 +271,13 @@ export class ApiConfigService {
     // Billing
 
   getSalesBranchList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetBranchesList`;
-  generateBillNo =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/api/sales/GenerateBillNo`;
+  generateBillNo =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GenerateBillNo`;
+  getEmployesList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetEmployesList`;
+  getCardTypeList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetCardTypeList`;
+  getFinanceGlAccList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetFinanceGlAccList`;
+  getGlaccountsList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetGlaccountsList`;
+  getModelList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetModelList`;
+  getcashAcctobranchAccountsList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetcashAcctobranchAccountsList`;
 
 }
 

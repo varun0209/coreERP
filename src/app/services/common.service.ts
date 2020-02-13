@@ -77,6 +77,21 @@ formatDate(event) {
   }
 
 
+  apiCall(url, callback) {
+    this.showSpinner();
+    this.apiService.apiGetRequest(url)
+      .subscribe(
+        response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            callback(res.response);
+          }
+        }
+        this.hideSpinner();
+      });
+  }
+
 
   public closeNav() {
     if (!isNullOrUndefined(this.appDrawer)) {

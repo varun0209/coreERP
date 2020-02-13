@@ -41,6 +41,9 @@ export class LeaverequestComponent implements OnInit {
 
   }
 
+  ngOnInit() {
+    
+  }
 
   get formControls() { return this.formData.controls; }
 

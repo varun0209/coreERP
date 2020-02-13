@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 
 import { SharedImportModule } from './shared/shared-import';
 
-import { NavbarComponent , TableComponent, DeleteItemComponent, ReportTableComponent, TableNewComponent } from './reuse-components/index';
+import { NavbarComponent , TableComponent, DeleteItemComponent, ReportTableComponent, TableNewComponent, NormalTableComponent, BillingTableComponent } from './reuse-components/index';
 import { CompanyComponent , MastersComponent, BranchesComponent, DivisionComponent, SegmentComponent, ProfitCenterComponent,PartnerCreationComponent, CostCenterComponent, NoSeriesComponent, PartnerTypeComponent,EmployeeInBranchComponent ,EmployeeComponent, TaxMasterComponent } from './components/dashboard/masters/index';
 import { SalesComponent, CardTypeComponent, BillingComponent } from './components/dashboard/sales/index';
 import {GeneralledgerComponent,AccountsGroupComponent,SubGroupComponent,UndersubGroupComponent,GlAccountsComponent,GlSubcodeComponent,TaxIntegrationComponent,
@@ -73,7 +73,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     VoucherTypesComponent,
     InventoryComponent,
     BrandModelComponent, SizesComponent, AccountingClassComponent, BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent,
-    PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaverequestComponent, BillingComponent
+    PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaverequestComponent, BillingComponent, NormalTableComponent, BillingTableComponent
   ],
   imports: [
     AppRoutingModule,

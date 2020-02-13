@@ -27,12 +27,12 @@ export class ApiService {
   // get API requests
   public apiGetRequest(url: any): Observable<any> {
     return this.http.get(url, { headers: this.options, observe: 'response' })
-      .pipe((tap<any>(response => {
-        console.log(response.body);
-        if (!isNullOrUndefined(response) && response.status === StatusCodes.fail) {
+      .pipe((tap<any>(res => {
+        if (!isNullOrUndefined(res) && res.body.status === StatusCodes.fail) {
+          this.alertService.openSnackBar(res.body.response, Static.Close, SnackBar.error);
           return;
         }
-        return response.body;
+        return res.body;
       })),
         catchError(this.handleError('apiGetRequest')));
   }

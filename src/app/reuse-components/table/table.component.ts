@@ -184,11 +184,25 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
           this.keys.push({ col: key });
         }
 
+        let col = [];
         this.keys.forEach(cols => {
           const obj = {
             def: cols.col, label: cols.col, hide: true
           };
-          this.columnDefinitions.push(obj);
+          col.push(obj);
+        });
+
+        this.translate.get(this.routeParam).subscribe(res => {
+          let key;
+          for (key in res) {
+            for (let c = 0; c < col.length; c++) {
+              if (key == col[c]['def']) {
+                this.columnDefinitions.push(col[c])
+              }
+            }
+          }
+          console.log( this.columnDefinitions);
+
         });
       }
 
