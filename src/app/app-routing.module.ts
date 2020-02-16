@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent , NotFoundComponent , DashboardComponent, SettingComponent} from './components/index';
 import { MastersComponent } from './components/dashboard/masters/index';
-import { SalesComponent } from './components/dashboard/sales/index';
+import { SalesComponent, CreateBillComponent } from './components/dashboard/sales/index';
 import { AuthGuard } from './auth.guard';
 import { GeneralledgerComponent } from './components/dashboard/generalledger/index';
 import { ReportsComponent } from './components/dashboard/reports/index';
@@ -20,6 +20,7 @@ const routes: Routes = [
     children : [
     { path: 'master/:id', component: MastersComponent, data: { title: 'Master' }, canActivate: [AuthGuard]    },
     { path: 'sales/:id', component: SalesComponent, data: { title: 'Sales' }, canActivate: [AuthGuard]  },
+    { path: 'sales/:id/createSale', component: CreateBillComponent, data: { title: 'Create Sale' }, canActivate: [AuthGuard]  },
     { path: 'generalledger/:id', component: GeneralledgerComponent, data: { title: 'Generalledger' }, canActivate: [AuthGuard]  },
     { path: 'inventory/:id', component: InventoryComponent, data: { title: 'Inventory' }, canActivate: [AuthGuard] },
     { path: 'payroll', component: PayrollComponent, data: { title: 'Payroll' }, canActivate: [AuthGuard] },

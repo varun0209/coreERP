@@ -22,6 +22,7 @@ export class SalesService {
       this.dynamicData.deleteUrl = this.apiConfigService.deleteCardType;
       this.dynamicData.listName = 'cardtype';
       this.dynamicData.primaryKey = 'code';
+      this.dynamicData.coustom = true;
       return this.dynamicData;
       break;
       case 'billing':

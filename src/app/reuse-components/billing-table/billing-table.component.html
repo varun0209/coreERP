@@ -1,28 +1,53 @@
-<mat-card >
-        <div class="table-boarder">
-          <mat-card-title class="table-boarder-color">
-            Report
-          </mat-card-title>
-          <div class="m-2 table-boarder">
-      
-        <div class="table">
-          <table class="w-100" mat-table [dataSource]="dataSource" matSort #mytable>
-            <ng-container *ngFor="let column of getDisplayedColumns()" [matColumnDef]="column">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                <!-- <strong>{{ column }}</strong> -->
-                <strong > {{ ( routeParam + '.' +  column) | translate }} </strong>
-              </th>
-              <td mat-cell *matCellDef="let element; let i = index">
-                <input matInput [value]="element[column]" [(ngModel)]="element[column]" />
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
-            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index" 
-             ></tr>
-          </table>
-        </div>
-        <mat-paginator [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
+<mat-card>
+  <div class="table-boarder">
+    <mat-card-title class="table-boarder-color">
+      Report
+    </mat-card-title>
+    <div class="m-2 table-boarder">
+
+      <div class="table">
+        <table class="w-100" mat-table [dataSource]="dataSource" matSort #mytable>
+          <ng-container *ngFor="let column of getDisplayedColumns()" [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <!-- <strong>{{ column }}</strong> -->
+              <strong> {{ ( routeParam + '.' +  column) | translate }} </strong>
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index;">
+              <input matInput [value]="element[column]" [(ngModel)]="element[column]" (change)="addUser()"/>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: getDisplayedColumns(); let i = index;"></tr>
+        </table>
       </div>
-      </div>
-      </mat-card>
-      
+      <mat-paginator [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</mat-card>
+<!-- 
+<form [formGroup]="tableForm">
+  <table class="table">
+    <thead>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+    </thead>
+    <tbody *ngFor="let control of tableForm.get('users')['controls']; let i=index;">
+      <tr [formGroup]="control">
+        <td class="form-group">
+          <input type="text" class="form-control" formControlName="name" placeholder="name" (change)="addUser()">
+        </td>
+        <td class="form-group">
+          <input type="text" class="form-control" formControlName="email" placeholder="email" (change)="addUser()">
+        </td>
+        <td class="form-group">
+          <input type="text" class="form-control" formControlName="mobNumber" placeholder="mobile number">
+        </td>
+        <td>
+          <button (click)="remove(i)" class="btn btn-primary mr-5">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form> -->
+

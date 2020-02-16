@@ -46,9 +46,8 @@
 .boader--color {
   padding: .30rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgb(43, 107, 177);
-  border-bottom: 1px solid rgba(0,0,0,.125);
-  color: white;
+  background-color: $color-poptitle;
+  color: $color-white;
 }
 
 mat-option  {
@@ -78,6 +77,37 @@ mat-option  {
 .style-normal {
   background: $color-gray;
 }
+
+::ng-deep .ng--valid  {
+  & .mat-form-field-label  {
+    color: $color-green !important;
+  }
+  & .mat-form-field-ripple  {
+    background-color: $color-green !important;
+  }
+}
+
+.d--flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.popup-class {
+  & mat-form-field {
+    margin: 5px;
+    flex: 0 0 24%;
+  }
+  & mat-card-title {
+    min-height: 50px;
+    height: 50px;
+    z-index: 1000;
+  }
+  & mat-card-content {
+    max-height: 400px;
+  }  
+}
+
+
 
 
 

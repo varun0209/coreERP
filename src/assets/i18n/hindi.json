@@ -3,7 +3,15 @@
       "LANGUAGEPREFERENCE" : "भाषा पसंद",
       "CANCEL" : "रद्द करना",
       "SAVE" : "सहेजें",
-      "OK" : "ठीक है"
+      "OK" : "ठीक है",
+      "NEW":"नया",
+      "EDIT":"संपादित करें",
+      "DELETE":"हटाएँ",
+      "PRINT":"प्रिंट",
+      "SEARCH":"खोज",
+      "COLUMNS":"कॉलम",
+      "LOGOUT":"लॉग आउट",
+      "WELCOME":"स्वागत हे"
   },
   "LOGIN": {
     "USERNAME" : "उपयोगकर्ता नाम",
@@ -488,6 +496,68 @@
     "size": "आकार",
     "active": "सक्रिय",
     "addDate":"दिनांक जोड़ें"
+  },
+  "componentmaster":{
+    "title":"घटक मास्टर",
+    "componentCode":"घटक कोड",
+    "componentName":"घटक का नाम",
+    "componentType":"घटक प्रकार",
+    "remarks":"टिप्पणियों",
+    "companyCode":"कंपनी कोड",
+    "amount":"रकम",
+    "percentage":"प्रतिशत",
+    "duration":"अवधि",
+    "active":"सक्रिय",
+    "specificMonth":"विशिष्ट माह"
+  },
+  "ptmaster":{
+    "title":"पीटी मास्टर",
+    "id":"Id",
+    "ptslab":"पीटी स्लैब",
+    "location":"पीटी स्थान",
+    "year":"साल",
+    "month":"महीना",
+    "ptlowerLimit":"पीटी लोअर लिमिट",
+    "ptupperLimit":"पीटी अपर लिमिट",
+    "ptamt":"पीटी राशि",
+    "active":"सक्रिय",
+    "ext1":"एक्सटेंशन 1"
+  },
+  "leaveopeningbalances": {
+    "title": "संतुलन छोड़ना",
+    "code": "कोड",
+    "groupName": "समूह का नाम",
+    "hsnCode": "HSN कोड",
+    "brandCode": "ब्रांड का नाम",
+    "compCode": "कंपनी",
+    "ext1": "एक्सटेंशन 1",
+    "ext2": "एक्सटेंशन 2",
+    "customerCare": "ग्राहक सेवा",
+    "active": "सक्रिय"
+  },
+  "leavetype": {
+    "title": "प्रकार छोड़ दें",
+    "code": "कोड",
+    "groupName": "समूह का नाम",
+    "hsnCode": "HSN कोड",
+    "brandCode": "ब्रांड का नाम",
+    "compCode": "कंपनी",
+    "ext1": "एक्सटेंशन 1",
+    "ext2": "एक्सटेंशन 2",
+    "customerCare": "ग्राहक सेवा",
+    "active": "सक्रिय"
+  },
+  "Leaverequest": {
+    "title": "छुट्टी का अनुरोध",
+    "code": "कोड",
+    "groupName": "समूह का नाम",
+    "hsnCode": "HSN कोड",
+    "brandCode": "ब्रांड का नाम",
+    "compCode": "कंपनी",
+    "ext1": "एक्सटेंशन 1",
+    "ext2": "एक्सटेंशन 2",
+    "customerCare": "ग्राहक सेवा",
+    "active": "सक्रिय"
   }
 
 }

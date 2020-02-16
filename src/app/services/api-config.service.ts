@@ -270,6 +270,9 @@ export class ApiConfigService {
   // sales
     // Billing
 
+   getBillingList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetBillingList`;
+
+
   getSalesBranchList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetBranchesList`;
   generateBillNo =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GenerateBillNo`;
   getEmployesList =  `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetEmployesList`;

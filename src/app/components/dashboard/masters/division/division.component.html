@@ -1,4 +1,4 @@
-<div class="position-relative">
+<div class="position-relative popup-class">
   <mat-card-title class="boader--color d-flex justify-content-between position-absolute w-100">
     <span> {{'division.title' | translate }} </span>
     <mat-icon class="p-2" (click)="cancel()">close</mat-icon>
@@ -34,8 +34,8 @@
       <mat-divider></mat-divider>
 
       <div class="form-element p-2 d-flex justify-content-end">
-        <button mat-raised-button class="mr-1" class="button-color-red text-white" [translate]="'COMMON.CANCEL'" (click)="cancel()">Cancel</button>
-        <button mat-raised-button type="submit" class="button-color-bule text-white ml-1" [translate]="'COMMON.SAVE'" (click)="save()"> Save</button>
+        <button mat-raised-button   class="mr-1" class="button-color-red text-white"  (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+        <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1"  (click)="save()" > {{ 'COMMON.SAVE' | translate }}</button>
       </div>
 
     </form>

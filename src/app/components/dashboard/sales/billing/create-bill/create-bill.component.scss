@@ -9,12 +9,26 @@ $color-white: white;
     flex-wrap: wrap;
   }
   
-  mat-form-field {
-    margin: 5px;
-    flex: 0 0 24%;
+  .mat-form-field-height {
+    .mat-form-field {
+      margin: 5px;
+      flex: 0 0 19%;
+      height: 30px;
+  
+    //   & .mat-form-field-wrapper {
+    //     padding-bottom: 0em !important;
+    // }
+    // & .mat-form-field-underline {
+    //   bottom: 0.1em;
+    // }
+    // & .mat-form-field-infix {
+    //   border: none;
+    // }
+    }  
   }
-  
-  
+
+
+
   .table-boarder {
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;

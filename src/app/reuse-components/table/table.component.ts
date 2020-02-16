@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDestroy {
+export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   /** control for the selected bank for multi-selection */
   public tableMultiCtrl: FormControl = new FormControl();
@@ -49,6 +49,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
   highlightedRows = [];
   columnDefinitions = [];
   filterColData = [];
+  doubleClick = 0;
+
 
 
   keys = [];
@@ -81,25 +83,49 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
     this.showDataNotFound = false;
   }
 
-  highlightRows(row, i) {
-    if (this.highlightedRows.length) {
-      if (this.index === i) {
-        this.highlightedRows = [];
-        this.index = null;
-      } else {
-        this.highlightedRows = [];
-        this.highlightedRows.push(row);
-        this.index = i;
-      }
-    } else {
-      this.highlightedRows = [];
-      this.highlightedRows.push(row);
-      this.index = i;
+  highlightRows(row?) {
+    if (!isNullOrUndefined(row) && this.index) {
+      // if (this.highlightedRows.length) {
+        // if (this.index === this.index) {
+        //   this.highlightedRows = [];
+        //   this.index = null;
+        // } else {
+          this.highlightedRows = [];
+          this.highlightedRows.push(row);
+          // this.index = this.index;
+        // }
+      // } else {
+        // this.highlightedRows = [];
+        // this.highlightedRows.push(row);
+        // this.index = this.index;
+      // }
+      console.log(this.highlightedRows, '3')
     }
   }
 
+  setIndex(i, row) {
+    // this.doubleClick++;
+    // console.log(this.index, this.highlightedRows, i , row, '11')
+    // if (this.index == i) {
+      // this.highlightRows();
+      // if((this.doubleClick % 2) == 1) {
+        // this.index = null;
+      // }
+      this.highlightedRows = [];
+      // console.log(this.index, this.highlightedRows, i, '12')
+    // } else {
+      this.index = i;
+      // this.highlightRows();
+      // this.highlightedRows = [];
+      this.highlightedRows.push(row);
+      // console.log(this.index, this.highlightedRows, i, '13')
+    // }
+    // console.log(this.index, this.highlightedRows, i , '14')
+  }
 
-  openDialog(val, row?, i?) {
+
+  openDialog(val, row?) {
+    console.log(this.index, '2')
     let data;
     if (!isNullOrUndefined(row)) {
       data = { action: val, item: row };
@@ -157,7 +183,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
         this.updateRowData(this.addOrUpdateData.item);
       } else if (this.addOrUpdateData.action === 'Add') {
         this.addRowData(this.addOrUpdateData.item);
-      } else if(this.addOrUpdateData.action === 'Delete') {
+      } else if (this.addOrUpdateData.action === 'Delete') {
         this.deleteRowData();
       }
 
@@ -201,7 +227,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
               }
             }
           }
-          console.log( this.columnDefinitions);
+          console.log(this.columnDefinitions);
 
         });
       }
@@ -265,8 +291,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit , OnDest
 
   checkboxCheck(index) {
 
-    this.filterColData[index] = { def: this.filterColData[index].def,
-      label: this.filterColData[index].label,  hide: !this.filterColData[index].hide };
+    this.filterColData[index] = {
+      def: this.filterColData[index].def,
+      label: this.filterColData[index].label, hide: !this.filterColData[index].hide
+    };
 
   }
 

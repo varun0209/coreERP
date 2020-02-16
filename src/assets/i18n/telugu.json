@@ -3,7 +3,15 @@
     "LANGUAGEPREFERENCE": "భాషా ప్రాధాన్యత",
     "CANCEL": "రద్దు చేయండి",
     "SAVE": "సేవ్",
-    "OK": "అలాగే"
+    "OK": "అలాగే",
+    "NEW":"కొత్త",
+    "EDIT":"మార్చు",
+    "DELETE":"తొలగించండి",
+    "PRINT":"ముద్రణ",
+    "SEARCH":"వెతకండి",
+    "COLUMNS":"కాలమ్",
+    "LOGOUT":"లాగౌట్",
+    "WELCOME":"స్వాగతం"
   },
   "LOGIN": {
     "USERNAME": "యూజర్ పేరు",
@@ -489,6 +497,68 @@
     "accClass": "అకౌంటింగ్ క్లాస్",
     "active": "క్రియాశీలమైన",
     "addDate":"తేదీని జోడించండి"
+  },
+  "ptmaster":{
+    "title":"పిటి మాస్టర్",
+    "id":"Id",
+    "ptslab":"పిటి స్లాబ్",
+    "location":"పిటి స్థానం",
+    "year":"యేడాది",
+    "month":"నెల",
+    "ptlowerLimit":"పిటి తక్కువ పరిమితి",
+    "ptupperLimit":"పిటి ఎగువ పరిమితి",
+    "ptamt":"పిటి మొత్తం",
+    "active":"క్రియాశీలమైన",
+    "ext1":"అదనపు 1"
+  },
+  "componentmaster":{
+    "title":"కాంపోనెంట్ మాస్టర్",
+    "componentCode":"కాంపోనెంట్ కోడ్",
+    "componentName":"కాంపోనెంట్ పేరు",
+    "componentType":"కాంపోనెంట్ రకం",
+    "remarks":"వ్యాఖ్యలు",
+    "companyCode":"కంపెనీ కోడ్",
+    "amount":"మొత్తం",
+    "percentage":"శాతం",
+    "duration":"వ్యవధి",
+    "active":"క్రియాశీలమైన",
+    "specificMonth":"నిర్దిష్ట నెల"
+  },
+  "leaveopeningbalances": {
+    "title": "లీవ్ ఓపెనింగ్ బ్యాలెన్స్",
+    "code": "కోడ్",
+    "groupName": "కూటమి పేరు",
+    "hsnCode": "HSN కోడ్",
+    "brandCode": "బ్రాండ్ పేరు",
+    "compCode": "కంపెనీ",
+    "ext1": "అదనపు 1",
+    "ext2": "అదనపు 2",
+    "customerCare": "వినియోగదారుల సహాయ కేంద్రం",
+    "active": "క్రియాశీలమైన"
+  },
+  "leavetype": {
+    "title": "సెలవు రకం",
+    "code": "కోడ్",
+    "groupName": "కూటమి పేరు",
+    "hsnCode": "HSN కోడ్",
+    "brandCode": "బ్రాండ్ పేరు",
+    "compCode": "కంపెనీ",
+    "ext1": "అదనపు 1",
+    "ext2": "అదనపు 2",
+    "customerCare": "వినియోగదారుల సహాయ కేంద్రం",
+    "active": "క్రియాశీలమైన"
+  },
+  "Leaverequest": {
+    "title": "సెలవు అభ్యర్థన",
+    "code": "కోడ్",
+    "groupName": "కూటమి పేరు",
+    "hsnCode": "HSN కోడ్",
+    "brandCode": "బ్రాండ్ పేరు",
+    "compCode": "కంపెనీ",
+    "ext1": "అదనపు 1",
+    "ext2": "అదనపు 2",
+    "customerCare": "వినియోగదారుల సహాయ కేంద్రం",
+    "active": "క్రియాశీలమైన"
   }
 
 }
