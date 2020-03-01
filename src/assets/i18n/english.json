@@ -5,13 +5,13 @@
     "CLOSE": "Close",
     "SAVE": "Save",
     "OK": "Ok",
-    "NEW":"New",
-    "EDIT":"Edit",
-    "DELETE":"Delete",
-    "PRINT":"Print",
-    "COLUMNS":"Columns",
-    "LOGOUT":"Logout",
-    "WELCOME":"Welcome",
+    "NEW": "New",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "PRINT": "Print",
+    "COLUMNS": "Columns",
+    "LOGOUT": "Logout",
+    "WELCOME": "Welcome",
     "SEARCH": "Search"
   },
   "LOGIN": {
@@ -149,7 +149,6 @@
     "addDate": "Add Date",
     "prefix": "Prefix"
   },
-
   "profitCenter": {
     "title": "ProfitCenter",
     "seqId": "Seq Id",
@@ -172,7 +171,6 @@
     "companyCodeNavigation": "CompanyCodeNavigation",
     "addDate": "AddDate"
   },
-
   "employeeInBranch": {
     "title": "EmployeeInBranch",
     "code": "Code",
@@ -194,7 +192,6 @@
     "companyCodeNavigation": "CompanyCodeNavigation",
     "addDate": "AddDate"
   },
-
   "costCenter": {
     "title": "CostCenter",
     "code": "Code",
@@ -277,7 +274,6 @@
     "place": "place",
     "active": "Active"
   },
-
   "branches": {
     "title": "Branch",
     "branchCode": "BranchCode",
@@ -313,7 +309,6 @@
     "country": "Country",
     "city": "City",
     "active": "Active"
-
   },
   "company": {
     "title": "Company",
@@ -352,7 +347,6 @@
     "branches": "Branches",
     "costCenters": "CostCenters"
   },
-
   "employee": {
     "title": "Employee",
     "code": "Code",
@@ -391,7 +385,6 @@
     "branchCode": "BranchCode",
     "addDate": "AddDate"
   },
-
   "taxMaster": {
     "title": "TaxMaster",
     "code": "Code",
@@ -415,7 +408,7 @@
     "ext1": "EXT1",
     "ext2": "EXT2",
     "active": "Active",
-    "addDate":"Add Date"
+    "addDate": "Add Date"
   },
   "accountingclass": {
     "title": "Accounting Class",
@@ -424,7 +417,7 @@
     "ext1": "EXT1",
     "ext2": "EXT2",
     "active": "Active",
-    "addDate":"Add Date"
+    "addDate": "Add Date"
   },
   "brand": {
     "title": "Brand",
@@ -435,9 +428,8 @@
     "ext1": "EXT1",
     "ext2": "EXT2",
     "active": "Active",
-    "addDate":"Add Date"
+    "addDate": "Add Date"
   },
-
   "brandmodel": {
     "title": "BrandModel",
     "code": "Code",
@@ -461,10 +453,8 @@
     "outputTaxCode": "OutputTaxCode",
     "size": "Size",
     "active": "Active",
-    "addDate":"Add Date"
+    "addDate": "Add Date"
   },
-
-
   "cardType": {
     "title": "Card Type",
     "code": "Code",
@@ -477,7 +467,6 @@
     "addDate": "addDate",
     "active": "Active"
   },
-
   "numberassignment": {
     "title": "Number Assignment",
     "code": "Code",
@@ -490,7 +479,7 @@
     "noType": "NoType",
     "numberInterval": "NoInterval",
     "active": "Active",
-    "addDate":"Add Date"
+    "addDate": "Add Date"
   },
   "materialgroups": {
     "title": "Material Groups",
@@ -508,66 +497,89 @@
   "leaveopeningbalances": {
     "title": "Leaveopening Balances",
     "code": "Code",
-    "groupName": "GroupName",
-    "hsnCode": "HSNCode",
-    "brandCode": "Brand Name",
-    "compCode": "Company",
-    "ext1": "EXT1",
-    "ext2": "EXT2",
-    "customerCare": "CustomerCare",
+    "cl":  "cl",
+    "clopbalance": "clopbalance",
+    "comOff": "comOff",
+    "comOffOpbalance": "comOffOpbalance",
+    "companyCode": "companyCode",
+    "companyDesc": "companyDesc",
+    "el": "el",
+    "elopbalance": "elopbalance",
+    "lp": "lp",
+    "lpopbalance": "lpopbalance",
+    "leaveType": "leaveType",
+    "ml": "ml",
+    "mlopbalance": "mlopbalance",
+    "name": "name",
+    "noOfDays": "noOfDays",
+    "pl": "pl",
+    "plopbalance": "plopbalance",
+    "sl": "sl",
+    "slopbalance": "slopbalance",
+    "year": "year",
+    "addDate": "addDate",
     "active": "Active"
   },
   "leavetype": {
     "title": "LeaveTypes",
-    "code": "Code",
-    "groupName": "GroupName",
-    "hsnCode": "HSNCode",
-    "brandCode": "Brand Name",
-    "compCode": "Company",
-    "ext1": "EXT1",
-    "ext2": "EXT2",
-    "customerCare": "CustomerCare",
-    "active": "Active"
+    "leaveCode": "01",
+"companyCode": "companyCode",
+"remarks": "remarks",
+"leaveMinLimit": "leaveMinLimit",
+"leaveMaxLimit": "leaveMaxLimit",
+"leaveName": "leaveName",
+"active": "active",
+"addDate": "addDate",
+"branchCode": "branchCode"
   },
   "Leaverequest": {
     "title": "LeaveRequest",
-    "code": "Code",
-    "groupName": "GroupName",
-    "hsnCode": "HSNCode",
-    "brandCode": "Brand Name",
-    "compCode": "Company",
-    "ext1": "EXT1",
-    "ext2": "EXT2",
-    "customerCare": "CustomerCare",
-    "active": "Active"
+    "sno": "sno",
+    "empCode": "empCode",
+    "empName": "empName",
+    "applDate": "applDate",
+    "leaveCode": "leaveCode",
+    "leaveFrom": "leaveFrom",
+    "leaveTo": "leaveTo",
+    "leaveDays": "leaveTo",
+    "leaveRemarks": "leaveRemarks",
+    "status": "status",
+    "approvedId": "approvedId",
+    "approvedName": "approvedName",
+    "reason": "reason",
+    "recommendedId": "recommendedId",
+    "recommendedName": "recommendedName",
+    "approvedDate": "approvedDate",
+    "acceptedRemarks": "acceptedRemarks",
+    "companyCode": "companyCode"
   },
-  "ptmaster":{
-    "title":"PT Master",
-    "id":"Id",
-    "ptslab":"PT Slab",
-    "location":"PT Location",
-    "year":"Year",
-    "month":"Month",
-    "ptlowerLimit":"PT Lower Limit",
-    "ptupperLimit":"PT Upper Limit",
-    "ptamt":"PT Amount",
-    "active":"Active",
-    "ext1":"EXT1"
+  "ptmaster": {
+    "title": "PT Master",
+    "id": "Id",
+    "ptslab": "PT Slab",
+    "location": "PT Location",
+    "year": "Year",
+    "month": "Month",
+    "ptlowerLimit": "PT Lower Limit",
+    "ptupperLimit": "PT Upper Limit",
+    "ptamt": "PT Amount",
+    "active": "Active",
+    "ext1": "EXT1"
   },
-  "componentmaster":{
-    "title":"Component Master",
-    "componentCode":"Component Code",
-    "componentName":"Component Name",
-    "componentType":"Component Type",
-    "remarks":"Remarks",
-    "companyCode":"Company Code",
-    "amount":"Amount",
-    "percentage":"Percentage",
-    "duration":"Duration",
-    "active":"Active",
-    "specificMonth":"Specific Month"
+  "componentmaster": {
+    "title": "Component Master",
+    "componentCode": "Component Code",
+    "componentName": "Component Name",
+    "componentType": "Component Type",
+    "remarks": "Remarks",
+    "companyCode": "Company Code",
+    "amount": "Amount",
+    "percentage": "Percentage",
+    "duration": "Duration",
+    "active": "Active",
+    "specificMonth": "Specific Month"
   },
-  "Billing" : {
+  "Billing": {
     "formDate": "Form Date",
     "toDate": "To Date",
     "branch": "Branch",
@@ -576,7 +588,7 @@
     "branchName": "Branch Name",
     "invoiceDate": "Invoice Date",
     "vehicleNo": "Vehicle No",
-    "accountName" : "Account Name",
+    "accountName": "Account Name",
     "stateCode": "State Code",
     "customerName": "Customer Name",
     "customerGSTIN": "Customer GSTIN",
@@ -591,6 +603,7 @@
     "totalTax": "Total Tax",
     "totalInvoiceAmount": "Total Invoice Amount",
 
+    
     "name": "name",
     "mobile1": "mobile1",
     "mobile2": "mobile2",
@@ -613,6 +626,54 @@
     "cardAmt": "cardAmt",
     "cardType": "cardType",
     "netAmount": "netAmount"
+  },
+  "structureCreation": {
+    "title":"Structure Creation",
+    "structureCode": "Structure Code",
+    "companyCode": "Company Code",
+    "branchCode": "Branch Code",
+    "componentCode": "Component Code",
+    "componentName": "Component Name",
+    "componentType": "Component Type",
+    "remarks": "Remarks",
+    "amount": "Amount",
+    "percentage": "Percentage",
+    "structureName": "Structure Name",
+    "amountType": "Amount Type",
+    "active": "Active",
+    "ext1": "Ext1",
+    "ext2": "EXT2",
+    "ext3": "Ext3"
+  },
+  "StructionCreation": {
+    "fixedComponents": "Fixed Components",
+    "structionName": "Struction Name"
+  },
+  "pfmaster":{
+       "title":"PF Master",
+       "pftypeName":"PFType Name",
+       "companyCode":"company Code",
+       "componentCode":"Component Code",
+       "componentName":"Component Name",
+       "employeeContribution":"Employee Contribution",
+       "employerContribution":"Employer Contribution",
+       "contributionType":"Contribution Type"
+  },
+  "CTCBreakup":{
+    "title":"CTC Breakup",
+    "companyCode":"Company Code",
+    "empCode":"Emp Code",
+    "effectFrom":"Effect From",
+    "earnDednCode":"Earn Dedn Code",
+    "earnDednAmount":"Earn Dedn Amount",
+    "ctc":"CTC",
+    "earnDednName":"Earn Dedn Name",
+    "structureName":"Structure Name"
+  },
+  "salaryprocess":{
+    "title":"Salary Process",
+    "emp_Code":"EmpCode",
+    "sal_Month":"Month",
+    "sal_Year":"Year"
   }
-
 }

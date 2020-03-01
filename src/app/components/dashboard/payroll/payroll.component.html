@@ -1,8 +1,33 @@
-<mat-tab-group>
+<!-- <mat-tab-group>
     <mat-tab label="Apply Leave">
         <app-leaverequest></app-leaverequest>
     </mat-tab>
-    <mat-tab label="Leave History"> 
+    <mat-tab label="Leave History">
         <app-leavetypes></app-leavetypes>
     </mat-tab>
-</mat-tab-group>
+</mat-tab-group> -->
+
+<div *ngIf="tableUrl">
+    <div *ngIf="tableUrl.coustom">
+        <app-table [tableData]="tableData" [addOrUpdateData]="addOrUpdateData"
+            (addOrUpdateEvent)="addOrUpdateEvent($event)"></app-table>
+    </div>
+    
+    <div *ngIf="!tableUrl.coustom && routeParams == 'leaveApproval'">
+    <app-leaveapproval></app-leaveapproval>
+    </div>
+
+    <div *ngIf="!tableUrl.coustom && routeParams == 'CTCBreakup'">
+        <app-ctcbreakup></app-ctcbreakup>
+        </div>
+
+        <div *ngIf="!tableUrl.coustom && routeParams == 'salaryprocess'">
+            <app-salaryprocess></app-salaryprocess>
+            </div>
+</div>
+
+
+
+<!-- <div *ngIf="routeParams == 'CTCBreakup'">
+    <app-ctcbreakup></app-ctcbreakup>
+</div> -->

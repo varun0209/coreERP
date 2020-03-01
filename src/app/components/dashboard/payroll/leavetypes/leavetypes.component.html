@@ -1,27 +1,42 @@
-<div>
-  <div >
+<div class="position-relative popup-class">
+  <mat-card-title class="boader--color d-flex justify-content-between position-absolute w-100">
     <span> New Leaveopeningbalances </span>
-  </div>
+    <mat-icon class="p-2" (click)="cancel()">close</mat-icon>
+  </mat-card-title>
   <mat-card-content class="pt-5 p-2 m-0 overflow-auto">
-    <form [formGroup]="formData" autocomplete="off">
+    <form [formGroup]="modelFormData" autocomplete="off">
 
       <div class="d--flex">
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.leaveCode.valid }">
+          <input matInput placeholder="Leavecode" formControlName="leaveCode" appFocusOnEnter tabIndex="1">
+          <mat-error *ngIf="formControls.leaveCode.errors" class="help-block">
+            <div *ngIf="formControls.leaveCode.errors.required">Code is required </div>
+          </mat-error>
 
+        </mat-form-field>
+
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.leaveName.valid }">
+          <input matInput placeholder="Name" formControlName="leaveName" appFocusOnEnter tabIndex="2">
+          <mat-error *ngIf="formControls.leaveName.errors" class="help-block">
+            <div *ngIf="formControls.leaveName.errors.required">Name is required</div>
+          </mat-error>
+        </mat-form-field>
 
         <mat-form-field class="form-element">
-          <input matInput placeholder="Employee Code" formControlName="code" appFocusOnEnter tabIndex="3">
+          <input matInput placeholder="MaxLimit" formControlName="leaveMaxLimit" appFocusOnEnter tabIndex="3">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="Employee Name" formControlName="name" appFocusOnEnter tabIndex="4">
+          <input matInput placeholder="Active" formControlName="active" appFocusOnEnter tabIndex="4">
         </mat-form-field>
-        <mat-divider></mat-divider>
-
 
 
       </div>
+      <mat-divider></mat-divider>
 
-      <app-normal-table [tableData]="tableData"></app-normal-table>
-
+      <div class="form-element p-2 d-flex justify-content-end">
+        <button mat-raised-button   class="button-color-red text-white mr-1"  (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+        <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1"  (click)="save()" > {{ 'COMMON.SAVE' | translate }}</button>
+      </div>
 
     </form>
 

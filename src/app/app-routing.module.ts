@@ -11,10 +11,6 @@ import { PayrollComponent } from './components/dashboard/payroll/index';
 
 
 const routes: Routes = [
-
-  { path: 'payroll', component: PayrollComponent, data: { title: 'Payroll' } },
-
-
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
   { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' }, canActivate: [AuthGuard] ,
     children : [
@@ -23,7 +19,7 @@ const routes: Routes = [
     { path: 'sales/:id/createSale', component: CreateBillComponent, data: { title: 'Create Sale' }, canActivate: [AuthGuard]  },
     { path: 'generalledger/:id', component: GeneralledgerComponent, data: { title: 'Generalledger' }, canActivate: [AuthGuard]  },
     { path: 'inventory/:id', component: InventoryComponent, data: { title: 'Inventory' }, canActivate: [AuthGuard] },
-    { path: 'payroll', component: PayrollComponent, data: { title: 'Payroll' }, canActivate: [AuthGuard] },
+    { path: 'payroll/:id', component: PayrollComponent, data: { title: 'Payroll' }, canActivate: [AuthGuard] },
     { path: 'reports/:id', component: ReportsComponent, data: { title: 'Report' }, canActivate: [AuthGuard]  },
     { path: 'setting', component: SettingComponent, data: { title: 'Generalledger' }, canActivate: [AuthGuard]  }
   ]

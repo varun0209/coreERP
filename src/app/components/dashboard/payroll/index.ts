@@ -1,7 +1,11 @@
-export { PayrollComponent } from './payroll.component'
-export { LeaveopeningbalancesComponent } from './leaveopeningbalances/leaveopeningbalances.component'
-export { LeavetypesComponent } from './leavetypes/leavetypes.component'
-export { LeaverequestComponent } from './leaverequest/leaverequest.component'
-//export { BrandComponent } from './brand/brand.component'
-//export { NumberAssignmentComponent } from './numberassignment/numberassignment.component'
-//export { MaterialGroupsComponent } from './materialgroups/materialgroups.component'
+export { PayrollComponent } from './payroll.component';
+export { LeaveopeningbalancesComponent } from './leaveopeningbalances/leaveopeningbalances.component';
+export { LeavetypesComponent } from './leavetypes/leavetypes.component';
+export { LeaveRequestComponent } from './leaverequest/leaverequest.component';
+export { StructureCreationComponent } from './structure-creation/structure-creation.component';
+export { PTMasterComponent } from './ptmaster/ptmaster.component'
+export { ComponentMasterComponent } from './componentmaster/componentmaster.component'
+export { LeaveApprovalComponent } from './leaveapproval/leaveapproval.component';
+export { PFMasterComponent} from './pfmaster/pfmaster.component';
+export { CTCBreakupComponent} from './ctcbreakup/ctcbreakup.component';
+export { SalaryProcessComponent} from './salaryproces/salaryprocess.component';

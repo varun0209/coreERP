@@ -1,9 +1,10 @@
-import {Component, ViewChild, ElementRef, ViewEncapsulation, AfterViewInit, OnInit, Input} from '@angular/core';
+import { Component, ViewChild, ElementRef, ViewEncapsulation, AfterViewInit, OnInit, Input } from '@angular/core';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';
 import { ApiConfigService } from '../../services/api-config.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +13,18 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
+  sidenavWidth = 4;
 
-  @ViewChild('appDrawer', {static: false}) appDrawer: ElementRef;
+  increase(){
+    this.sidenavWidth = 15;
+    console.log("increase sidenav width");
+  }
+  decrease(){
+    this.sidenavWidth = 4;
+    console.log("decrease sidenav width");
+  }
+
+  @ViewChild('appDrawer', { static: false }) appDrawer: ElementRef;
   navItems = [
     {
       displayName: 'Master',
@@ -87,21 +98,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       iconName: 'videocam',
       route: 'sales',
       children: [
-        {
-          displayName: 'Bill Receivable Branch',
-          iconName: 'group',
-          route: 'asnBillsRcvBranch'
-        },
-        {
-          displayName: 'Sessions',
-          iconName: 'speaker_notes',
-          route: 'dashboard/table'
-        },
-        {
-          displayName: 'Feedback',
-          iconName: 'feedback',
-          route: 'feedback'
-        },
+        // {
+        //   displayName: 'Bill Receivable Branch',
+        //   iconName: 'group',
+        //   route: 'asnBillsRcvBranch'
+        // },
+        // {
+        //   displayName: 'Sessions',
+        //   iconName: 'speaker_notes',
+        //   route: 'dashboard/table'
+        // },
+        // {
+        //   displayName: 'Feedback',
+        //   iconName: 'feedback',
+        //   route: 'feedback'
+        // },
         {
           displayName: 'CardType',
           iconName: 'feedback',
@@ -114,7 +125,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       ]
     },
-
     {
       displayName: 'GeneralLedger',
       iconName: 'recent_actors',
@@ -167,7 +177,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       ]
     },
-
     {
       displayName: 'Inventory',
       iconName: 'recent_actors',
@@ -206,13 +215,65 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       ]
     },
-
     {
       displayName: 'Payroll',
       iconName: 'recent_actors',
       route: 'payroll',
-    },
+      children: [
+        {
+          displayName: 'Leaveopeningbalances',
+          iconName: 'speaker_notes',
+          route: 'leaveopeningbalances'
+        },
+        {
+          displayName: 'LeaveType',
+          iconName: 'speaker_notes',
+          route: 'leavetype'
+        },
+        {
+          displayName: 'LeaveRequest',
+          iconName: 'speaker_notes',
+          route: 'Leaverequest'
+        },
+        {
+          displayName: 'Component Master',
+          iconName: 'speaker_notes',
+          route: 'componentmaster'
+        },
+        {
+          displayName: 'PT Master',
+          iconName: 'speaker_notes',
+          route: 'ptmaster'
+        
+        },
+        {
+          displayName: 'CTCBreakup',
+          iconName: 'account_balance',
+          route: 'CTCBreakup'
+        },
+        {
+      	displayName: 'Structure Creation',
+          iconName: 'account_balance',
+          route: 'structureCreation'
+        },
+	 {
+          displayName: 'Leave Approval',
+          iconName: 'account_balance',
+          route: 'leaveApproval'
+        },
+        {
+          displayName: 'PF Master',
+          iconName: 'account_balance',
+          route: 'pfmaster'
+        },
+        {
+          displayName: 'Salary Process',
+          iconName: 'account_balance',
+          route: 'salaryprocess'
+        }
 
+      ]
+    },
     {
       displayName: 'Reports',
       iconName: 'recent_actors',
@@ -225,8 +286,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         },
       ]
     }
-
-
   ];
 
   constructor(
@@ -234,14 +293,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private commonService: CommonService,
     private apiConfigService: ApiConfigService,
     private spinner: NgxSpinnerService
-  ) { }
+  ) {
+    commonService.showNavbar.next(true)
+
+   }
 
   ngOnInit() {
     this.spinner.show();
     const getMenuUrl = String.Join('/', this.apiConfigService.getMenuUrl);
 
     this.apiService.apiGetRequest(getMenuUrl)
-        .subscribe(
+      .subscribe(
         menu => {
           console.log(menu);
           this.spinner.hide();

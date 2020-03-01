@@ -14,7 +14,9 @@ export class BillingComponent implements OnInit {
 
   dateForm: FormGroup;
   
-  displayedColumns: string[] = ['branchCode'];
+  displayedColumns: string[] = ['slNo','code', 'name', 'hsnNo', 'pump', 'qty', 'fqty',
+  'slipNo','unit','discount','taxCode', 'rate','grossAmount','stockAvailable'
+];
   dataSource: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -41,7 +43,7 @@ export class BillingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTableData();
+    // this.getBillingList();
   }
 
   search() {
@@ -54,13 +56,13 @@ export class BillingComponent implements OnInit {
   }
 
   
-  getTableData() {
-    const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getBranchesBranchList);
-    this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
-      this.dataSource = new MatTableDataSource(data['branchesList']);
-      this.dataSource.paginator = this.paginator;
-    });
-  }
+  // getBillingList() {
+  //   const getBillingListUrl = String.Join('/', this.apiConfigService.getBillingList);
+  //   this.commonService.apiCall(getBillingListUrl, (data) => {
+  //     this.dataSource = new MatTableDataSource(data['branchesList']);
+  //     this.dataSource.paginator = this.paginator;
+  //   });
+  // }
 
   cancel() {
     this.dateForm.reset();

@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 
 import { SharedImportModule } from './shared/shared-import';
 
-import { NavbarComponent , TableComponent, DeleteItemComponent, ReportTableComponent, TableNewComponent, NormalTableComponent, BillingTableComponent } from './reuse-components/index';
+import { NavbarComponent , TableComponent, DeleteItemComponent, ReportTableComponent, NormalTableComponent, BillingTableComponent } from './reuse-components/index';
 import { CompanyComponent , MastersComponent, BranchesComponent, DivisionComponent, SegmentComponent, ProfitCenterComponent,PartnerCreationComponent, CostCenterComponent, NoSeriesComponent, PartnerTypeComponent,EmployeeInBranchComponent ,EmployeeComponent, TaxMasterComponent } from './components/dashboard/masters/index';
 import { SalesComponent, CardTypeComponent, BillingComponent, CreateBillComponent } from './components/dashboard/sales/index';
 import {GeneralledgerComponent,AccountsGroupComponent,SubGroupComponent,UndersubGroupComponent,GlAccountsComponent,GlSubcodeComponent,TaxIntegrationComponent,
@@ -15,7 +15,8 @@ import { LoginComponent, NotFoundComponent, SidebarComponent, DashboardComponent
 
 import { InventoryComponent, BrandModelComponent, SizesComponent, AccountingClassComponent, BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent } from './components/dashboard/Inventory/index';
 
-import { PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaverequestComponent } from './components/dashboard/payroll/index';
+import { PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaveRequestComponent,PTMasterComponent,ComponentMasterComponent, StructureCreationComponent,LeaveApprovalComponent,
+PFMasterComponent,CTCBreakupComponent,SalaryProcessComponent } from './components/dashboard/payroll/index';
 
 import { RuntimeConfigService } from './services/runtime-config.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -26,6 +27,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { FocusOnEnterDirective } from './directives/focus-on-enter.directive';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
+
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -44,7 +47,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DeleteItemComponent,
     DashboardComponent,
     FocusOnEnterDirective,
-    TableNewComponent,
     BranchesComponent,
     DivisionComponent,
     SalesComponent,
@@ -73,7 +75,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     VoucherTypesComponent,
     InventoryComponent,
     BrandModelComponent, SizesComponent, AccountingClassComponent, BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent,
-    PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaverequestComponent, BillingComponent, NormalTableComponent, BillingTableComponent, CreateBillComponent
+    PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent, LeaveRequestComponent, BillingComponent, NormalTableComponent, BillingTableComponent, CreateBillComponent, StructureCreationComponent,LeaveApprovalComponent,
+    PTMasterComponent,ComponentMasterComponent,PFMasterComponent,CTCBreakupComponent,SalaryProcessComponent
   ],
   imports: [
     AppRoutingModule,
@@ -99,6 +102,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   bootstrap: [AppComponent],
   entryComponents: [ DeleteItemComponent, CompanyComponent, BranchesComponent,DivisionComponent, SegmentComponent,ProfitCenterComponent, PartnerCreationComponent, CostCenterComponent, NoSeriesComponent, PartnerTypeComponent, EmployeeInBranchComponent , EmployeeComponent,
     TaxMasterComponent, CardTypeComponent, AccountsGroupComponent, SubGroupComponent, UndersubGroupComponent, GlAccountsComponent, GlSubcodeComponent, TaxIntegrationComponent, CashAccToBranchesComponent, AccToAccClassComponent, VoucherTypesComponent, BrandModelComponent, SizesComponent, AccountingClassComponent, BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent, LeaveopeningbalancesComponent, LeavetypesComponent
-  ,LeaverequestComponent]
+  ,LeaveRequestComponent, StructureCreationComponent,LeaveApprovalComponent,PTMasterComponent,ComponentMasterComponent,PFMasterComponent,CTCBreakupComponent,SalaryProcessComponent]
 })
 export class AppModule { }

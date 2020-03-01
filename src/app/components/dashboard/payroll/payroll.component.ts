@@ -25,6 +25,7 @@ export class PayrollComponent implements OnInit {
   tableData: any;
   addOrUpdateData: any;
   tableUrl: any;
+  routeParams: any;
 
   @ViewChild(TableComponent, { static: false }) tableComponent: TableComponent;
 
@@ -39,6 +40,7 @@ export class PayrollComponent implements OnInit {
 
   ) {
     activatedRoute.params.subscribe(params => {
+      this.routeParams = params.id;
       this.tableUrl = mastersService.getRouteUrls(params.id);
       if (!isNullOrUndefined(this.tableUrl)) {
         this.getTableData();

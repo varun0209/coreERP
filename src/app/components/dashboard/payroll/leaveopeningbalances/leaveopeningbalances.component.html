@@ -8,33 +8,75 @@
 
       <div class="d--flex">
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.code.valid }">
-          <input matInput placeholder="code" formControlName="code" appFocusOnEnter tabIndex="1">
+          <input matInput  placeholder="{{'leaveopeningbalances.code' | translate }}" formControlName="code" appFocusOnEnter tabIndex="1">
           <mat-error *ngIf="formControls.code.errors" class="help-block">
             <div *ngIf="formControls.code.errors.required">Code is required </div>
           </mat-error>
 
         </mat-form-field>
 
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.description.valid }">
-          <input matInput placeholder="Name" formControlName="description" appFocusOnEnter tabIndex="2">
-          <mat-error *ngIf="formControls.description.errors" class="help-block">
-            <div *ngIf="formControls.description.errors.required">Name is required</div>
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.cl.valid }">
+          <input matInput  placeholder="{{'leaveopeningbalances.cl' | translate }}"  formControlName="cl" appFocusOnEnter tabIndex="2">
+          <mat-error *ngIf="formControls.cl.errors" class="help-block">
+            <div *ngIf="formControls.cl.errors.required">Name is required</div>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="form-element">
-          <input matInput placeholder="Responsible Person" formControlName="responsiblePerson" appFocusOnEnter tabIndex="3">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="Active" formControlName="active" appFocusOnEnter tabIndex="4">
+          <input matInput  placeholder="{{'leaveopeningbalances.clopbalance' | translate }}" formControlName="clopbalance" appFocusOnEnter tabIndex="4">
         </mat-form-field>
 
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.comOff' | translate }}" formControlName="comOff" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.companyCode' | translate }}" formControlName="companyCode" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.companyDesc' | translate }}" formControlName="companyDesc" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.el' | translate }}" formControlName="el" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.elopbalance' | translate }}" formControlName="elopbalance" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.lp' | translate }}" formControlName="lp" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.lpopbalance' | translate }}" formControlName="lpopbalance" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.leaveType' | translate }}" formControlName="leaveType" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.ml' | translate }}" formControlName="ml" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.mlopbalance' | translate }}" formControlName="mlopbalance" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        <mat-form-field class="form-element">
+          <input matInput  placeholder="{{'leaveopeningbalances.name' | translate }}" formControlName="name" appFocusOnEnter tabIndex="4">
+        </mat-form-field>
+
+        
 
       </div>
       <mat-divider></mat-divider>
 
       <div class="form-element p-2 d-flex justify-content-end">
-        <button mat-raised-button   class="mr-1" class="button-color-red text-white"  (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+       <button mat-raised-button class="button-color-red text-white mr-1"  (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1"  (click)="save()" > {{ 'COMMON.SAVE' | translate }}</button>
       </div>
 

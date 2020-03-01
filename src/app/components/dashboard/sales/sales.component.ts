@@ -33,7 +33,7 @@ export class SalesComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private alertService: AlertService,
     private salesService: SalesService
-  ) { 
+  ) {
     activatedRoute.params.subscribe(params => {
       this.tableUrl = salesService.getRouteUrls(params.id);
       if (!isNullOrUndefined(this.tableUrl)) {

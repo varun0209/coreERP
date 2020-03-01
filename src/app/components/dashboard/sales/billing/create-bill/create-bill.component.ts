@@ -16,11 +16,16 @@ import { take } from 'rxjs/operators';
 })
 export class CreateBillComponent implements OnInit {
 
-  displayedColumns: string[] = ['branchCode', 'name', 'address1', 'address2', 'delete'];
+  displayedColumns: string[] = ['slNo','code', 'name', 'hsnNo', 'pump', 'qty', 'fqty',
+  'slipNo','unit','discount','taxCode', 'rate','grossAmount','stockAvailable','delete'
+];
   dataSource: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
+  memberNamesList: any;
+  branchesList: any;
+  date = new Date((new Date().getTime() - 3888000000));
 
   branchFormData: FormGroup;
   modelFormData: FormGroup;
@@ -44,11 +49,10 @@ export class CreateBillComponent implements OnInit {
     private _ngZone: NgZone
   ) {
     this.branchFormData = this.formBuilder.group({
-      branch: [null],
       invoiceNo: [null],
       cashOrParty: [null],
       branchName: [null],
-      invoiceDate: [null],
+      invoiceDate: [(new Date()).toISOString()],
       vehicleNo: [null],
       accountName: [null],
       stateCode: [null],
@@ -66,7 +70,11 @@ export class CreateBillComponent implements OnInit {
       totalInvoiceAmount: [null],
     });
     this.branchFormData.controls['invoiceNo'].disable();
+    this.branchFormData.controls['invoiceDate'].disable();
     this.branchFormData.controls['accountBalance'].disable();
+    this.branchFormData.controls['totalGross'].disable();
+    this.branchFormData.controls['totalTax'].disable();
+    this.branchFormData.controls['totalInvoiceAmount'].disable();
 
     const user = JSON.parse(localStorage.getItem('user'));
     if (!isNullOrUndefined(user)) {
@@ -74,53 +82,47 @@ export class CreateBillComponent implements OnInit {
         branch: user.branchCode,
       })
 
+      this.getSalesBranchList();
       this.genarateBillNo(user.branchCode);
-      // this.getEmployesList(user.branchCode);
-      // this.getcashAcctobranchAccountsList(user.branchCode);
+      this.getBillingBranchesList();
+      this.getMemberNamesList();
+
+
+      this.getcashAcctobranchAccountsList(user.branchCode);
+      this.getEmployesList(user.branchCode);
+
       // this.getModelList(user.branchCode);
       // this.getBillingList(user.branchCode);
     }
-    // this.getCardTypeList();
-    // this.getGlaccountsList();
-    // this.getFinanceGlAccList(); 
     this.getTableData();
+
+    this.getFinanceGlAccList();
+    this.getGlaccountsList();
+    this.getCardTypeList();
+
   }
 
   ngOnInit() {
-    const getSalesBranchListUrl = String.Join('/', this.apiConfigService.getSalesBranchList);
-    this.commonService.apiCall(getSalesBranchListUrl, (data) => {
-      this.getSalesBranchListArray = data.BranchesList;
-    });
     this.formGroup();
     console.log(this.dataSource)
   }
 
-
-
   formGroup() {
     this.tableFormData = this.formBuilder.group({
-      branchCode: [null],
+      slNo: [null],
+      code: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      address1: [null, [Validators.required]],
-      address2: [null],
-    });
-  }
-
-  getTableData() {
-    const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getBranchesBranchList);
-    this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
-      // this.dataSource = new MatTableDataSource(data['branchesList']);
-      // this.dataSource.paginator = this.paginator;
-      this.addTableRow();
-    });
-  }
-
-  getBillingList(branch) {
-    const getBillingListUrl = String.Join('/', this.apiConfigService.getBillingList, branch);
-    this.commonService.apiCall(getBillingListUrl, (data) => {
-      this.dataSource = new MatTableDataSource(data['BillingList']);
-      this.dataSource.paginator = this.paginator;
-      this.addTableRow();
+      hsnNo: [null, [Validators.required]],
+      pump: [null, [Validators.required]],
+      qty: [null, [Validators.required]],
+      fqty: [null, [Validators.required]],
+      slipNo: [null, [Validators.required]],
+      unit: [null, [Validators.required]],
+      discount: [null, [Validators.required]],
+      taxCode: [null, [Validators.required]],
+      rate: [null, [Validators.required]],
+      grossAmount: [null, [Validators.required]],
+      stockAvailable: [null, [Validators.required]],
     });
   }
 
@@ -131,7 +133,6 @@ export class CreateBillComponent implements OnInit {
         [column]: value
       })
     }
-
     if (this.tableFormData.valid) {
       this.addTableRow();
       this.formGroup();
@@ -141,20 +142,31 @@ export class CreateBillComponent implements OnInit {
 
   addTableRow() {
     let tableObj = {
-      branchCode: '',
+      slNo: '',
+      code: '',
       name: '',
-      address1: '',
-      address2: '',
+      hsnNo: '',
+      pump: '',
+      qty: '',
+      fqty: '',
+      slipNo: '',
+      unit: '',
+      discount: '',
+      taxCode: '',
+      rate: '',
+      grossAmount: '',
+      stockAvailable: '',
+      delete: '',
       text: 'obj'
     }
     console.log(this.dataSource)
-    if(!isNullOrUndefined(this.dataSource)) {
+    if (!isNullOrUndefined(this.dataSource)) {
       this.dataSource.data.push(tableObj);
-      this.dataSource = new MatTableDataSource(this.dataSource.data);  
+      this.dataSource = new MatTableDataSource(this.dataSource.data);
     } else {
       this.dataSource = new MatTableDataSource([tableObj]);
-   
-    } 
+
+    }
     this.dataSource.paginator = this.paginator;
   }
 
@@ -175,6 +187,13 @@ export class CreateBillComponent implements OnInit {
     }
   }
 
+  getSalesBranchList() {
+    const getSalesBranchListUrl = String.Join('/', this.apiConfigService.getSalesBranchList);
+    this.commonService.apiCall(getSalesBranchListUrl, (data) => {
+      this.getSalesBranchListArray = data.BranchesList;
+    });
+  }
+
   genarateBillNo(branch?) {
     var generateBillUrl;
     if (!isNullOrUndefined(branch)) {
@@ -189,31 +208,43 @@ export class CreateBillComponent implements OnInit {
     });
   }
 
-  getEmployesList(branch) {
-    const getEmployesListUrl = String.Join('/', this.apiConfigService.getEmployesList, branch);
-    this.commonService.apiCall(getEmployesListUrl, (data) => {
+  getBillingBranchesList() {
+    const getBillingBranchesListUrl = String.Join('/', this.apiConfigService.getBillingBranchesList);
+    this.commonService.apiCall(getBillingBranchesListUrl, (data) => {
+      this.branchesList = data['BranchesList'];
       console.log(data);
     });
   }
 
 
+
+
+
+
+
+
+
+
+  getMemberNamesList() { 
+    const getMemberNamesListUrl = String.Join('/', this.apiConfigService.getMemberNamesList);
+    this.commonService.apiCall(getMemberNamesListUrl, (res) => {
+      this.memberNamesList = res['PartnerCreationList'];
+    });
+  }
+
+
+  // stop
+  getFinanceGlAccList() {
+    const getFinanceGlAccListUrl = String.Join('/', this.apiConfigService.getFinanceGlAccList);
+    this.commonService.apiCall(getFinanceGlAccListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+  // stop
   getcashAcctobranchAccountsList(branch) {
     const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getcashAcctobranchAccountsList, branch);
     this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
-      console.log(data);
-    });
-  }
-
-  getModelList(branch) {
-    const getModelListUrl = String.Join('/', this.apiConfigService.getModelList, branch);
-    this.commonService.apiCall(getModelListUrl, (data) => {
-      console.log(data);
-    });
-  }
-
-  getCardTypeList() {
-    const getCardTypeListUrl = String.Join('/', this.apiConfigService.getCardTypeList);
-    this.commonService.apiCall(getCardTypeListUrl, (data) => {
       console.log(data);
     });
   }
@@ -225,11 +256,81 @@ export class CreateBillComponent implements OnInit {
     });
   }
 
-  getFinanceGlAccList() {
-    const getFinanceGlAccListUrl = String.Join('/', this.apiConfigService.getFinanceGlAccList);
-    this.commonService.apiCall(getFinanceGlAccListUrl, (data) => {
+  getCardTypeList() {
+    const getCardTypeListUrl = String.Join('/', this.apiConfigService.getCardTypeList);
+    this.commonService.apiCall(getCardTypeListUrl, (data) => {
       console.log(data);
     });
+  }
+
+  getEmployesList(branch) {
+    const getEmployesListUrl = String.Join('/', this.apiConfigService.getEmployesList, branch);
+    this.commonService.apiCall(getEmployesListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  getTableData() {
+    const getcashAcctobranchAccountsListUrl = String.Join('/', this.apiConfigService.getBranchesBranchList);
+    this.commonService.apiCall(getcashAcctobranchAccountsListUrl, (data) => {
+      // this.dataSource = new MatTableDataSource(data['branchesList']);
+      // this.dataSource.paginator = this.paginator;
+      this.addTableRow();
+    });
+  }
+
+  getBillingList(branch) {
+    const getBillingListUrl = String.Join('/', this.apiConfigService.getBillingList, branch);
+    this.commonService.apiCall(getBillingListUrl, (data) => {
+      this.dataSource = new MatTableDataSource(data['BillingList']);
+      this.dataSource.paginator = this.paginator;
+      this.addTableRow();
+    });
+  }
+
+
+
+
+
+
+
+  getModelList(branch) {
+    const getModelListUrl = String.Join('/', this.apiConfigService.getModelList, branch);
+    this.commonService.apiCall(getModelListUrl, (data) => {
+      console.log(data);
+    });
+  }
+
+
+
+
+
+
+  print() {
+
   }
 
 

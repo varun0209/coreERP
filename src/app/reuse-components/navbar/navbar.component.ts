@@ -10,9 +10,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   openMenu = false;
-  @Input() showExpandButton = true;
-  @Input() showInfoIcon = false;
   loginUser: any;
+  showExpandButtons : any
+  @Input() set showExpandButton(val: string) {
+    this.loginUser = JSON.parse(localStorage.getItem('user'));
+    this.showExpandButtons = val;
+  }
 
   constructor(
     public commonService: CommonService,
@@ -21,7 +24,6 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loginUser = JSON.parse(localStorage.getItem('user'));
   }
 
   logout() {

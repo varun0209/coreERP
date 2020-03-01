@@ -2,67 +2,145 @@ import { Component, Inject, Optional, OnInit } from '@angular/core';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { AlertService } from '../../../../services/alert.service';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { isNullOrUndefined } from 'util';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StatusCodes } from '../../../../enums/common/common';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CommonService } from '../../../../services/common.service';
+import { StatusCodes } from '../../../../enums/common/common';
+import { DatePipe, formatDate } from '@angular/common';
 
+
+interface Session {
+  value: string;
+  viewValue: string;
+}
+interface NumberType {
+  value: string;
+  viewValue: string;
+}
 @Component({
   selector: 'app-leaverequest',
   templateUrl: './leaverequest.component.html',
   styleUrls: ['./leaverequest.component.scss']
 })
-export class LeaverequestComponent implements OnInit {
 
-  isSubmitted  =  false;
-  formData: FormGroup;
+export class LeaveRequestComponent implements OnInit {
+
+  modelFormData: FormGroup;
+  isSubmitted = false;
+  formData: any;
+  apiConfigService: any;
+  apiService: any;
+  companyList: any;
+
+  applDate = new FormControl(new Date());
+
+  sessions: Session[] =
+    [
+      { value: 'FirstHalf', viewValue: 'FirstHalf' },
+      { value: 'SecondHalf', viewValue: 'SecondHalf' }
+    ];
+
+  NumberTypes: NumberType[] =
+    [
+      { value: 'SL-10', viewValue: 'SL-10' },
+      { value: 'CL-10', viewValue: 'CL-10' }
+    ];
+
+
+
 
   constructor(
     private alertService: AlertService,
     private formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<LeaveRequestComponent>,
     private commonService: CommonService,
     // @Optional() is used to prevent error if no data is passed
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any)
+  {
 
-      this.formData  =  this.formBuilder.group({
-        code: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
-        name: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-        applyDate: [null],
-        leaveType: [null],
-        fromDate: [null]
-      });
+    this.modelFormData = this.formBuilder.group({
+      empCode: [null],
+      empName: [null],
+      applDate: [null],
+      leaveCode: [null],
+      leaveFrom: [null],
+      leaveTo: [null],
+      leaveDays: [null],
+      leaveRemarks: [null],
+      status: [null],
+      approvedId: [null],
+      approvedName: [null],
+      reason: [null],
+      recommendedId: [null],
+      recommendedName: [null],
+      approvedDate: [null],
+      acceptedRemarks: [null],
+      companyCode: [null],
+      ext1: [null],
+      ext2: [null],
+      active: [null],
+      sno:[null]
+    });
 
-
+    
+    
+    this.formData = { ...data };
+    if (!isNullOrUndefined(this.formData.item)) {
+      this.modelFormData.patchValue(this.formData.item);
+      // this.modelFormData.controls['code'].disable();
+    }
 
   }
 
   ngOnInit() {
-    
+    // this.getTableData();
   }
 
-  get formControls() { return this.formData.controls; }
 
-  
-  save() {
-    if (this.formData.invalid) {
+  getTableData() {
+    this.commonService.showSpinner();
+    const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
+    this.apiService.apiGetRequest(getCompanyUrl)
+      .subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              console.log(res);
+              this.companyList = res.response['companiesList'];
+            }
+          }
+          this.commonService.hideSpinner();
+        }, error => {
+
+        });
+  }
+
+  showErrorAlert(caption: string, message: string) {
+    // this.alertService.openSnackBar(caption, message);
+  }
+
+  get formControls() { return this.modelFormData.controls; }
+
+
+  save()
+  {
+    //debugger;
+    if (this.modelFormData.invalid)
+    {
       return;
     }
-
-    this.formData.patchValue({
-      applyDate : this.commonService.formatDate(this.formData.get('applyDate').value),
-      fromDate : this.commonService.formatDate(this.formData.get('fromDate').value)
-    })
-
-    
-    console.log(this.formData)
+    this.formData.item = this.modelFormData.value;
+    this.dialogRef.close(this.formData);
   }
 
-  oncancel() {
+  cancel() {
+    this.dialogRef.close();
   }
 
 }

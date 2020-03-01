@@ -12,6 +12,7 @@ import { SnackBar, StatusCodes } from '../../enums/common/common';
 import { Static } from '../../enums/common/static';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { isNullOrUndefined } from 'util';
+import { CommonService } from '../../services/common.service';
 
 
 @Component({
@@ -33,8 +34,11 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private apiConfigService: ApiConfigService,
     public translate: TranslateService,
-    private spinner: NgxSpinnerService
-  ) {}
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService
+  ) {
+    commonService.showNavbar.next(false)
+  }
 
   // form model
   ngOnInit() {

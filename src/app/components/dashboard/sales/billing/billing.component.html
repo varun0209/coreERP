@@ -43,10 +43,78 @@
                 <div class="table">
 
                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
-                        <ng-container matColumnDef="branchCode">
-                            <th mat-header-cell *matHeaderCellDef> branchCode </th>
-                            <td mat-cell *matCellDef="let element;"> {{element.branchCode}} </td>
+                       
+                        <ng-container matColumnDef="slNo">
+                            <th mat-header-cell *matHeaderCellDef> Sl No </th>
+                            <td mat-cell *matCellDef="let element;"> {{dataSource.filteredData.indexOf(element) + 1}} </td>
                         </ng-container>
+    
+                        <ng-container matColumnDef="code">
+                            <th mat-header-cell *matHeaderCellDef> Product Code </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.code}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.name}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="hsnNo">
+                            <th mat-header-cell *matHeaderCellDef> HSN No </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.hsnNo}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="pump">
+                            <th mat-header-cell *matHeaderCellDef> Pump </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.pump}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="qty">
+                            <th mat-header-cell *matHeaderCellDef> Qty </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.qty}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="fqty">
+                            <th mat-header-cell *matHeaderCellDef> F/Qty </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.fqty}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="slipNo">
+                            <th mat-header-cell *matHeaderCellDef> Slip No </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.slipNo}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="unit">
+                            <th mat-header-cell *matHeaderCellDef> Unit </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.unit}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="discount">
+                            <th mat-header-cell *matHeaderCellDef> Discount </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.discount}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="taxCode">
+                            <th mat-header-cell *matHeaderCellDef> Tax Code </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.taxCode}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="rate">
+                            <th mat-header-cell *matHeaderCellDef> Rate </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.rate}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="grossAmount">
+                            <th mat-header-cell *matHeaderCellDef> Gross Amount </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.grossAmount}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="stockAvailable">
+                            <th mat-header-cell *matHeaderCellDef> Stock Available </th>
+                            <td mat-cell *matCellDef="let element;"> {{element.code}} </td>
+                        </ng-container>
+
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
