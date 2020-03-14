@@ -26,7 +26,6 @@ export class CashAccToBranchesComponent  implements OnInit {
   glaccgrpList:any;
 
   constructor(
-    private alertService: AlertService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CashAccToBranchesComponent>,
     private spinner: NgxSpinnerService,
@@ -62,7 +61,6 @@ this.getCashAccounts();
   }
 
   getCashAccBranchesList() {
-    this.commonService.showSpinner();
     const getCashAccBranchesList = String.Join('/', this.apiConfigService.getCashAccBranchesList);
     this.apiService.apiGetRequest(getCashAccBranchesList)
       .subscribe(
@@ -74,14 +72,11 @@ this.getCashAccounts();
             this.branchesList = res.response['BranchesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getBankAccounts() {
-    this.commonService.showSpinner();
     const getBankAccounts = String.Join('/', this.apiConfigService.getBankAccounts);
     this.apiService.apiGetRequest(getBankAccounts)
       .subscribe(
@@ -93,14 +88,11 @@ this.getCashAccounts();
             this.bankList = res.response['GLCasnBankAccounts'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getCashAccounts() {
-    this.commonService.showSpinner();
     const getCashAccounts = String.Join('/', this.apiConfigService.getCashAccounts);
     this.apiService.apiGetRequest(getCashAccounts)
       .subscribe(
@@ -112,14 +104,8 @@ this.getCashAccounts();
             this.cashaccList = res.response['GLCashAccounts'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
-  }
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

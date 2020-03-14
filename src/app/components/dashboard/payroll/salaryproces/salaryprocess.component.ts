@@ -76,21 +76,9 @@ export class SalaryProcessComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getBillingList();
   }
-
-
-
   
-  // getBillingList() {
-  //   const getBillingListUrl = String.Join('/', this.apiConfigService.getBillingList);
-  //   this.commonService.apiCall(getBillingListUrl, (data) => {
-  //     this.dataSource = new MatTableDataSource(data['branchesList']);
-  //     this.dataSource.paginator = this.paginator;
-  //   });
-  // }
-
-  cancel() {
+ cancel() {
 
   }
 

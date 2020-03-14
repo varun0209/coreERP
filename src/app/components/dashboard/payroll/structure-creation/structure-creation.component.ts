@@ -5,6 +5,9 @@ import { String } from 'typescript-string-operations';
 import { CommonService } from '../../../../services/common.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { isNullOrUndefined } from 'util';
+import { ApiService } from '../../../../services/api.service';
+import { StatusCodes } from '../../../../enums/common/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-structure-creation',
@@ -23,6 +26,8 @@ export class StructureCreationComponent implements OnInit {
   constructor(
     private apiConfigService: ApiConfigService,
     private commonService: CommonService,
+    private apiService: ApiService,
+    private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<StructureCreationComponent>,
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
@@ -36,10 +41,18 @@ export class StructureCreationComponent implements OnInit {
 
   getComponentsList() {
     const getComponentsListUrl = String.Join('/', this.apiConfigService.getStructureComponentsList);
-    this.commonService.apiCall(getComponentsListUrl, (data) => {
-      this.dataSource = new MatTableDataSource(data['ComponentsList']);
-      this.dataSource.paginator = this.paginator;
-    });
+    this.apiService.apiGetRequest(getComponentsListUrl)
+      .subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              this.dataSource = new MatTableDataSource(res.response['ComponentsList']);
+              this.dataSource.paginator = this.paginator;
+            }
+          }
+          this.spinner.hide();
+        });
   }
 
   enableCheckBox(column, data, index) {

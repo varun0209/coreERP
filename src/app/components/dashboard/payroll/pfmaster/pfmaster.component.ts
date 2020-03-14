@@ -74,7 +74,6 @@ export class PFMasterComponent  implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-      //  this.modelFormData.controls['id'].disable();
       }
 
   }
@@ -84,7 +83,6 @@ export class PFMasterComponent  implements OnInit {
   }
 
   getPfComponentsList() {
-    this.commonService.showSpinner();
     const getPfComponentsList = String.Join('/', this.apiConfigService.getPfComponentsList);
     this.apiService.apiGetRequest(getPfComponentsList)
       .subscribe(
@@ -95,16 +93,12 @@ export class PFMasterComponent  implements OnInit {
             this.componentList = res.response['ComponentList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
 
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
+  
 
   get formControls() { return this.modelFormData.controls; }
 
@@ -113,7 +107,6 @@ export class PFMasterComponent  implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
-    //this.modelFormData.controls['id'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

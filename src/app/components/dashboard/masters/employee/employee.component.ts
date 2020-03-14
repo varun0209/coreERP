@@ -78,7 +78,7 @@ export class EmployeeComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-       // this.modelFormData.controls['code'].disable();
+       this.modelFormData.controls['code'].disable();
       }
 
   }
@@ -88,7 +88,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   getTableData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -100,17 +99,8 @@ export class EmployeeComponent implements OnInit {
             this.companyList = res.response['companiesList'];
           }
         }
-          this.commonService.hideSpinner();
-      }, error => {
-
+          this.spinner.hide();
       });
-  }
-
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

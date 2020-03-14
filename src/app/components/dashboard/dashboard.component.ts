@@ -4,7 +4,6 @@ import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';
 import { ApiConfigService } from '../../services/api-config.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,16 +12,6 @@ import { MatSidenav } from '@angular/material';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
 
-  sidenavWidth = 4;
-
-  increase(){
-    this.sidenavWidth = 15;
-    console.log("increase sidenav width");
-  }
-  decrease(){
-    this.sidenavWidth = 4;
-    console.log("decrease sidenav width");
-  }
 
   @ViewChild('appDrawer', { static: false }) appDrawer: ElementRef;
   navItems = [
@@ -91,38 +80,37 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           iconName: 'feedback',
           route: 'taxMaster'
         },
-      ]
-    },
-    {
-      displayName: 'Sales',
-      iconName: 'videocam',
-      route: 'sales',
-      children: [
-        // {
-        //   displayName: 'Bill Receivable Branch',
-        //   iconName: 'group',
-        //   route: 'asnBillsRcvBranch'
-        // },
-        // {
-        //   displayName: 'Sessions',
-        //   iconName: 'speaker_notes',
-        //   route: 'dashboard/table'
-        // },
-        // {
-        //   displayName: 'Feedback',
-        //   iconName: 'feedback',
-        //   route: 'feedback'
-        // },
+       
         {
-          displayName: 'CardType',
+          displayName: 'ProductPacking',
           iconName: 'feedback',
-          route: 'cardType'
+          route: 'productpacking'
         },
         {
-          displayName: 'Billing',
+          displayName: 'TaxGroup',
           iconName: 'feedback',
-          route: 'billing'
-        }
+          route: 'taxgroup'
+        },
+        {
+          displayName: 'TaxStructure',
+          iconName: 'feedback',
+          route: 'taxstructure'
+        },
+        {
+          displayName: 'Tank',
+          iconName: 'feedback',
+          route: 'tank'
+        },
+        {
+          displayName: 'Unit',
+          iconName: 'feedback',
+          route: 'unit'
+        },
+        {
+          displayName: 'Pump',
+          iconName: 'feedback',
+          route: 'pump'
+        },
       ]
     },
     {
@@ -211,8 +199,83 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           displayName: 'MaterialGroups',
           iconName: 'speaker_notes',
           route: 'materialgroups'
-        }
-
+        },
+        {
+          displayName: 'Payroll',
+          iconName: 'recent_actors',
+          route: 'payroll',
+          children: [
+            {
+              displayName: 'Leavebalances',
+              iconName: 'speaker_notes',
+              route: 'leaveopeningbalances'
+            },
+            {
+              displayName: 'LeaveType',
+              iconName: 'speaker_notes',
+              route: 'leavetype'
+            },
+            {
+              displayName: 'LeaveRequest',
+              iconName: 'speaker_notes',
+              route: 'Leaverequest'
+            },
+            {
+              displayName: 'Component Master',
+              iconName: 'speaker_notes',
+              route: 'componentmaster'
+            },
+            {
+              displayName: 'PT Master',
+              iconName: 'speaker_notes',
+              route: 'ptmaster'
+    
+            },
+            {
+              displayName: 'CTCBreakup',
+              iconName: 'account_balance',
+              route: 'CTCBreakup'
+            },
+            {
+              displayName: 'Structure Creation',
+              iconName: 'account_balance',
+              route: 'structureCreation'
+            },
+            {
+              displayName: 'Leave Approval',
+              iconName: 'account_balance',
+              route: 'leaveApproval'
+            },
+            {
+              displayName: 'PF Master',
+              iconName: 'account_balance',
+              route: 'pfmaster'
+            },
+            {
+              displayName: 'Salary Process',
+              iconName: 'account_balance',
+              route: 'salaryprocess'
+            }
+    
+          ]
+        },
+        {
+          displayName: 'Sales',
+          iconName: 'videocam',
+          route: 'sales',
+          children: [
+            {
+              displayName: 'Sales Invoice',
+              iconName: 'videocam',
+              route: 'salesInvoice',
+            },
+            {
+              displayName: 'Sales Return',
+              iconName: 'videocam',
+              route: 'salesReturn',
+            }
+          ]
+        },
       ]
     },
     {
@@ -221,7 +284,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       route: 'payroll',
       children: [
         {
-          displayName: 'Leaveopeningbalances',
+          displayName: 'Leavebalances',
           iconName: 'speaker_notes',
           route: 'leaveopeningbalances'
         },
@@ -244,7 +307,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           displayName: 'PT Master',
           iconName: 'speaker_notes',
           route: 'ptmaster'
-        
+
         },
         {
           displayName: 'CTCBreakup',
@@ -252,11 +315,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'CTCBreakup'
         },
         {
-      	displayName: 'Structure Creation',
+          displayName: 'Structure Creation',
           iconName: 'account_balance',
           route: 'structureCreation'
         },
-	 {
+        {
           displayName: 'Leave Approval',
           iconName: 'account_balance',
           route: 'leaveApproval'
@@ -275,15 +338,42 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       ]
     },
     {
-      displayName: 'Reports',
-      iconName: 'recent_actors',
-      route: 'reports',
+      displayName: 'Sales',
+      iconName: 'videocam',
+      route: 'sales',
       children: [
         {
-          displayName: 'Bonus',
-          iconName: 'account_balance',
-          route: 'bonus'
+          displayName: 'Sales Invoice',
+          iconName: 'videocam',
+          route: 'salesInvoice',
         },
+        {
+          displayName: 'Sales Return',
+          iconName: 'videocam',
+          route: 'salesReturn',
+        }
+      ]
+    },
+    {
+      displayName: 'Transactions',
+      iconName: 'account_balance',
+      route: 'transactions',
+      children: [
+        {
+          displayName: 'Cash Payment',
+          iconName: 'account_balance',
+          route: 'cashpayment'
+        },
+        {
+          displayName: 'Cash Receipt',
+          iconName: 'account_balance',
+          route: 'cashreceipt'
+        },
+        {
+          displayName: 'Bank Payment',
+          iconName: 'account_balance',
+          route: 'bankpayment'
+        }
       ]
     }
   ];
@@ -292,16 +382,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private apiService: ApiService,
     private commonService: CommonService,
     private apiConfigService: ApiConfigService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {
-    commonService.showNavbar.next(true)
-
-   }
+    commonService.showNavbar.next(true);
+  }
 
   ngOnInit() {
-    this.spinner.show();
-    const getMenuUrl = String.Join('/', this.apiConfigService.getMenuUrl);
+    // this.getMenuList();
+  }
 
+  getMenuList() {
+    const getMenuUrl = String.Join('/', this.apiConfigService.getMenuUrl);
     this.apiService.apiGetRequest(getMenuUrl)
       .subscribe(
         menu => {

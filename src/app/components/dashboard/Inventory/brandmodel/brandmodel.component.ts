@@ -56,9 +56,6 @@ export class BrandModelComponent implements OnInit {
       outputTaxCode: [null],
       size: [null],
       active: "Y"
-    //}
-     // numberRange: [null],
-      //active: [null]
     });
 
 
@@ -78,7 +75,6 @@ export class BrandModelComponent implements OnInit {
   }
 
   getTableData() {
-    this.spinner.show();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -91,13 +87,10 @@ export class BrandModelComponent implements OnInit {
             }
           }
           this.spinner.hide();
-        }, error => {
-
         });
   }
 
   getbrandTableData() {
-    this.spinner.show();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getBrandList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -110,12 +103,9 @@ export class BrandModelComponent implements OnInit {
             }
           }
           this.spinner.hide();
-        }, error => {
-
         });
   }
   getMaterialGroupsList() {
-    this.spinner.show();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getMaterialGroupsList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -128,13 +118,10 @@ export class BrandModelComponent implements OnInit {
             }
           }
           this.spinner.hide();
-        }, error => {
-
         });
   }
-  getSizesList()
-  {
-    this.spinner.show();
+
+  getSizesList()  {
     const getCompanyUrl = String.Join('/', this.apiConfigService.getSizesList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -147,15 +134,8 @@ export class BrandModelComponent implements OnInit {
             }
           }
           this.spinner.hide();
-        }, error => {
-
         });
   }
-
-  showErrorAlert(caption: string, message: string) {
-    // this.alertService.openSnackBar(caption, message);
-  }
-
   get formControls() { return this.modelFormData.controls; }
 
 

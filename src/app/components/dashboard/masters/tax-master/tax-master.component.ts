@@ -59,7 +59,6 @@ export class TaxMasterComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-       // this.modelFormData.controls['code'].disable();
       }
 
   }
@@ -70,8 +69,6 @@ export class TaxMasterComponent implements OnInit {
   }
 
   getTableData() {
-   // debugger;
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.GetTaxTypes);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -83,16 +80,8 @@ export class TaxMasterComponent implements OnInit {
               this.taxtypeList = res.response['TaxType'];
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
-  }
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

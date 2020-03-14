@@ -12,16 +12,18 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { CommonService } from '../../../../services/common.service';
 import { StatusCodes } from '../../../../enums/common/common';
 import { DatePipe, formatDate } from '@angular/common';
+import { ApiConfigService } from '../../../../services/api-config.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 interface Session {
-  value: string;
-  viewValue: string;
+ value: string;
+ viewValue: string;
 }
-interface NumberType {
-  value: string;
-  viewValue: string;
-}
+//interface NumberType {
+//  value: string;
+//  viewValue: string;
+//}
 @Component({
   selector: 'app-leaverequest',
   templateUrl: './leaverequest.component.html',
@@ -33,32 +35,38 @@ export class LeaveRequestComponent implements OnInit {
   modelFormData: FormGroup;
   isSubmitted = false;
   formData: any;
-  apiConfigService: any;
-  apiService: any;
+  LeaveTypeatList: any;
   companyList: any;
+  brandList: any;
+  MaterialGroupsList: any;
+  SizesList: any; 
 
   applDate = new FormControl(new Date());
 
   sessions: Session[] =
-    [
-      { value: 'FirstHalf', viewValue: 'FirstHalf' },
-      { value: 'SecondHalf', viewValue: 'SecondHalf' }
-    ];
+   [
+     { value: 'FirstHalf', viewValue: 'FirstHalf' },
+     { value: 'SecondHalf', viewValue: 'SecondHalf' }
+   ];
 
-  NumberTypes: NumberType[] =
-    [
-      { value: 'SL-10', viewValue: 'SL-10' },
-      { value: 'CL-10', viewValue: 'CL-10' }
-    ];
+  //NumberTypes: NumberType[] =
+  //  [
+  //    { value: 'SL-10', viewValue: 'SL-10' },
+  //    { value: 'CL-10', viewValue: 'CL-10' }
+  //  ];
 
 
 
 
   constructor(
+    private apiService: ApiService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<LeaveRequestComponent>,
     private commonService: CommonService,
+    private apiConfigService: ApiConfigService,
+
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any)
   {
@@ -73,18 +81,22 @@ export class LeaveRequestComponent implements OnInit {
       leaveDays: [null],
       leaveRemarks: [null],
       status: [null],
-      approvedId: [null],
-      approvedName: [null],
-      reason: [null],
-      recommendedId: [null],
-      recommendedName: [null],
-      approvedDate: [null],
-      acceptedRemarks: [null],
-      companyCode: [null],
       ext1: [null],
       ext2: [null],
-      active: [null],
-      sno:[null]
+      sno: [null],
+      countofLeaves: [null],
+      approvedID: [null],
+      approveName: [null],
+      reason: [null],
+      chkAcceptReject: [null],
+      reportID: [null],
+      reportName: [null],
+      appr_date: [null],
+      acceptedRemarks: [null],
+      companyCode: null,
+      rejectedId: null,
+      rejectedName: null,
+      loPdays: null
     });
 
     
@@ -92,19 +104,19 @@ export class LeaveRequestComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
-      // this.modelFormData.controls['code'].disable();
+      this.modelFormData.controls['empCode'].disable();
     }
 
   }
 
   ngOnInit() {
-    // this.getTableData();
+     this.getTableData();
   }
 
-
   getTableData() {
-    this.commonService.showSpinner();
-    const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
+    //debugger;
+    this.spinner.show();
+    const getCompanyUrl = String.Join('/', this.apiConfigService.getLeaveTypeatList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
         response => {
@@ -112,14 +124,15 @@ export class LeaveRequestComponent implements OnInit {
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
             if (!isNullOrUndefined(res.response)) {
               console.log(res);
-              this.companyList = res.response['companiesList'];
+              this.LeaveTypeatList = res.response['leavetypesList'];
             }
           }
-          this.commonService.hideSpinner();
+          this.spinner.hide();
         }, error => {
 
         });
   }
+  
 
   showErrorAlert(caption: string, message: string) {
     // this.alertService.openSnackBar(caption, message);

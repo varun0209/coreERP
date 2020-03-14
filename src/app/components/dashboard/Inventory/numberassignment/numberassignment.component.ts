@@ -39,7 +39,6 @@ export class NumberAssignmentComponent implements OnInit {
     this.modelFormData = this.formBuilder.group({
       code: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
       companyCode: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-      //brandName: [null],
       description: [null],
       ext1: [null],
       ext2: [null],
@@ -64,7 +63,6 @@ export class NumberAssignmentComponent implements OnInit {
   }
 
   getTableData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -76,14 +74,11 @@ export class NumberAssignmentComponent implements OnInit {
               this.companyList = res.response['companiesList'];
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
 
   getMaterialGroupsList() {
-    this.spinner.show();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getMaterialGroupsList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -96,15 +91,9 @@ export class NumberAssignmentComponent implements OnInit {
             }
           }
           this.spinner.hide();
-        }, error => {
-
         });
   }
 
-
-  showErrorAlert(caption: string, message: string) {
-    // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

@@ -1,11 +1,6 @@
-<div *ngIf="tableUrl.coustom">
-  <app-table
-    [tableData]="tableData"
-    [addOrUpdateData]="addOrUpdateData"
-    (addOrUpdateEvent)="addOrUpdateEvent($event)"
-  ></app-table>
+<div *ngIf="!tableUrl.coustom && routeParams == 'salesInvoice'">
+  <app-sales-invoice></app-sales-invoice>
 </div>
-
-<div *ngIf="!tableUrl.coustom">
-  <app-billing></app-billing>
+<div *ngIf="!tableUrl.coustom && routeParams == 'salesReturn'">
+  <app-sales-return></app-sales-return>
 </div>

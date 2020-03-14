@@ -32,7 +32,7 @@ export class PayrollService {
         this.dynamicData.updateUrl = this.apiConfigService.updateLeaveopeningbalance;
         this.dynamicData.deleteUrl = this.apiConfigService.deleteLeaveopeningbalance;
         this.dynamicData.listName = 'lopList';
-        this.dynamicData.primaryKey = 'code';
+        this.dynamicData.primaryKey = 'empCode';
         this.dynamicData.coustom = true;
         return this.dynamicData;
         break;

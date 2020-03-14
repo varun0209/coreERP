@@ -1,15 +1,14 @@
-import { AlertService } from '../../services/alert.service';
-import { ApiService } from '../../services/api.service';
-import { String } from 'typescript-string-operations';
-
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Static } from '../../enums/common/static';
+import { SnackBar, StatusCodes } from '../../enums/common/common';
+import { String } from 'typescript-string-operations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { ApiConfigService } from '../../services/api-config.service';
-import { TranslateService } from '@ngx-translate/core';
-import { SnackBar, StatusCodes } from '../../enums/common/common';
-import { Static } from '../../enums/common/static';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
+import { ApiService } from '../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { isNullOrUndefined } from 'util';
 import { CommonService } from '../../services/common.service';
@@ -27,22 +26,22 @@ export class LoginComponent implements OnInit {
   isSubmitted = false;
 
   constructor(
+    public translate: TranslateService,
+    private apiConfigService: ApiConfigService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private spinner: NgxSpinnerService,
     private alertService: AlertService,
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private apiConfigService: ApiConfigService,
-    public translate: TranslateService,
-    private spinner: NgxSpinnerService,
     private commonService: CommonService
   ) {
-    commonService.showNavbar.next(false)
+    commonService.showNavbar.next(false);
   }
 
   // form model
   ngOnInit() {
-    this.loginForm  =  this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
@@ -50,7 +49,7 @@ export class LoginComponent implements OnInit {
 
   // Language Preference
   setLang(lang) {
-    localStorage.setItem( Static.DefaultLang , lang.toLowerCase());
+    localStorage.setItem(Static.DefaultLang, lang.toLowerCase());
     this.translate.use(lang.toLowerCase());
     this.translate.currentLang = lang;
   }
@@ -64,30 +63,26 @@ export class LoginComponent implements OnInit {
     this.loginAPICall();
   }
 
-loginAPICall() {
-  this.spinner.show();
-  const requestObj = { UserName: this.loginForm.get('username').value, Password: this.loginForm.get('password').value };
-  const getLoginUrl = String.Join('/', this.apiConfigService.loginUrl);
-
-  this.apiService.apiPostRequest(getLoginUrl, requestObj)
+  loginAPICall() {
+    // // this.spinner.show();
+    const requestObj = { UserName: this.loginForm.get('username').value, Password: this.loginForm.get('password').value };
+    const getLoginUrl = String.Join('/', this.apiConfigService.loginUrl);
+    this.apiService.apiPostRequest(getLoginUrl, requestObj)
       .subscribe(
-      response => {
-        const res = response.body;
-        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response)) {
-            this.authService.login(res.response);
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
-            this.router.navigate(['dashboard']);
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              this.authService.login(res.response);
+              this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+              this.router.navigate(['dashboard']);
+            }
           }
-        }
-        this.spinner.hide();
-      },
-      error => {
-        this.alertService.openSnackBar(Static.LoginFailed, Static.Close, SnackBar.error);
-      });
-}
+          this.spinner.hide();
+        });
+  }
 
 
-get formControls() { return this.loginForm.controls; }
+  get formControls() { return this.loginForm.controls; }
 
 }

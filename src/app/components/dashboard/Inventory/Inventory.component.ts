@@ -44,9 +44,7 @@ export class InventoryComponent implements OnInit {
               this.tableComponent.defaultValues();
             }
           }
-
         });
-
       }
 
       ngOnInit() {
@@ -70,14 +68,12 @@ export class InventoryComponent implements OnInit {
                 const res = response.body;
                 if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                   if (!isNullOrUndefined(res.response)) {
+                    result.item = res.response;
                     this.addOrUpdateData = result;
                     this.alertService.openSnackBar('Delected Record...', 'close', SnackBar.success);
                   }
                 }
                 this.spinner.hide();
-              },
-              error => {
-                console.log('error');
               });
             }
         });
@@ -104,14 +100,12 @@ export class InventoryComponent implements OnInit {
                   const res = response.body;
                   if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                     if (!isNullOrUndefined(res.response)) {
+                      result.item = res.response;
                       this.addOrUpdateData = result;
                       this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
                     }
                   }
                   this.spinner.hide();
-                },
-                error => {
-                  console.log('error');
                 });
             } else if (result.action === 'Edit') {
              const updateCompanyUrl = String.Join('/', this.tableUrl.updateUrl);
@@ -127,9 +121,6 @@ export class InventoryComponent implements OnInit {
                       this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
                     }
                   }
-                },
-                error => {
-                  console.log('error');
                 });
               }
           }
@@ -138,9 +129,7 @@ export class InventoryComponent implements OnInit {
       }
 
       getTableData() {
-        this.spinner.show();
         const getUrl = String.Join('/', this.tableUrl.url);
-
         this.apiService.apiGetRequest(getUrl)
           .subscribe(
             response => {
@@ -151,8 +140,6 @@ export class InventoryComponent implements OnInit {
               }
             }
             this.spinner.hide();
-          }, error => {
-
           });
       }
 

@@ -44,10 +44,10 @@ export class GlAccountsComponent  implements OnInit {
         accountNumber: [null],
         ext1: [null],
         ext2: [null],
-        balanceType:[null],
+        balanceType: [null],
         nactureofaccount: [null, [Validators.required]],
         statementType: [null, [Validators.required]],
-        openingBalance:[null]
+        openingBalance: [null]
       });
 
 
@@ -67,7 +67,6 @@ this.getAccountGroupList();
   }
 
   getStatementTypes() {
-    this.commonService.showSpinner();
     const getStatementTypes = String.Join('/', this.apiConfigService.getStatementTypes);
     this.apiService.apiGetRequest(getStatementTypes)
       .subscribe(
@@ -79,14 +78,11 @@ this.getAccountGroupList();
             this.stmtTypeList = res.response['StatementTypesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getNaturesOfAcountsList() {
-    this.commonService.showSpinner();
     const getNaturesOfAcountsList = String.Join('/', this.apiConfigService.getNaturesOfAcountsList);
     this.apiService.apiGetRequest(getNaturesOfAcountsList)
       .subscribe(
@@ -98,14 +94,11 @@ this.getAccountGroupList();
             this.natOfAccList = res.response['BalanceTypesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getGLAccBalanceTypes() {
-    this.commonService.showSpinner();
     const getGLAccBalanceTypes = String.Join('/', this.apiConfigService.getGLAccBalanceTypes);
     this.apiService.apiGetRequest(getGLAccBalanceTypes)
       .subscribe(
@@ -117,14 +110,11 @@ this.getAccountGroupList();
             this.glAccBalType = res.response['BalanceTypesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getAccountGroupList() {
-    this.commonService.showSpinner();
     const getAccountGroupList = String.Join('/', this.apiConfigService.getAccountGroupList);
     this.apiService.apiGetRequest(getAccountGroupList)
       .subscribe(
@@ -136,16 +126,11 @@ this.getAccountGroupList();
             this.glaccgrpList = res.response['GLUnderSubGroupList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
 
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

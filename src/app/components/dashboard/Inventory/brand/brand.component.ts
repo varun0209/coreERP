@@ -1,5 +1,4 @@
 import { Component, Inject, Optional, OnInit } from '@angular/core';
-import { AlertService } from '../../../../services/alert.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,6 +7,7 @@ import { ApiService } from '../../../../services/api.service';
 import { ApiConfigService } from '../../../../services/api-config.service';
 import { String } from 'typescript-string-operations';
 import { CommonService } from 'src/app/services/common.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-brand',
@@ -23,12 +23,12 @@ export class BrandComponent implements OnInit {
   companyList: any;
 
   constructor(
-    private alertService: AlertService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<BrandComponent>,
     private apiConfigService: ApiConfigService,
     private apiService: ApiService,
     private commonService: CommonService,
+    private spinner: NgxSpinnerService,
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
@@ -56,7 +56,6 @@ export class BrandComponent implements OnInit {
   }
 
   getTableData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -68,16 +67,8 @@ export class BrandComponent implements OnInit {
               this.companyList = res.response['companiesList'];
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
-  }
-
-
-
-  showErrorAlert(caption: string, message: string) {
-    // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

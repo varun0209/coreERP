@@ -57,7 +57,6 @@ this.getGLSubCodeAccountsList();
 
 
   getGLSubCodeAccountsList() {
-    this.commonService.showSpinner();
     const getGLSubCodeAccountsList = String.Join('/', this.apiConfigService.getGLSubCodeAccountsList);
     this.apiService.apiGetRequest(getGLSubCodeAccountsList)
       .subscribe(
@@ -69,15 +68,11 @@ this.getGLSubCodeAccountsList();
             this.glaccsubgrpList = res.response['GLUnderSubGroupList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
+
 
   get formControls() { return this.modelFormData.controls; }
 

@@ -19,7 +19,7 @@
 
             <mat-form-field>
                 <input matInput [matDatepicker]="picker1" placeholder="{{'CTCBreakup.effectFrom' | translate }}"
-                    formControlName="effectFrom" appFocusOnEnter tabIndex="1">
+                    formControlName="effectFrom" >
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
@@ -80,13 +80,11 @@
              </mat-card-content>
         </mat-card-content>
         <div  class="form-element p-2 d-flex justify-content-end">
+            <mat-icon>save</mat-icon>
             <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1"  (click)="save()" > {{ 'COMMON.SAVE' | translate }}</button>
           </div>
-    <!-- <div >
 
-        <app-normal-table [tableData]="tableData"></app-normal-table>
-    </div> -->
-
+     
 
 </div>
 

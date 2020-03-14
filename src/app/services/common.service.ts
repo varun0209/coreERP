@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Event, NavigationEnd, Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { isNullOrUndefined } from 'util';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiService } from '../services/api.service';
-import { StatusCodes } from '../enums/common/common';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +18,9 @@ export class CommonService {
 
   constructor(
     private router: Router,
-    private _snackBar: MatSnackBar,
     public translate: TranslateService,
     private http: HttpClient,
-    private spinner: NgxSpinnerService,
-    private apiService: ApiService,
+    private spinner: NgxSpinnerService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -66,30 +61,15 @@ export class CommonService {
 
 
   formatDate(event) {
-    var time = new Date();
-    var date = new Date(event),
-      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-      day = ("0" + date.getDate()).slice(-2),
-      hours = ("0" + time.getHours()).slice(-2),
-      minutes = ("0" + time.getMinutes()).slice(-2),
-      seconds = ("0" + time.getSeconds()).slice(-2);
-    return `${[day, mnth, date.getFullYear()].join("/")} ${[seconds, minutes, hours].join(":")}`
-  }
-
-
-  apiCall(url, callback) {
-    this.showSpinner();
-    this.apiService.apiGetRequest(url)
-      .subscribe(
-        response => {
-          const res = response.body;
-          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-            if (!isNullOrUndefined(res.response)) {
-              callback(res.response);
-            }
-          }
-          this.hideSpinner();
-        });
+    const time = new Date();
+    // tslint:disable-next-line: one-variable-per-declaration
+    const date = new Date(event),
+      mnth = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2),
+      hours = ('0' + time.getHours()).slice(-2),
+      minutes = ('0' + time.getMinutes()).slice(-2),
+      seconds = ('0' + time.getSeconds()).slice(-2);
+    return `${[mnth, day, date.getFullYear()].join('-')} ${[hours, minutes,  seconds].join(':')}`;
   }
 
 
@@ -105,11 +85,11 @@ export class CommonService {
     }
   }
 
-  showSpinner() {
-    setTimeout(() => this.spinner.show());
-  }
+  // showSpinner() {
+  //    this.spinner.show();
+  // }
 
-  hideSpinner() {
-    setTimeout(() => this.spinner.hide());
-  }
+  // hideSpinner() {
+  //  this.spinner.hide();
+  // }
 }

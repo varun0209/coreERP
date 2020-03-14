@@ -36,67 +36,28 @@ export class LeaveopeningbalancesComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.modelFormData = this.formBuilder.group({
-      code: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
-      cl: [null],
-      clopbalance: [null],
-      comOff: [null],
-      comOffOpbalance: [null],
-      companyCode: [null],
-      companyDesc: [null],
-      el: [null],
-      elopbalance: [null],
-      lp: [null],
-      lpopbalance: [null],
-      leaveType: [null],
-      ml: [null],
-      mlopbalance: [null],
-      name: [null],
-      noOfDays: [null],
-      pl: [null],
-      plopbalance: [null],
-      sl: [null],
-      slopbalance: [null],
-      year: [null],
-      addDate: [null],
-      active: [null],
+      empCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
+      year: ['', [Validators.required, Validators.minLength(2)]],
+      leaveCode: ['', [Validators.required, Validators.minLength(2)]],
+      opbal: [null],
+      used: [null],
+      userId: [null],
+      timeStamp: [null],
+      balance: [null],
+      remarks: [null],
+      compCode: [null]
     });
 
 
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
-      // this.modelFormData.controls['code'].disable();
+     this.modelFormData.controls['EmpCode'].disable();
     }
 
   }
 
   ngOnInit() {
-    //this.getTableData();
-  }
-
-
-  getTableData() {
-    this.commonService.showSpinner();
-    const getLeaveopeningbalanceUrl = String.Join('/', this.apiConfigService.getLeaveopeningbalanceList);
-    this.apiService.apiGetRequest(getLeaveopeningbalanceUrl)
-      .subscribe(
-        response => {
-          const res = response.body;
-          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-            if (!isNullOrUndefined(res.response)) {
-              console.log(res);
-              this.companyList = res.response['companiesList'];
-            }
-          }
-          this.commonService.hideSpinner();
-        }, error => {
-
-        });
-  }
-
-  showErrorAlert(caption: string, message: string)
-  {
-    // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }
@@ -106,6 +67,7 @@ export class LeaveopeningbalancesComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['EmpCode'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

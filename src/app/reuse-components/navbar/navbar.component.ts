@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
   openMenu = false;
   loginUser: any;
-  showExpandButtons : any
+  showExpandButtons: any;
   @Input() set showExpandButton(val: string) {
     this.loginUser = JSON.parse(localStorage.getItem('user'));
     this.showExpandButtons = val;

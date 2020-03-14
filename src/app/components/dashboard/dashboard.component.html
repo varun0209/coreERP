@@ -1,11 +1,11 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" class="example-sidenav" [ngStyle]="{ 'width.em': sidenavWidth }" opened="true" (mouseenter)="increase()"
-    (mouseleave)="decrease()">
+  <mat-sidenav #appDrawer mode="over" opened="false">
     <mat-nav-list>
       <app-sidebar *ngFor="let item of navItems"  [item]="item"></app-sidebar>
     </mat-nav-list>
   </mat-sidenav>
-  <div class="example-sidenav-content">
+  <div class="p-2">
     <router-outlet></router-outlet>
   </div>
+  <div fxFlex></div>
 </mat-sidenav-container>

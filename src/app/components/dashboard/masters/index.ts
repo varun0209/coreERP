@@ -11,3 +11,10 @@ export { PartnerTypeComponent } from './partner-type/partner-type.component';
 export { EmployeeInBranchComponent } from './employee-in-branch/employee-in-branch.component';
 export { EmployeeComponent } from './employee/employee.component';
 export { TaxMasterComponent } from './tax-master/tax-master.component';
+export { UnitComponent } from './unit/unit.component';
+export { TanksComponent } from './tank/tank.componet';
+export { PumpComponent } from './pump/pump.component';
+export { TaxgroupsComponent } from './taxgroup/taxgroup.component';
+export { TaxstructuresComponent } from './taxstructure/taxstructure.component';
+export { ProductpackingComponent } from './productpacking/productpacking.component';
+

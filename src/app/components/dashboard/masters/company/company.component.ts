@@ -72,13 +72,6 @@ export class CompanyComponent  implements OnInit {
 
   }
 
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
-
   get formControls() { return this.modelFormData.controls; }
 
 

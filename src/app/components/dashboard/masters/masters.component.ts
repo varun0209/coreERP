@@ -72,14 +72,12 @@ export class MastersComponent implements OnInit {
             const res = response.body;
             if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
               if (!isNullOrUndefined(res.response)) {
+                result.item = res.response;
                 this.addOrUpdateData = result;
                 this.alertService.openSnackBar('Delected Record...', 'close', SnackBar.success);
               }
             }
             this.spinner.hide();
-          },
-          error => {
-            console.log('error');
           });
         }
     });
@@ -91,7 +89,6 @@ export class MastersComponent implements OnInit {
       } else {
     const dialogRef = this.dialog.open(this.tableUrl.component, {
       width: '80%',
-      //height: '350px',
       data: value,
       panelClass: 'custom-dialog-container',
       disableClose: true
@@ -107,14 +104,12 @@ export class MastersComponent implements OnInit {
               const res = response.body;
               if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                 if (!isNullOrUndefined(res.response)) {
+                  result.item = res.response;
                   this.addOrUpdateData = result;
                   this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
                 }
               }
               this.spinner.hide();
-            },
-            error => {
-              console.log('error');
             });
         } else if (result.action === 'Edit') {
          const updateCompanyUrl = String.Join('/', this.tableUrl.updateUrl);
@@ -130,9 +125,6 @@ export class MastersComponent implements OnInit {
                   this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
                 }
               }
-            },
-            error => {
-              console.log('error');
             });
           }
       }
@@ -141,9 +133,7 @@ export class MastersComponent implements OnInit {
   }
 
   getTableData() {
-    this.spinner.show();
     const getUrl = String.Join('/', this.tableUrl.url);
-
     this.apiService.apiGetRequest(getUrl)
       .subscribe(
         response => {
@@ -154,8 +144,6 @@ export class MastersComponent implements OnInit {
           }
         }
         this.spinner.hide();
-      }, error => {
-
       });
   }
 

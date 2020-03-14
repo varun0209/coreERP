@@ -48,37 +48,12 @@ export class DivisionComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-       // this.modelFormData.controls['code'].disable();
+       this.modelFormData.controls['code'].disable();
       }
 
   }
 
   ngOnInit() {
-   // this.getTableData();
-  }
-
-
-  getTableData() {
-    this.commonService.showSpinner();
-    const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
-    this.apiService.apiGetRequest(getCompanyUrl)
-      .subscribe(
-        response => {
-          const res = response.body;
-          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-            if (!isNullOrUndefined(res.response)) {
-              console.log(res);
-              this.companyList = res.response['companiesList'];
-            }
-          }
-          this.commonService.hideSpinner();
-        }, error => {
-
-        });
-  }
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }
@@ -88,6 +63,7 @@ export class DivisionComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['code'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

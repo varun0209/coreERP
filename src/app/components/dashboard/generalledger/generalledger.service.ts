@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ApiConfigService } from '../../../services/api-config.service'
-import{AccountsGroupComponent} from './accountsgroup/accountsgroup.component'
+import { ApiConfigService } from '../../../services/api-config.service';
+import {AccountsGroupComponent} from './accountsgroup/accountsgroup.component';
 import { SubGroupComponent } from './subgroup/subgroup.component';
 import {UndersubGroupComponent} from './undersubgroup/undersubgroup.component';
-import {GlAccountsComponent} from './glaccounts/glaccounts.component'
-import {GlSubcodeComponent } from './glsubcode/glsubcode.component'
-import {TaxIntegrationComponent } from './taxintegration/taxintegration.component'
-import {CashAccToBranchesComponent } from './cashacctobranches/cashacctobranches.component'
-import {AccToAccClassComponent} from './acctoaccclass/acctoaccclass.component'
-import {VoucherTypesComponent} from './vouchertypes/vouchertypes.component'
+import {GlAccountsComponent} from './glaccounts/glaccounts.component';
+import {GlSubcodeComponent } from './glsubcode/glsubcode.component';
+import {TaxIntegrationComponent } from './taxintegration/taxintegration.component';
+import {CashAccToBranchesComponent } from './cashacctobranches/cashacctobranches.component';
+import {AccToAccClassComponent} from './acctoaccclass/acctoaccclass.component';
+import {VoucherTypesComponent} from './vouchertypes/vouchertypes.component';
 
 @Injectable({
   providedIn: 'root'

@@ -27,13 +27,11 @@ export class AccToAccClassComponent  implements OnInit {
   invAcc:any;
 
   constructor(
-    private alertService: AlertService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<AccToAccClassComponent>,
-    private spinner: NgxSpinnerService,
     private apiConfigService: ApiConfigService,
     private apiService: ApiService,
-    private commonService:CommonService,
+    private spinner: NgxSpinnerService,
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
@@ -59,15 +57,14 @@ export class AccToAccClassComponent  implements OnInit {
   }
 
   ngOnInit() {
-this.getAccountingClass();
-this.getMatTranTypes();
-this.getSalesGlAccounts();
-this.getPurchaseGlAccounts();
-this.getInventoryGlAccounts();
+    this.getAccountingClass();
+    this.getMatTranTypes();
+    this.getSalesGlAccounts();
+    this.getPurchaseGlAccounts();
+    this.getInventoryGlAccounts();
   }
 
   getAccountingClass() {
-    this.commonService.showSpinner();
     const getAccountingClass = String.Join('/', this.apiConfigService.getAccountingClass);
     this.apiService.apiGetRequest(getAccountingClass)
       .subscribe(
@@ -75,19 +72,14 @@ this.getInventoryGlAccounts();
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            console.log(res);
             this.accClassList = res.response['AccountingclassList'];
-            console.log(this.accClassList);
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getMatTranTypes() {
-    this.commonService.showSpinner();
     const getMatTranTypes = String.Join('/', this.apiConfigService.getMatTranTypes);
     this.apiService.apiGetRequest(getMatTranTypes)
       .subscribe(
@@ -95,18 +87,14 @@ this.getInventoryGlAccounts();
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            console.log(res);
             this.tranTypes = res.response['mattranstype'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getSalesGlAccounts() {
-    this.commonService.showSpinner();
     const getSalesGlAccounts = String.Join('/', this.apiConfigService.getSalesGlAccounts);
     this.apiService.apiGetRequest(getSalesGlAccounts)
       .subscribe(
@@ -118,14 +106,11 @@ this.getInventoryGlAccounts();
             this.salesGlAcc = res.response['GLSalesAccounts'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getPurchaseGlAccounts() {
-    this.commonService.showSpinner();
     const getPurchaseGlAccounts = String.Join('/', this.apiConfigService.getPurchaseGlAccounts);
     this.apiService.apiGetRequest(getPurchaseGlAccounts)
       .subscribe(
@@ -137,14 +122,11 @@ this.getInventoryGlAccounts();
             this.purchaseAcc = res.response['GLPurchaseAccounts'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getInventoryGlAccounts() {
-    this.commonService.showSpinner();
     const getInventoryGlAccounts = String.Join('/', this.apiConfigService.getInventoryGlAccounts);
     this.apiService.apiGetRequest(getInventoryGlAccounts)
       .subscribe(
@@ -156,15 +138,8 @@ this.getInventoryGlAccounts();
             this.invAcc = res.response['GLInventoryAccounts'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
-  }
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

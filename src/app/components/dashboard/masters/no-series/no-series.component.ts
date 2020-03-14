@@ -56,7 +56,7 @@ export class NoSeriesComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
-     // this.modelFormData.controls['code'].disable();
+     this.modelFormData.controls['code'].disable();
     }
 
   }
@@ -67,7 +67,6 @@ export class NoSeriesComponent implements OnInit {
   }
 
   PartnetTypeListData() {
-    this.commonService.showSpinner();
     const getPartnetTypeUrl = String.Join('/', this.apiConfigService.getPartnerTypesList);
     this.apiService.apiGetRequest(getPartnetTypeUrl)
       .subscribe(
@@ -79,15 +78,12 @@ export class NoSeriesComponent implements OnInit {
               this.PartnetTypeList = res.response['partnerTypeList'];
             }
           }
-          this.commonService.hideSpinner();
+          this.spinner.hide();
         }, error => {
 
         });
   }
 
-  showErrorAlert(caption: string, message: string) {
-    // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 
@@ -96,6 +92,7 @@ export class NoSeriesComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['code'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

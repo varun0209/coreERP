@@ -73,7 +73,6 @@ export class ProfitCenterComponent implements OnInit {
   }
 
   companiesListData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -85,18 +84,10 @@ export class ProfitCenterComponent implements OnInit {
             this.companyList = res.response['companiesList'];
           }
         }
-          this.commonService.hideSpinner();
-      }, error => {
-
+          this.spinner.hide();
       });
   }
 
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 
@@ -105,6 +96,7 @@ export class ProfitCenterComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['seqId'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

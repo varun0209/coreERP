@@ -57,7 +57,6 @@ this.getAccgrpList();
   }
 
   getAccgrpList() {
-    this.commonService.showSpinner();
     const getAccgrpList = String.Join('/', this.apiConfigService.getAccgrpList);
     this.apiService.apiGetRequest(getAccgrpList)
       .subscribe(
@@ -69,16 +68,10 @@ this.getAccgrpList();
             this.accGroupList = res.response['GLAccountGroupList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

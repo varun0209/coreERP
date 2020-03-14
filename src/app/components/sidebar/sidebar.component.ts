@@ -21,6 +21,7 @@ import { String } from 'typescript-string-operations';
 })
 export class SidebarComponent implements OnInit {
 
+
   expanded: boolean;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() item: any;
@@ -39,9 +40,6 @@ export class SidebarComponent implements OnInit {
       if (this.item.route && url) {
         this.expanded = url.indexOf(`/${this.item.route}`) === 0;
         this.ariaExpanded = this.expanded;
-        // if (!isNullOrUndefined(this.item.children)) {
-        //   this.onItemSelected(this.item);
-        // }
       }
     });
   }
@@ -63,4 +61,5 @@ export class SidebarComponent implements OnInit {
       this.expanded = !this.expanded;
     }
   }
+
 }

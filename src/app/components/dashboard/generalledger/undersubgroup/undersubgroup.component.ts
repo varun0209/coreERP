@@ -59,7 +59,6 @@ this.getglAccgrpList();
   }
 
   getglAccgrpList() {
-    this.commonService.showSpinner();
     const getglAccgrpList = String.Join('/', this.apiConfigService.getglAccgrpList);
     this.apiService.apiGetRequest(getglAccgrpList)
       .subscribe(
@@ -71,15 +70,13 @@ this.getglAccgrpList();
             this.glAccgrpList = res.response['GLAccGroupList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getAccountSubGrouplist() {
-    this.commonService.showSpinner();
-    const getAccountSubGrouplist = String.Join('/', this.apiConfigService.getAccountSubGrouplist, this.modelFormData.get('groupName').value);
+    const getAccountSubGrouplist = String.Join('/', this.apiConfigService.getAccountSubGrouplist,
+    this.modelFormData.get('groupName').value);
     this.apiService.apiGetRequest(getAccountSubGrouplist)
       .subscribe(
         response => {
@@ -90,17 +87,11 @@ this.getglAccgrpList();
             this.getAccSubGrpList = res.response['GLAccSubGroupList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
 
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

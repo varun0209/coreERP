@@ -1,7 +1,11 @@
-.example-sidenav-content {
+@import '../../../reuse.scss';
+
+.mat-sidenav {
+  width: 360px;
+}
+.mat-sidenav-container {
+  background-color: $background-color !important;
   height: 92vh;
-  padding: 1%;
-  background-color: #80808029 !important;
 }
 
 

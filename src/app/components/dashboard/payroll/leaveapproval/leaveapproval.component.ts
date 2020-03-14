@@ -4,6 +4,10 @@ import { CommonService } from '../../../../services/common.service';
 import { String } from 'typescript-string-operations';
 import { ApiConfigService } from '../../../../services/api-config.service';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { isNullOrUndefined } from 'util';
+import { StatusCodes } from '../../../../enums/common/common';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ApiService } from '../../../../services/api.service';
 
 @Component({
   selector: 'app-leaveapproval',
@@ -26,7 +30,8 @@ export class LeaveApprovalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private commonService: CommonService,
     private apiConfigService: ApiConfigService,
-  ) {
+    private apiService: ApiService,
+    private spinner: NgxSpinnerService,  ) {
 
     this.leaveRequestForm = this.formBuilder.group({
       accept: [null],
@@ -92,11 +97,19 @@ export class LeaveApprovalComponent implements OnInit {
 
   getLeaveApplDetailsList() {
     const getLeaveApplDetailsListUrl = String.Join('/', this.apiConfigService.getLeaveApplDetailsList);
-    this.commonService.apiCall(getLeaveApplDetailsListUrl, (data) => {
-      this.dataSource = new MatTableDataSource(data['LeaveApplDetailsList']);
-      this.dataSource.paginator = this.paginator;
-      this.checkAll(false);
-    });
+    this.apiService.apiGetRequest(getLeaveApplDetailsListUrl)
+      .subscribe(
+        response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            this.dataSource = new MatTableDataSource(res.response['LeaveApplDetailsList']);
+            this.dataSource.paginator = this.paginator;
+            this.checkAll(false);
+          }
+        }
+        this.spinner.hide();
+      });
   }
 
   save() {

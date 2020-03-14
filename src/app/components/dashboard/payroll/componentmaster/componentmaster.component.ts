@@ -60,7 +60,6 @@ this.getConfigurationList();
   }
 
   getConfigurationList() {
-    this.commonService.showSpinner();
     const getConfigurationList = String.Join('/', this.apiConfigService.getConfigurationList);
     this.apiService.apiGetRequest(getConfigurationList)
       .subscribe(
@@ -72,15 +71,8 @@ this.getConfigurationList();
             this.configureList = res.response['ConfigurationList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
-  }
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }

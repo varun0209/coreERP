@@ -60,7 +60,6 @@ export class PartnerTypeComponent implements OnInit {
   }
 
   getaccounttypelistData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getaccounttypelist);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -72,18 +71,10 @@ export class PartnerTypeComponent implements OnInit {
               this.accounttypelist = res.response['partnerTypeList'];
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
 
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

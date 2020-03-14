@@ -80,7 +80,7 @@ export class PartnerCreationComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        //this.modelFormData.controls['code'].disable();
+        this.modelFormData.controls['code'].disable();
       }
 
   }
@@ -94,7 +94,6 @@ export class PartnerCreationComponent implements OnInit {
   }
 
   companiesListData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -106,14 +105,11 @@ export class PartnerCreationComponent implements OnInit {
             this.companyList = res.response['companiesList'];
           }
         }
-          this.commonService.hideSpinner();
-      }, error => {
-
+          this.spinner.hide();
       });
   }
 
   branchesListData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getBranchesPartnerCreationList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -125,14 +121,11 @@ export class PartnerCreationComponent implements OnInit {
             console.log(res);
           }
         }
-          this.commonService.hideSpinner();
-      }, error => {
-
+          this.spinner.hide();
       });
   }
   PartnerTypesListData()
   {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getPartnerPartnerCreationTypes);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -144,14 +137,11 @@ export class PartnerCreationComponent implements OnInit {
               console.log(res);
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
   getBalanceTypesData()
   {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getBalanceTypes);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -163,13 +153,10 @@ export class PartnerCreationComponent implements OnInit {
               console.log(res);
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
   getNatureListData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getNatureList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -181,16 +168,10 @@ export class PartnerCreationComponent implements OnInit {
               console.log(res);
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
 
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 
@@ -199,6 +180,7 @@ export class PartnerCreationComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['code'].disable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

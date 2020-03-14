@@ -1,9 +1,7 @@
 import { Component, Inject, Optional, OnInit } from '@angular/core';
-import { AlertService } from '../../../../services/alert.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StatusCodes } from '../../../../enums/common/common';
 @Component({
   selector: 'app-accountsgroup',
   templateUrl: './accountsgroup.component.html',
@@ -17,7 +15,6 @@ export class AccountsGroupComponent  implements OnInit {
   formData: any;
 
   constructor(
-    private alertService: AlertService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<AccountsGroupComponent>,
     // @Optional() is used to prevent error if no data is passed
@@ -29,29 +26,18 @@ export class AccountsGroupComponent  implements OnInit {
         numberRange: [null],
         active: [null]
       });
-
-
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
         this.modelFormData.controls['groupCode'].disable();
       }
-
   }
 
   ngOnInit() {
 
   }
 
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
-
   get formControls() { return this.modelFormData.controls; }
-
 
   save() {
     if (this.modelFormData.invalid) {

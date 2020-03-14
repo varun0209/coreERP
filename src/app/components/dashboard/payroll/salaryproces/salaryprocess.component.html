@@ -13,7 +13,7 @@
 
             <mat-form-field>
               <mat-label>{{'salaryprocess.sal_Month' | translate }}</mat-label>
-              <mat-select formControlName="sal_Month" placeholder="sal_Month" appFocusOnEnter tabIndex="2">
+              <mat-select formControlName="sal_Month" placeholder="sal_Month" >
                 <mat-option *ngFor="let month of month" [value]="month.value">
                   {{month.viewValue}}
                 </mat-option>
@@ -22,7 +22,7 @@
     
             <mat-form-field>
               <mat-label>{{'salaryprocess.sal_Year' | translate }}</mat-label>
-              <mat-select formControlName="sal_Year" placeholder="sal_Year" appFocusOnEnter tabIndex="3">
+              <mat-select formControlName="sal_Year" placeholder="sal_Year" >
                 <mat-option *ngFor="let year of year" [value]="year.value">
                   {{year.viewValue}}
                 </mat-option>
@@ -32,6 +32,7 @@
           </form>
           </mat-card-content>
           <div  class="form-element p-2 d-flex justify-content-end">
+            <mat-icon>save</mat-icon>
             <button mat-raised-button  type="submit" class="button-color-bule text-white ml-1"  (click)="save()" > {{ 'COMMON.SAVE' | translate }}</button>
           </div>
           </div>

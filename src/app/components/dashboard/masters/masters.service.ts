@@ -12,6 +12,12 @@ import { PartnerTypeComponent } from './partner-type/partner-type.component';
 import { EmployeeInBranchComponent } from './employee-in-branch/employee-in-branch.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { TaxMasterComponent } from './tax-master/tax-master.component';
+import { UnitComponent } from './unit/unit.component';
+import { TanksComponent } from './tank/tank.componet';
+import { PumpComponent } from './pump/pump.component';
+import { ProductpackingComponent } from './productpacking/productpacking.component';
+import { TaxgroupsComponent } from './taxgroup/taxgroup.component';
+import { TaxstructuresComponent } from './taxstructure/taxstructure.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -92,7 +98,7 @@ export class MastersService {
       this.dynamicData.registerUrl = this.apiConfigService.registerCostCenter;
       this.dynamicData.updateUrl = this.apiConfigService.updateCostCenter;
       this.dynamicData.deleteUrl = this.apiConfigService.deleteCostCenter;
-      this.dynamicData.listName = 'costcenterList';
+        this.dynamicData.listName = 'costcenterList';
       this.dynamicData.primaryKey = 'code';
       return this.dynamicData;
       break;
@@ -145,7 +151,67 @@ export class MastersService {
       this.dynamicData.listName = 'TaxmasterList';
       this.dynamicData.primaryKey = 'code';
       return this.dynamicData;
-      break;
+        break;
+      case 'unit':
+        this.dynamicData.url = this.apiConfigService.getunitList;
+        this.dynamicData.component = UnitComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registerunit;
+        this.dynamicData.updateUrl = this.apiConfigService.updateunit;
+        this.dynamicData.deleteUrl = this.apiConfigService.deleteunit;
+        this.dynamicData.listName = 'unitList';
+        this.dynamicData.primaryKey = 'unitId';
+        return this.dynamicData;
+        break;
+      case 'tank':
+        this.dynamicData.url = this.apiConfigService.gettankList;
+        this.dynamicData.component = TanksComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registertank;
+        this.dynamicData.updateUrl = this.apiConfigService.updatetank;
+        this.dynamicData.deleteUrl = this.apiConfigService.deletetank;
+        this.dynamicData.listName = 'tankList';
+        this.dynamicData.primaryKey = 'tankId';
+        return this.dynamicData;
+        break;
+      case 'pump':
+        this.dynamicData.url = this.apiConfigService.getpumpList;
+        this.dynamicData.component = PumpComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registerpump;
+        this.dynamicData.updateUrl = this.apiConfigService.updatepump;
+        this.dynamicData.deleteUrl = this.apiConfigService.deletepump;
+        this.dynamicData.listName = 'pumplist';
+        this.dynamicData.primaryKey = 'pumpId';
+        return this.dynamicData;
+        break;
+      case 'productpacking':
+        this.dynamicData.url = this.apiConfigService.getproductpackingList;
+        this.dynamicData.component = ProductpackingComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registerproductpacking;
+        this.dynamicData.updateUrl = this.apiConfigService.updateproductpacking;
+        this.dynamicData.deleteUrl = this.apiConfigService.deleteproductpacking;
+        this.dynamicData.listName = 'ProductpackingList';
+        this.dynamicData.primaryKey = 'packingId';
+        return this.dynamicData;
+        break;
+      case 'taxgroup':
+        this.dynamicData.url = this.apiConfigService.getTaxGroupList;
+        this.dynamicData.component = TaxgroupsComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registerTaxGroup;
+        this.dynamicData.updateUrl = this.apiConfigService.updateTaxGroup;
+        this.dynamicData.deleteUrl = this.apiConfigService.deleteTaxGroup;
+        this.dynamicData.listName = 'TaxgroupList';
+        this.dynamicData.primaryKey = 'taxGroupId';
+        return this.dynamicData;
+        break;
+      case 'taxstructure':
+        this.dynamicData.url = this.apiConfigService.getTaxStructureList;
+        this.dynamicData.component = TaxstructuresComponent;
+        this.dynamicData.registerUrl = this.apiConfigService.registerTaxStructure;
+        this.dynamicData.updateUrl = this.apiConfigService.updateTaxStructure;
+        this.dynamicData.deleteUrl = this.apiConfigService.deleteTaxStructure;
+        this.dynamicData.listName = 'TaxStructureList';
+        this.dynamicData.primaryKey = 'taxStructureId';
+        return this.dynamicData;
+        break;
      default:
     }
    }

@@ -63,7 +63,6 @@ export class MaterialGroupsComponent implements OnInit {
 
 
   companiesListData() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getCompanysList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -75,14 +74,13 @@ export class MaterialGroupsComponent implements OnInit {
               this.companyList = res.response['companiesList'];
             }
           }
-          this.commonService.hideSpinner();
+          this.spinner.hide();
         }, error => {
 
         });
   }
 
   getAccountingClassList() {
-    this.commonService.showSpinner();
     const getCompanyUrl = String.Join('/', this.apiConfigService.getAccountingClassList);
     this.apiService.apiGetRequest(getCompanyUrl)
       .subscribe(
@@ -94,16 +92,11 @@ export class MaterialGroupsComponent implements OnInit {
               this.AccountingClassList = res.response['AccountingClassList'];
             }
           }
-          this.commonService.hideSpinner();
-        }, error => {
-
+          this.spinner.hide();
         });
   }
 
 
-  showErrorAlert(caption: string, message: string) {
-    // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

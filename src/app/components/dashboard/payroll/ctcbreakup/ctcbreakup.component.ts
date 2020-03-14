@@ -25,6 +25,7 @@ export class CTCBreakupComponent implements OnInit {
     private commonService: CommonService,
     private apiConfigService: ApiConfigService,
     private apiService: ApiService,
+    private spinner: NgxSpinnerService,
   ) {
     this.modelFormData = this.formBuilder.group({
       myControl: [null],
@@ -41,7 +42,6 @@ export class CTCBreakupComponent implements OnInit {
   }
 
   getStructureList() {
-    this.commonService.showSpinner();
     const getStructureList = String.Join('/', this.apiConfigService.getStructureList);
     this.apiService.apiGetRequest(getStructureList)
       .subscribe(
@@ -52,18 +52,24 @@ export class CTCBreakupComponent implements OnInit {
             this.structureList = res.response['ComponentsList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getctcComponentsList() {
     const getctcComponentsListUrl = String.Join('/', this.apiConfigService.getctcComponentsList);
-    this.commonService.apiCall(getctcComponentsListUrl, (data) => {
-      this.dataSource = new MatTableDataSource(data['componentsList']);
-      this.dataSource.paginator = this.paginator;
-    });
+    this.apiService.apiGetRequest(getctcComponentsListUrl)
+      .subscribe(
+        response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            this.dataSource = new MatTableDataSource(res.response['componentsList']);
+            this.dataSource.paginator = this.paginator;
+          }
+        }
+        this.spinner.hide();
+      });
   }
 
   save() {

@@ -48,17 +48,12 @@ export class SegmentComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-       // this.modelFormData.controls['id'].disable();
+       this.modelFormData.controls['id'].disable();
       }
 
   }
 
   ngOnInit() {
-  }
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
   }
 
   get formControls() { return this.modelFormData.controls; }
@@ -68,6 +63,7 @@ export class SegmentComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['id'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

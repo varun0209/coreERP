@@ -22,7 +22,7 @@ export class TaxIntegrationComponent  implements OnInit {
   formData: any;
   taxcodeList:any;
   taxaccList:any;
-  
+
   constructor(
     private alertService: AlertService,
     private formBuilder: FormBuilder,
@@ -63,7 +63,6 @@ this.getGLTaxAccountList();
   }
 
   getTaxCodesList() {
-    this.commonService.showSpinner();
     const getTaxCodesList = String.Join('/', this.apiConfigService.getTaxCodesList);
     this.apiService.apiGetRequest(getTaxCodesList)
       .subscribe(
@@ -75,14 +74,11 @@ this.getGLTaxAccountList();
             this.taxcodeList = res.response['TaxcodesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getGLTaxAccountList() {
-    this.commonService.showSpinner();
     const getGLTaxAccountList = String.Join('/', this.apiConfigService.getGLTaxAccountList);
     this.apiService.apiGetRequest(getGLTaxAccountList)
       .subscribe(
@@ -94,16 +90,10 @@ this.getGLTaxAccountList();
             this.taxaccList = res.response['TaxcodesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

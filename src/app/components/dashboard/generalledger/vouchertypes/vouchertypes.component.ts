@@ -23,7 +23,7 @@ export class VoucherTypesComponent  implements OnInit {
   voucherClass:any;
   compList:any;
   branchList:any;
-  
+
   constructor(
     private alertService: AlertService,
     private formBuilder: FormBuilder,
@@ -65,7 +65,6 @@ this.getVoucherBranchesList();
   }
 
   getVoucherClassList() {
-    this.commonService.showSpinner();
     const getVoucherClassList = String.Join('/', this.apiConfigService.getVoucherClassList);
     this.apiService.apiGetRequest(getVoucherClassList)
       .subscribe(
@@ -77,14 +76,11 @@ this.getVoucherBranchesList();
             this.voucherClass = res.response['VoucherClassList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getCompaniesList() {
-    this.commonService.showSpinner();
     const getCompaniesList = String.Join('/', this.apiConfigService.getCompaniesList);
     this.apiService.apiGetRequest(getCompaniesList)
       .subscribe(
@@ -96,14 +92,11 @@ this.getVoucherBranchesList();
             this.compList = res.response['CompaniesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
   getVoucherBranchesList() {
-    this.commonService.showSpinner();
     const getVoucherBranchesList = String.Join('/', this.apiConfigService.getVoucherBranchesList);
     this.apiService.apiGetRequest(getVoucherBranchesList)
       .subscribe(
@@ -115,16 +108,10 @@ this.getVoucherBranchesList();
             this.branchList = res.response['BranchesList'];
           }
         }
-        this.commonService.hideSpinner();
-      }, error => {
-
+        this.spinner.hide();
       });
   }
 
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
 
   get formControls() { return this.modelFormData.controls; }
 

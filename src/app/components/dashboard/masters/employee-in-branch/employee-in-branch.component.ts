@@ -77,14 +77,6 @@ export class EmployeeInBranchComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
-
-
-  showErrorAlert(caption: string, message: string) {
-      // this.alertService.openSnackBar(caption, message);
-  }
-
   get formControls() { return this.modelFormData.controls; }
 
 
@@ -92,6 +84,7 @@ export class EmployeeInBranchComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
+    this.modelFormData.controls['branchCode'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

@@ -6,13 +6,10 @@ import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MatTable } from '
 import { CommonService } from '../../services/common.service';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute } from '@angular/router';
-import { DeleteItemComponent } from '../delete-item/delete-item.component';
-// search
-
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
+import { MatSelect } from '@angular/material';
 import { User } from '../../models/common/user';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -50,9 +47,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   columnDefinitions = [];
   filterColData = [];
   doubleClick = 0;
-
-
-
   keys = [];
   index: any;
   showDataNotFound = false;
@@ -60,14 +54,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   routeParam: any;
 
   constructor(
-    private commonService: CommonService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
     private translate: TranslateService
   ) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    console.log(this.user);
     activatedRoute.params.subscribe(params => {
       this.routeParam = params.id;
     });
@@ -85,47 +77,19 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   highlightRows(row?) {
     if (!isNullOrUndefined(row) && this.index) {
-      // if (this.highlightedRows.length) {
-        // if (this.index === this.index) {
-        //   this.highlightedRows = [];
-        //   this.index = null;
-        // } else {
           this.highlightedRows = [];
           this.highlightedRows.push(row);
-          // this.index = this.index;
-        // }
-      // } else {
-        // this.highlightedRows = [];
-        // this.highlightedRows.push(row);
-        // this.index = this.index;
-      // }
-      console.log(this.highlightedRows, '3')
     }
   }
 
   setIndex(i, row) {
-    // this.doubleClick++;
-    // console.log(this.index, this.highlightedRows, i , row, '11')
-    // if (this.index == i) {
-      // this.highlightRows();
-      // if((this.doubleClick % 2) == 1) {
-        // this.index = null;
-      // }
       this.highlightedRows = [];
-      // console.log(this.index, this.highlightedRows, i, '12')
-    // } else {
       this.index = i;
-      // this.highlightRows();
-      // this.highlightedRows = [];
       this.highlightedRows.push(row);
-      // console.log(this.index, this.highlightedRows, i, '13')
-    // }
-    // console.log(this.index, this.highlightedRows, i , '14')
   }
 
 
   openDialog(val, row?) {
-    console.log(this.index, '2')
     let data;
     if (!isNullOrUndefined(row)) {
       data = { action: val, item: row };
@@ -146,11 +110,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   updateRowData(rowObj) {
-    // for (let t = 0; t < this.tableData.length; t++) {
-    //   if (this.tableData[t].code === rowObj.code) {
-    //     this.tableData[t] = rowObj;
-    //   }
-    // }
     this.tableData[this.index] = rowObj;
     this.dataSource = new MatTableDataSource(this.tableData);
     this.dataSource.paginator = this.paginator;
@@ -165,7 +124,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
 
   addRowData(rowObj) {
     this.tableData.unshift(rowObj);
@@ -186,9 +144,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
       } else if (this.addOrUpdateData.action === 'Delete') {
         this.deleteRowData();
       }
-
     } else {
-
       if (!isNullOrUndefined(this.tableData)) {
         if (this.tableData.length > 0) {
           this.showDataNotFound = false;
@@ -197,20 +153,17 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
           this.showDataNotFound = true;
         }
       }
-
       if (!isNullOrUndefined(this.dataSource)) {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
 
       if (!isNullOrUndefined(this.tableData) && this.tableData.length > 0) {
-
         // tslint:disable-next-line:forin
         for (const key in this.tableData[0]) {
           this.keys.push({ col: key });
         }
-
-        let col = [];
+        const col = [];
         this.keys.forEach(cols => {
           const obj = {
             def: cols.col, label: cols.col, hide: true
@@ -220,40 +173,32 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
         this.translate.get(this.routeParam).subscribe(res => {
           let key;
+          // tslint:disable-next-line: forin
           for (key in res) {
+            // tslint:disable-next-line: prefer-for-of
             for (let c = 0; c < col.length; c++) {
-              if (key == col[c]['def']) {
-                this.columnDefinitions.push(col[c])
+              if (key == col[c].def) {
+                this.columnDefinitions.push(col[c]);
               }
             }
           }
-          console.log(this.columnDefinitions);
-
         });
       }
 
 
       if (!isNullOrUndefined(this.tableData) && this.tableData.length > 0) {
         this.filteredTableMulti.next(this.columnDefinitions.slice());
-
         this.tableMultiFilterCtrl.valueChanges
           .pipe(takeUntil(this.onDestroy))
           .subscribe(() => {
             this.filterBanksMulti();
           });
-
       }
-
-
     }
-
-
-
   }
 
 
   ngAfterViewInit() {
-    // this.multiSelect.open();
     this.cdr.detectChanges();
   }
 
@@ -261,7 +206,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     if (!this.columnDefinitions) {
       return;
     }
-    // get the search keyword
     let search = this.tableMultiFilterCtrl.value;
     if (!search) {
       this.filteredTableMulti.next(this.columnDefinitions.slice());
@@ -269,7 +213,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     } else {
       search = search.toLowerCase();
     }
-    // filter the banks
     this.filteredTableMulti.next(
       this.columnDefinitions.filter(bank => bank.def.toLowerCase().indexOf(search) > -1)
     );
@@ -286,24 +229,17 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
       });
   }
 
-
-
-
   checkboxCheck(index) {
-
     this.filterColData[index] = {
       def: this.filterColData[index].def,
       label: this.filterColData[index].label, hide: !this.filterColData[index].hide
     };
-
   }
-
 
   saveChanges() {
     this.columnDefinitions = this.filterColData.slice(0);
     this.filterColData = [];
   }
-
 
   filterData() {
     this.filterColData = [];
