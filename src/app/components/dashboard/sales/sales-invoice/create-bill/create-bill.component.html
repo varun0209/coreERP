@@ -108,6 +108,12 @@
 
                 </div>
             </form>
+
+            <mat-form-field *ngIf="routeUrl == 'return'" class="form-element w-25 pr-4 mb-3">
+              <input matInput disabled placeholder="Sales Return Invoice Number"
+                 [(ngModel)]="isSalesReturnInvoice" appFocusOnEnter tabIndex="10">
+          </mat-form-field>
+
         </mat-card-content>
 
     </mat-card>
@@ -259,7 +265,9 @@
 
             </div>
 
-
+            <div *ngIf="!dataSource" class="d-flex justify-content-center p-2">
+              <strong> No records found </strong>
+            </div>
 
         </mat-card-content>
     </mat-card>

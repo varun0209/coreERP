@@ -25,7 +25,7 @@ export class SalesInvoiceComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['invoiceMasterId', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
     'ledgerName', 'totalAmount', 'stateCode',
-    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry'
+    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry', 'salesInvoice'
   ];
   branchCode: any;
 
@@ -71,6 +71,10 @@ export class SalesInvoiceComponent implements OnInit {
   openSale(row) {
     localStorage.setItem('selectedBill', JSON.stringify(row));
     this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', row.invoiceNo]);
+  }
+
+  returnSale() {
+    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', 'return']);
   }
 
   search() {

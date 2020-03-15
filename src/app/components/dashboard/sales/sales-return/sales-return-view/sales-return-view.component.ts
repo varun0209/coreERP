@@ -636,7 +636,6 @@ export class SalesReturnViewComponent implements OnInit {
     this.branchFormData.reset();
     this.dataSource = new MatTableDataSource();
     this.formDataGroup();
-    this.addTableRow();
     this.loadData();
   }
 

@@ -44,7 +44,7 @@ export class CreateBillComponent implements OnInit {
   printBill = false;
   routeUrl = '';
   taxPercentage: any;
-
+  isSalesReturnInvoice: any;
   constructor(
     private formBuilder: FormBuilder,
     private commonService: CommonService,
@@ -109,7 +109,7 @@ export class CreateBillComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {    
+  loadData() {
     this.GetBranchesList();
     this.getCashPartyAccountList();
     this.getStateList();
@@ -120,6 +120,10 @@ export class CreateBillComponent implements OnInit {
         this.getInvoiceDeatilList(params.id1);
         const billHeader = JSON.parse(localStorage.getItem('selectedBill'));
         this.branchFormData.setValue(billHeader);
+        if(this.routeUrl == 'return') {
+          const user = JSON.parse(localStorage.getItem('user'));
+          this.generateSalesReturnInvNo(user.branchCode);
+        }
       } else {
         this.disableForm();
         this.addTableRow();
@@ -136,6 +140,22 @@ export class CreateBillComponent implements OnInit {
         }
       }
     });
+  }
+
+  generateSalesReturnInvNo(branchCode) {
+    const generateSalesReturnInvNoUrl = String.Join('/', this.apiConfigService.generateSalesReturnInvNo, branchCode);
+    this.apiService.apiGetRequest(generateSalesReturnInvNoUrl).subscribe(
+      response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            if (!isNullOrUndefined(res.response['SalesReturnInvNo'])) {
+              this.isSalesReturnInvoice = res.response['SalesReturnInvNo'];
+              this.spinner.hide();
+            }
+          }
+        }
+      });
   }
 
   getInvoiceDeatilList(id) {
@@ -602,6 +622,10 @@ export class CreateBillComponent implements OnInit {
   }
 
   save() {
+    if (this.routeUrl == 'return') {
+        this.registerInvoiceReturn();
+        return;
+    }
     if (this.routeUrl != '' || this.dataSource.data.length == 0) {
       return;
     }
@@ -650,7 +674,6 @@ export class CreateBillComponent implements OnInit {
     this.branchFormData.reset();
     this.dataSource = new MatTableDataSource();
     this.formDataGroup();
-    this.addTableRow();
     this.loadData();
   }
 
@@ -661,6 +684,21 @@ export class CreateBillComponent implements OnInit {
     const registerInvoiceUrl = String.Join('/', this.apiConfigService.registerInvoice);
     const requestObj = { InvoiceHdr: this.branchFormData.value, InvoiceDetail: data };
     this.apiService.apiPostRequest(registerInvoiceUrl, requestObj).subscribe(
+      response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+          }
+        this.reset();
+        this.spinner.hide();
+        }
+      });
+  }
+
+  registerInvoiceReturn() {
+    const registerInvoiceReturnUrl = String.Join('/', this.apiConfigService.registerInvoiceReturn, this.isSalesReturnInvoice, this.branchFormData.get('invoiceMasterId').value);
+    this.apiService.apiGetRequest(registerInvoiceReturnUrl).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {

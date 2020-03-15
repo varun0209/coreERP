@@ -125,6 +125,13 @@
             <td mat-cell *matCellDef="let element">{{ element.isManualEntry }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="salesInvoice">
+            <th mat-header-cell *matHeaderCellDef> Sales Invoice </th>
+            <td mat-cell *matCellDef="let element" >
+               <u (click)="returnSale();" class="text-danger"> Sales Return </u>
+            </td>
+          </ng-container>
+
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns" (dblclick)="openSale(row)"></tr>

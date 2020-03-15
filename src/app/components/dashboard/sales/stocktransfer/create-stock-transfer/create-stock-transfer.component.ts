@@ -377,6 +377,9 @@ export class CreateStockTransferComponent implements OnInit {
     this.formData.controls['stockTransferNo'].disable();
   }
 
+  setProductName(){
+
+  }
 
   registerStockTransfer(data) {
     const registerStockTransferUrl = String.Join('/', this.apiConfigService.registerStockTransfer);
@@ -398,7 +401,6 @@ export class CreateStockTransferComponent implements OnInit {
     this.formData.reset();
     this.dataSource = new MatTableDataSource();
     this.formDataGroup();
-    this.addTableRow();
     this.loadData();
   }
 

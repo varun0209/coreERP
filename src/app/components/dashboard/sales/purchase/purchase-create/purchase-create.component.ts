@@ -555,7 +555,7 @@ export class PurchaseCreateComponent implements OnInit {
       }
     }
     this.enableFileds();
-    this.registerInvoice(tableData);
+    this.registerPurchase(tableData);
   }
 
   enableFileds() {
@@ -574,17 +574,16 @@ export class PurchaseCreateComponent implements OnInit {
     this.branchFormData.reset();
     this.dataSource = new MatTableDataSource();
     this.formDataGroup();
-    this.addTableRow();
     this.loadData();
   }
 
-  registerInvoice(data) {
+  registerPurchase(data) {
     this.branchFormData.patchValue({
       paymentMode: 0
     });
-    const registerInvoiceUrl = String.Join('/', this.apiConfigService.registerInvoice);
-    const requestObj = { InvoiceHdr: this.branchFormData.value, InvoiceDetail: data };
-    this.apiService.apiPostRequest(registerInvoiceUrl, requestObj).subscribe(
+    const registerPurchaseUrl = String.Join('/', this.apiConfigService.registerPurchase);
+    const requestObj = { purchaseHdr: this.branchFormData.value, purchaseDetail: data };
+    this.apiService.apiPostRequest(registerPurchaseUrl, requestObj).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
