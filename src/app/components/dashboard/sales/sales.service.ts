@@ -21,6 +21,18 @@ export class SalesService {
         this.dynamicData.coustom = false;
         return this.dynamicData;
         break;
+      case 'stockTransfer':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
+      case 'purchaseInvoice':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
+      case 'purchaseReturn':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
      default:
     }
    }

@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           iconName: 'feedback',
           route: 'taxMaster'
         },
-       
+
         {
           displayName: 'ProductPacking',
           iconName: 'feedback',
@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               displayName: 'PT Master',
               iconName: 'speaker_notes',
               route: 'ptmaster'
-    
+
             },
             {
               displayName: 'CTCBreakup',
@@ -256,7 +256,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               iconName: 'account_balance',
               route: 'salaryprocess'
             }
-    
+
           ]
         },
         {
@@ -351,6 +351,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           displayName: 'Sales Return',
           iconName: 'videocam',
           route: 'salesReturn',
+        },
+        {
+          displayName: 'Stock Transfer',
+          iconName: 'videocam',
+          route: 'stockTransfer',
+        },
+        {
+          displayName: 'Purchase Invoice',
+          iconName: 'videocam',
+          route: 'purchaseInvoice',
+        },
+        {
+          displayName: 'Purchase Return',
+          iconName: 'videocam',
+          route: 'purchaseReturn',
         }
       ]
     },
@@ -375,7 +390,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'bankpayment'
         }
       ]
-    }
+    },
+    {
+      displayName: 'Settings',
+      iconName: 'settings',
+      route: 'settings',
+      children: [
+        {
+          displayName: 'Role Previlages',
+          iconName: 'account_balance',
+          route: 'rolePrevilages',
+        }
+      ]
+    },
   ];
 
   constructor(

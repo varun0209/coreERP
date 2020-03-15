@@ -34,7 +34,22 @@ export class ApiConfigService {
    getPupms = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetPupms`;
 
 
+   //  stock Transfer
+   generateStockTranfNo = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GenerateStockTranfNo`;
+   geProductsByName = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GeProductsByName`;
+   geProductsByCode = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GeProductsByCode`;
+   getStockTransferDetailsSection = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GetStockTransferDetailsSection`;
+   registerStockTransfer = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/RegisterStockTransfer`;
+   getStockTransferList = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GetStockTransferList`;
+   getStockTransferDetilsaRecords = `${this.environment.runtimeConfig.serverUrl}transaction/StockTransfer/GetStockTransferDetilsaRecords`;
 
+   //  purchase Transfer
+   getPurchasePupms = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetPupms`;
+   generatePurchaseInvNo = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GeneratePurchaseInvNo`;
+   getProductDeatilsSectionRcd = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetProductDeatilsSectionRcd`;
+   registerPurchase = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/RegisterPurchase`;
+   getPurchaseInvoiceList = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetInvoiceList`;
+   getPurchaseInvoiceDeatilList = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetInvoiceDeatilList`;
    
    // *******************************   Transaction *****************************************
 

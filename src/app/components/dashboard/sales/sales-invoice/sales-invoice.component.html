@@ -1,5 +1,5 @@
-<div class="p-2">
-  <h4 >   {{ 'SALESINVOICE.TITLE' | translate }} </h4>
+<div class="pt-1">
+  <h5 >   {{ 'SALESINVOICE.TITLE' | translate }} </h5>
 </div>
 
 
@@ -7,7 +7,7 @@
     <mat-card-content class="mt-2">
       <form [formGroup]="dateForm" autocomplete="off">
         <div class="d-flex justify-content-between">
-          <div class="d-flex">
+          <div class="d-flex p-2">
             <div class="range-picker p-2">
               <input
                 type="text"
@@ -19,7 +19,7 @@
                 class="form-control"
               />
             </div>
-            <div>
+            <div >
               <mat-form-field class="form-element">
                 <input
                   matInput
@@ -36,7 +36,7 @@
                 class="button-color-bule text-white m-2"
                 (click)="search()"
               >
-                <mat-icon>search</mat-icon>
+                
                 {{ "COMMON.SEARCH" | translate }}
               </button>
               <button
@@ -44,7 +44,7 @@
                 class="button-color-red text-white m-2"
                 (click)="reset()"
               >
-                <mat-icon>clear</mat-icon>
+                
                 {{ "COMMON.RESET" | translate }}
               </button>
             </div>
@@ -70,14 +70,7 @@
           [dataSource]="dataSource"
           class="mat-elevation-z8 w-100"
         >
-          <!-- <ng-container matColumnDef="slNo">
-            <th mat-header-cell *matHeaderCellDef>Sl No</th>
-            <td mat-cell *matCellDef="let element">
-              {{ dataSource.filteredData.indexOf(element) + 1 }}
-            </td>
-          </ng-container> -->
-
-          <ng-container matColumnDef="invoiceMasterId">
+           <ng-container matColumnDef="invoiceMasterId">
             <th mat-header-cell *matHeaderCellDef>{{ "SALESINVOICE.invoiceMasterId" | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.invoiceMasterId }}</td>
           </ng-container>

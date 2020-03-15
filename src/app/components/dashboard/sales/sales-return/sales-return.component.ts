@@ -1,12 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonService } from '../../../../services/common.service';
+import { String } from 'typescript-string-operations';
 import { ApiConfigService } from '../../../../services/api-config.service';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ApiService } from '../../../../services/api.service';
-import { AlertService } from '../../../../services/alert.service';
 import { isNullOrUndefined } from 'util';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SnackBar, StatusCodes } from '../../../../enums/common/common';
 import { Static } from '../../../../enums/common/static';
+import { AlertService } from '../../../../services/alert.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-sales-return',
@@ -15,74 +19,80 @@ import { Static } from '../../../../enums/common/static';
 })
 export class SalesReturnComponent implements OnInit {
 
-  formData: FormGroup;
-  roleArray = [ { id : '1' , text : 'admin' }, { id : '1' , text : 'emp' } ];
-
+  dateForm: FormGroup;
+  // table
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['menuName', 'active', 'add', 'edit', 'delete'  ];
+  displayedColumns: string[] = ['invoiceMasterId', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
+    'ledgerName', 'totalAmount', 'stateCode',
+    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry'
+  ];
+  branchCode: any;
 
   constructor(
     private formBuilder: FormBuilder,
+    private commonService: CommonService,
     private apiConfigService: ApiConfigService,
     private apiService: ApiService,
+    private router: Router,
     private alertService: AlertService,
+    private spinner: NgxSpinnerService,
+    private activatedRoute: ActivatedRoute,
 
-  ) { 
-    this.formData = this.formBuilder.group({
-      role: [null]
+  ) {
+    this.dateForm = this.formBuilder.group({
+      selected: [null],
+      fromDate: [null],
+      toDate: [null],
+      invoiceNo: [null]
     });
   }
 
   ngOnInit() {
-    let data = [
-      { menuName : 'test', active : false, add : false, edit : false, delete : false },
-      { menuName : 'test2', active : false, add : false, edit : false, delete : false },
-      { menuName : 'test3', active : false, add : false, edit : false, delete : false },
-      { menuName : 'test4', active : false, add : false, edit : false, delete : false },
-      { menuName : 'test5', active : false, add : false, edit : false, delete : false },
-    ];
-    this.dataSource = new MatTableDataSource(data);
+    this.branchCode = JSON.parse(localStorage.getItem('user'));
+
+  }
+
+  getInvoiceList() {
+    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList, this.branchCode.branchCode);
+    this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
+      response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
+            this.dataSource = new MatTableDataSource(res.response['InvoiceList']);
+            this.dataSource.paginator = this.paginator;
+            this.spinner.hide();
+          }
+        }
+      });
+  }
+
+  openSale(row) {
+    localStorage.setItem('selectedBill', JSON.stringify(row));
+    this.router.navigate(['dashboard/sales/salesReturn/salesReturnView', row.invoiceNo]);
+  }
+
+  search() {
+    if (isNullOrUndefined(this.dateForm.value.invoiceNo)) {
+      if (isNullOrUndefined(this.dateForm.value.selected)) {
+        this.alertService.openSnackBar('Select Invoice or Date', Static.Close, SnackBar.error);
+        return;
+      } else {
+        this.dateForm.patchValue({
+          fromDate: this.commonService.formatDate(this.dateForm.value.selected.start._d),
+          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d)
+        });
+      }
+    }
+
+    this.getInvoiceList();
+  }
+
+  reset() {
+    this.dateForm.reset();
+    this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
-  }
-
-  // asa() {
-  //   const registerInvoiceUrl = String.Join('/', this.apiConfigService.registerInvoice);
-  //   this.apiService.apiPostRequest(registerInvoiceUrl, requestObj).subscribe(
-  //     response => {
-  //       const res = response.body;
-  //       if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-  //         if (!isNullOrUndefined(res.response)) {
-  //           this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
-  //         }
-  //       }
-  //     });
-  // }
-
-  // adasd() {
-  //   const registerInvoiceUrl = String.Join('/', this.apiConfigService.registerInvoice);
-  //   const requestObj = { InvoiceHdr: this.branchFormData, InvoiceDetail: this.dataSource.data };
-  //   this.apiService.apiPostRequest(registerInvoiceUrl, requestObj).subscribe(
-  //     response => {
-  //       const res = response.body;
-  //       if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-  //         if (!isNullOrUndefined(res.response)) {
-  //           this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
-  //         }
-  //       }
-  //     });
-  // }
-
-  checkboxCheck(event , column) {
-    console.log(event.checked , column)
-    this.dataSource.data = this.dataSource.data.map(val => {
-      val[column] = event.checked;
-      return val;
-    } );
-  }
-
-  update() {
-    console.log(this.dataSource.data)
   }
 
 }

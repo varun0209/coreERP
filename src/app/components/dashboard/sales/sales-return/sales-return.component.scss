@@ -1,4 +1,9 @@
+
 @import "../../../../../reuse";
+
+.table {
+  overflow-x: unset;
+}
 
 :host ::ng-deep table {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -48,3 +53,16 @@
   height: 40px !important;
   cursor: pointer;
 }
+
+.range-picker {
+  width: 200px;
+  & input {
+    border: none;
+    border-radius : unset;
+    border-bottom: 1px solid $color-color;
+    padding: 0rem;
+    font-size: 0.9rem;
+  }
+}
+
+

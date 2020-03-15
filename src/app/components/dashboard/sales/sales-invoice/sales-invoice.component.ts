@@ -6,7 +6,7 @@ import { ApiConfigService } from '../../../../services/api-config.service';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ApiService } from '../../../../services/api.service';
 import { isNullOrUndefined } from 'util';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SnackBar, StatusCodes } from '../../../../enums/common/common';
 import { Static } from '../../../../enums/common/static';
 import { AlertService } from '../../../../services/alert.service';
@@ -24,9 +24,10 @@ export class SalesInvoiceComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['invoiceMasterId', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
-  'ledgerName', 'totalAmount', 'stateCode',
-  'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry'
-];
+    'ledgerName', 'totalAmount', 'stateCode',
+    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry'
+  ];
+  branchCode: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +37,8 @@ export class SalesInvoiceComponent implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private spinner: NgxSpinnerService,
+    private activatedRoute: ActivatedRoute,
+
   ) {
     this.dateForm = this.formBuilder.group({
       selected: [null],
@@ -46,45 +49,41 @@ export class SalesInvoiceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.branchCode = JSON.parse(localStorage.getItem('user'));
+
   }
 
   getInvoiceList() {
-    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList);
-    // this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
-    const date = {
-        'fromDate':'3/7/2020 1:10:57 PM',
-          'toDate':'1/7/2020 1:10:57 PM',
-          'invoiceNo':null
-      };
-    this.apiService.apiPostRequest(getInvoiceListUrl, date).subscribe(
+    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList, this.branchCode.branchCode);
+    this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-        if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
-          this.dataSource = new MatTableDataSource( res.response['InvoiceList']);
-          this.dataSource.paginator = this.paginator;
-          this.spinner.hide();
+          if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
+            this.dataSource = new MatTableDataSource(res.response['InvoiceList']);
+            this.dataSource.paginator = this.paginator;
+            this.spinner.hide();
+          }
         }
-      }
       });
   }
 
   openSale(row) {
     localStorage.setItem('selectedBill', JSON.stringify(row));
-    this.router.navigate(['dashboard/sales/salesInvoice/createSale', row.invoiceNo]);
+    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', row.invoiceNo]);
   }
 
   search() {
     if (isNullOrUndefined(this.dateForm.value.invoiceNo)) {
-        if (isNullOrUndefined(this.dateForm.value.selected)) {
-          this.alertService.openSnackBar('Select Invoice or Date', Static.Close, SnackBar.error);
-          return;
-        } else {
-          this.dateForm.patchValue({
-            fromDate:  this.commonService.formatDate(this.dateForm.value.selected.start._d),
-            toDate:  this.commonService.formatDate(this.dateForm.value.selected.end._d)
-          });
-        }
+      if (isNullOrUndefined(this.dateForm.value.selected)) {
+        this.alertService.openSnackBar('Select Invoice or Date', Static.Close, SnackBar.error);
+        return;
+      } else {
+        this.dateForm.patchValue({
+          fromDate: this.commonService.formatDate(this.dateForm.value.selected.start._d),
+          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d)
+        });
+      }
     }
 
     this.getInvoiceList();

@@ -37,13 +37,17 @@ import {
 } from './components/dashboard/payroll/index';
 
 import {
-  SalesComponent, SalesInvoiceComponent, SalesReturnComponent, CreateBillComponent
+  SalesComponent, SalesInvoiceComponent, SalesReturnComponent,StocktransferComponent , SalesReturnViewComponent, CreateBillComponent, CreateStockTransferComponent, PurchaseComponent, PurchaseCreateComponent
 } from './components/dashboard/sales/index';
 
 import {
   TransactionsComponent, CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
   CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent
 } from './components/dashboard/transactions/index';
+
+import {
+  RolesprevilagesComponent,  SettingsComponent
+} from './components/dashboard/settings/index';
 
 import { RuntimeConfigService } from './services/runtime-config.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -55,7 +59,8 @@ import { FocusOnEnterDirective } from './directives/focus-on-enter.directive';
 
 import { BsDropdownModule, TypeaheadModule } from 'ngx-bootstrap';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-
+import { PurchaseReturnComponent } from './components/dashboard/sales/purchase-return/purchase-return.component';
+import { PurchaseReturnViewComponent } from './components/dashboard/sales/purchase-return/purchase-return-view/purchase-return-view.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -87,9 +92,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LeaveRequestComponent, PTMasterComponent, ComponentMasterComponent,
     StructureCreationComponent, LeaveApprovalComponent,
     PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent,
-    SalesComponent, SalesInvoiceComponent, SalesReturnComponent, CreateBillComponent,
+    SalesComponent, SalesInvoiceComponent, SalesReturnComponent, CreateBillComponent, SalesReturnViewComponent,
     TransactionsComponent, CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
-    CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent
+    CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent, 
+    RolesprevilagesComponent, SettingsComponent, StocktransferComponent, CreateStockTransferComponent, PurchaseComponent, PurchaseCreateComponent, PurchaseReturnComponent, PurchaseReturnViewComponent
   ],
   imports: [
     AppRoutingModule,
