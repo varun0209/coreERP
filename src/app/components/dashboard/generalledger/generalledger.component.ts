@@ -21,7 +21,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   })
   export class GeneralledgerComponent implements OnInit {
     tableData: any;
-    addOrUpdateData: any;
     tableUrl: any;
 
     @ViewChild(TableComponent, { static: false }) tableComponent: TableComponent;
@@ -79,8 +78,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
                   const res = response.body;
                   if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                     if (!isNullOrUndefined(res.response)) {
-                      result.item = res.response;
-                      this.addOrUpdateData = result;
+                      this.tableComponent.defaultValues();
+                      this.getTableData();
                       this.alertService.openSnackBar('Delected Record...', 'close', SnackBar.success);
                     }
                   }
@@ -110,8 +109,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     const res = response.body;
                     if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                     if (!isNullOrUndefined(res.response)) {
-                      result.item = res.response;
-                      this.addOrUpdateData = result;
+                      this.tableComponent.defaultValues();
+                      this.getTableData();
                       this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
                     }
                   }
@@ -125,8 +124,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     const res = response.body;
                     if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                       if (!isNullOrUndefined(res.response)) {
-                        result.item = res.response;
-                        this.addOrUpdateData = result;
+                        this.tableComponent.defaultValues();
+                        this.getTableData();
                         this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
                       }
                     }

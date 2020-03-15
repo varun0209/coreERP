@@ -34,8 +34,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   protected onDestroy = new Subject<void>();
 
   @Input() tableData: any;
-  @Input() addOrUpdateData: any;
   @Output() addOrUpdateEvent = new EventEmitter();
+  @Input() addOrUpdateData: any;
 
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -48,7 +48,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
   filterColData = [];
   doubleClick = 0;
   keys = [];
-  index: any;
   showDataNotFound = false;
   user: User;
   routeParam: any;
@@ -71,20 +70,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
     this.columnDefinitions = [];
     this.filterColData = [];
     this.keys = [];
-    this.index = null;
     this.showDataNotFound = false;
   }
 
   highlightRows(row?) {
-    if (!isNullOrUndefined(row) && this.index) {
+    if (!isNullOrUndefined(row)) {
           this.highlightedRows = [];
           this.highlightedRows.push(row);
     }
   }
 
-  setIndex(i, row) {
+  setIndex(row) {
       this.highlightedRows = [];
-      this.index = i;
       this.highlightedRows.push(row);
   }
 
@@ -109,42 +106,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   }
 
-  updateRowData(rowObj) {
-    this.tableData[this.index] = rowObj;
-    this.dataSource = new MatTableDataSource(this.tableData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  deleteRowData() {
-    this.tableData = this.tableData.filter((value, index, array) => {
-      return index !== this.index;
-    });
-    this.dataSource = new MatTableDataSource(this.tableData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  addRowData(rowObj) {
-    this.tableData.unshift(rowObj);
-    this.dataSource = new MatTableDataSource(this.tableData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
   ngOnChanges() {
     this.highlightedRows = [];
 
-    if (!isNullOrUndefined(this.addOrUpdateData)) {
-
-      if (this.addOrUpdateData.action === 'Edit') {
-        this.updateRowData(this.addOrUpdateData.item);
-      } else if (this.addOrUpdateData.action === 'Add') {
-        this.addRowData(this.addOrUpdateData.item);
-      } else if (this.addOrUpdateData.action === 'Delete') {
-        this.deleteRowData();
-      }
-    } else {
       if (!isNullOrUndefined(this.tableData)) {
         if (this.tableData.length > 0) {
           this.showDataNotFound = false;
@@ -194,7 +159,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit, OnDestr
             this.filterBanksMulti();
           });
       }
-    }
+    
   }
 
 

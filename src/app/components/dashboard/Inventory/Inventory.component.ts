@@ -68,8 +68,8 @@ export class InventoryComponent implements OnInit {
                 const res = response.body;
                 if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                   if (!isNullOrUndefined(res.response)) {
-                    result.item = res.response;
-                    this.addOrUpdateData = result;
+                    this.tableComponent.defaultValues();
+                    this.getTableData();
                     this.alertService.openSnackBar('Delected Record...', 'close', SnackBar.success);
                   }
                 }
@@ -100,8 +100,8 @@ export class InventoryComponent implements OnInit {
                   const res = response.body;
                   if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                     if (!isNullOrUndefined(res.response)) {
-                      result.item = res.response;
-                      this.addOrUpdateData = result;
+                      this.tableComponent.defaultValues();
+                      this.getTableData();
                       this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
                     }
                   }
@@ -116,8 +116,8 @@ export class InventoryComponent implements OnInit {
                   this.spinner.hide();
                   if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
                     if (!isNullOrUndefined(res.response)) {
-                      result.item = res.response;
-                      this.addOrUpdateData = result;
+                      this.tableComponent.defaultValues();
+                      this.getTableData();
                       this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
                     }
                   }
