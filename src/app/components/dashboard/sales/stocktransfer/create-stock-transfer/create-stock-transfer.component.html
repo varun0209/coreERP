@@ -84,7 +84,7 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'STOCKTRANSFER.productName' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input class="typeAhead" [(ngModel)]="element.productName" type="search"
-                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setProductName($event)"
+                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setProductName()"
                                 (input)="getProductByProductName($event.target.value)"
                                 [typeahead]="getProductByProductNameArray" typeaheadOptionField='text'>
                         </td>

@@ -132,7 +132,7 @@
                         <td mat-cell *matCellDef="let element;">
                             <input class="typeAhead" [(ngModel)]="element.productCode" type="search"
                                 [disabled]="element.text != 'obj'"
-                                (typeaheadOnSelect)="getProductDeatilsSectionRcd($event)"
+                                (typeaheadOnSelect)="getBillingDetailsRcd($event)"
                                 (input)="getProductByProductCode($event.target.value)"
                                 [typeahead]="getProductByProductCodeArray" typeaheadOptionField='text' appFocusOnEnter tabIndex="10">
                         </td>

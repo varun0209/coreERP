@@ -37,7 +37,7 @@
                   <mat-label>{{ 'bankpayment.bankLedgerName' | translate }}</mat-label>
                   <mat-select formControlName="bankLedgerCode" appFocusOnEnter tabIndex="3" >
                       <mat-option *ngFor="let bank of GetBPAccountLedgerListArray" [value]="bank.id">
-                        {{ bank.id }} - {{branch.text}}
+                        {{ bank.id }} - {{bank.text}}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
