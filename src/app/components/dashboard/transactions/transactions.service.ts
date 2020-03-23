@@ -25,6 +25,30 @@ export class TransactionsService {
             this.dynamicData.coustom = false;
             return this.dynamicData;
             break;
+            case 'bankreceipt':
+              this.dynamicData.coustom = false;
+              return this.dynamicData;
+              break;
+              case 'journalvoucher':
+                this.dynamicData.coustom = false;
+                return this.dynamicData;
+                break;
+		      case 'stockissues':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
+      case 'stockreceipt':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
+      case 'stockshort':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
+      case 'oilconversion':
+        this.dynamicData.coustom = false;
+        return this.dynamicData;
+        break;
      default:
     }
    }

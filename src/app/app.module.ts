@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 
 import { SharedImportModule } from './shared/shared-import';
 
-import { NavbarComponent, TableComponent, DeleteItemComponent } from './reuse-components/index';
+import { NavbarComponent, TableComponent, DeleteItemComponent, ReportTableComponent,ReportsInnerTableComponent ,SearchFilterTableComponent } from './reuse-components/index';
 import {
   DashboardComponent, LoginComponent, SidebarComponent, NotFoundComponent
 } from './components/index';
@@ -42,7 +42,10 @@ import {
 
 import {
   TransactionsComponent, CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
-  CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent
+  CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent, BankReceiptComponent,
+  CreateBankreceiptComponent,JournalVoucherComponent,CreateJournalvoucherComponent,
+   CreateStockissuesComponent , StockissuesComponent, CreateStockreceiptsComponent, StockreceiptsComponent
+   ,CreateStockshortsComponent, StockshortComponent, CreateOilconversionsComponent, OilconversionComponent
 } from './components/dashboard/transactions/index';
 
 import {
@@ -61,6 +64,8 @@ import { BsDropdownModule, TypeaheadModule } from 'ngx-bootstrap';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { PurchaseReturnComponent } from './components/dashboard/sales/purchase-return/purchase-return.component';
 import { PurchaseReturnViewComponent } from './components/dashboard/sales/purchase-return/purchase-return-view/purchase-return-view.component';
+
+import { ReportsComponent } from './components/dashboard/reports/index';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -94,8 +99,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent,
     SalesComponent, SalesInvoiceComponent, SalesReturnComponent, CreateBillComponent, SalesReturnViewComponent,
     TransactionsComponent, CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
-    CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent, 
-    RolesprevilagesComponent, SettingsComponent, StocktransferComponent, CreateStockTransferComponent, PurchaseComponent, PurchaseCreateComponent, PurchaseReturnComponent, PurchaseReturnViewComponent
+    CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent,BankReceiptComponent,
+    CreateBankreceiptComponent,JournalVoucherComponent,CreateJournalvoucherComponent,
+    RolesprevilagesComponent, SettingsComponent, StocktransferComponent, CreateStockTransferComponent, PurchaseComponent, PurchaseCreateComponent, PurchaseReturnComponent, PurchaseReturnViewComponent,
+    ReportTableComponent,ReportsInnerTableComponent, ReportsComponent, SearchFilterTableComponent,
+    CreateStockissuesComponent , StockissuesComponent, CreateStockreceiptsComponent, StockreceiptsComponent
+    ,CreateStockshortsComponent, StockshortComponent, CreateOilconversionsComponent, OilconversionComponent
   ],
   imports: [
     AppRoutingModule,
@@ -136,7 +145,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     LeaveopeningbalancesComponent, LeavetypesComponent,
     LeaveRequestComponent, PTMasterComponent, ComponentMasterComponent,
     StructureCreationComponent, LeaveApprovalComponent,
-    PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent
+    PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent,CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
+    CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent,BankReceiptComponent,CreateBankreceiptComponent,
+    JournalVoucherComponent,CreateJournalvoucherComponent,
+    ReportsInnerTableComponent, SearchFilterTableComponent
   ]
 })
 export class AppModule { }

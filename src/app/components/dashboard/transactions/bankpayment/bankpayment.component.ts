@@ -26,7 +26,7 @@ export class BankPaymentComponent implements OnInit {
   displayedColumns: string[] = ['bankPaymentMasterId', 'bankPaymentDate', 'branchCode', 'branchName', 'fromLedgerCode',
   'fromLedgerName', 'totalAmount','voucherNo'
 ];
-
+branchCode:any;
   constructor(
     private formBuilder: FormBuilder,
     private commonService: CommonService,
@@ -46,23 +46,18 @@ export class BankPaymentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.branchCode = JSON.parse(localStorage.getItem('user'));
+    this.search();
   }
 
-  getInvoiceList() {
-    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList);
-    // this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
-
-    const date = {
-        'fromDate':'3/7/2020 1:10:57 PM',
-          'toDate':'1/7/2020 1:10:57 PM',
-          'voucherNo':null
-      }
-    this.apiService.apiPostRequest(getInvoiceListUrl, date).subscribe(
+  getBankpaymentList() {
+    const getBankpaymentListUrl = String.Join('/', this.apiConfigService.getBankpaymentList, this.branchCode.branchCode);
+    this.apiService.apiPostRequest(getBankpaymentListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-        if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
-          this.dataSource = new MatTableDataSource( res.response['InvoiceList']);
+        if (!isNullOrUndefined(res.response['BankPaymentList']) && res.response['BankPaymentList'].length) {
+          this.dataSource = new MatTableDataSource( res.response['BankPaymentList']);
           this.dataSource.paginator = this.paginator;
           this.spinner.hide();
         }
@@ -78,7 +73,7 @@ export class BankPaymentComponent implements OnInit {
   search() {
     if (isNullOrUndefined(this.dateForm.value.voucherNo)) {
         if (isNullOrUndefined(this.dateForm.value.selected)) {
-          this.alertService.openSnackBar('Select Invoice or Date', Static.Close, SnackBar.error);
+          this.alertService.openSnackBar('Select VoucherNO or Date', Static.Close, SnackBar.error);
           return;
         } else {
           this.dateForm.patchValue({
@@ -88,7 +83,7 @@ export class BankPaymentComponent implements OnInit {
         }
     }
 
-    this.getInvoiceList();
+    this.getBankpaymentList();
   }
 
   reset() {

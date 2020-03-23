@@ -14,7 +14,7 @@
 
           <mat-form-field class="form-element">
             <mat-label>{{ 'cashreceipt.branchName' | translate }}</mat-label>
-            <mat-select formControlName="branchCode" appFocusOnEnter tabIndex="3"  (selectionChange)="genarateVoucherNo()">
+            <mat-select formControlName="branchCode" appFocusOnEnter tabIndex="3"  (selectionChange)="genarateVoucherNo(); setBranchCode();">
                 <mat-option *ngFor="let branch of GetBranchesListArray" [value]="branch.id">
                   {{ branch.id }} - {{branch.text}}
                 </mat-option>
@@ -44,37 +44,34 @@
 <mat-card-content>
   <div class="table mt-3 mat-form-field-height">
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
-
-    <ng-container matColumnDef="accountCode">
-        <th mat-header-cell *matHeaderCellDef>  {{ 'cashreceipt.accountCode' | translate }} </th>
+    <ng-container matColumnDef="SlNo">
+        <th class="p-0" mat-header-cell *matHeaderCellDef> {{ 'cashreceipt.SlNo' | translate }} </th>
         <td mat-cell *matCellDef="let element;">
-            <div class="position-relative">
-                <input matInput [disabled]="element.text != 'obj'"
-                [value]="element.accountCode" [(ngModel)]="element.accountCode"  appFocusOnEnter tabIndex="10" #accountCode  (input)="getAccountByAccountCode(accountCode.value); selectAccount.open();">
-                      <mat-select [(ngModel)]="element.accountCode" hidden disableOptionCentering="true" appFocusOnEnter #selectAccount (selectionChange)="setAccountName(selectAccount.value)">
-                        <mat-option *ngFor="let account of getAccountLedgerListArray" [value]="account.id" >
-                            {{account.id}}
-                        </mat-option>
-                    </mat-select>
-            </div>
 
-            <input class="typeAhead" [(ngModel)]="element.accountCode" type="search"
+            <input matInput disabled value="{{ dataSource.filteredData.indexOf(element) + 1}}" />
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="toLedgerCode">
+        <th mat-header-cell *matHeaderCellDef>  {{ 'cashreceipt.toLedgerCode' | translate }} </th>
+        <td mat-cell *matCellDef="let element;">
+
+            <input class="typeAhead" [(ngModel)]="element.toLedgerCode" type="search"
             [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setAccountName($event)"
             (input)="getAccountByAccountCode($event.target.value)"
             [typeahead]="getAccountLedgerListArray" typeaheadOptionField='id'>
-            
+
           </td>
     </ng-container>
 
-    <ng-container matColumnDef="accountName">
-        <th mat-header-cell *matHeaderCellDef>{{ 'cashreceipt.accountName' | translate }}</th>
+    <ng-container matColumnDef="toLedgerName">
+        <th mat-header-cell *matHeaderCellDef>{{ 'cashreceipt.toLedgerName' | translate }}</th>
         <td mat-cell *matCellDef="let element">
           <!-- <span >{{ element.name }} </span> -->
-          <input matInput [value]="element.accountName" [(ngModel)]="element.accountName" (input)="
+          <input matInput [value]="element.toLedgerName" [(ngModel)]="element.toLedgerName" (input)="
               setToFormModel(
                 element.text,
-                'accountName',
-                element.accountName
+                'toLedgerName',
+                element.toLedgerName
               )
             " />
         </td>
@@ -117,15 +114,25 @@
   <form [formGroup]="branchFormData" autocomplete="off">
 
     <div class="d-flex justify-content-between m-2">
+        <div class="d-flex justify-content-center">
+            <!-- <div class="w-50 d-flex justify-content-center mat-form-field-height"> -->
+                <div class="w-75">
+                    <mat-form-field class="form-element">
+                        <input matInput placeholder="{{ 'cashreceipt.userName' | translate }}"
+                            formControlName="userName" appFocusOnEnter tabIndex="1">
+                    </mat-form-field>
+  
+                </div>
+            </div>
         <div class="w-50">
             <mat-form-field>
-                <mat-label>{{ 'SALESINVOICE.AMOUNTINWORDS' | translate }}</mat-label>
-                <textarea matInput formControlName="amountInWords" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea>
+                <mat-label>{{ 'cashreceipt.narration' | translate }}</mat-label>
+                <textarea matInput formControlName="narration" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
             </mat-form-field>
         </div>
 
-        <div class="w-50 d-flex justify-content-center mat-form-field-height">
+        <div class="w-50 d-flex justify-content-center">
             <div class="w-75">
                 <mat-form-field class="form-element">
                     <input matInput placeholder="{{ 'cashreceipt.totalAmount' | translate }}"

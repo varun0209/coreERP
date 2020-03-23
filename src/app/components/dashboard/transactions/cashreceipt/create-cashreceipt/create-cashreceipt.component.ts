@@ -32,7 +32,7 @@ export class CreateCashreceiptComponent implements OnInit {
   branchesList = [];
   getmemberNamesArray=[];
 
-  displayedColumns: string[] = ['accountCode', 'accountName', 'amount', 'delete'
+  displayedColumns: string[] = ['SlNo','toLedgerCode', 'toLedgerName', 'amount', 'delete'
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -57,7 +57,7 @@ export class CreateCashreceiptComponent implements OnInit {
     this.branchFormData = this.formBuilder.group({
       voucherNo: [null],
       voucherTypeId: [null],
-      cashPaymentDate: [(new Date()).toISOString()],
+      cashReceiptDate: [(new Date()).toISOString()],
       branchCode: [null],
       branchName: [null],
       shiftId: [null],
@@ -65,7 +65,7 @@ export class CreateCashreceiptComponent implements OnInit {
       userName: [null],
       employeeId: [null],
       totalAmount: [null],
-      amountInWords: [null],
+      narration: [null],
       printBill: [false],
     });
     
@@ -73,27 +73,32 @@ export class CreateCashreceiptComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup();
+   this.loadData();
+  }
+
+  loadData() {
+    this.getCashReceiptBranchesList();
     this.activatedRoute.params.subscribe(params => {
-      console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         this.disableForm(params.id1);
         this.getInvoiceDeatilList(params.id1);
         let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
         this.branchFormData.setValue(billHeader);
-        console.log(billHeader);
       } else {
         this.disableForm();
         const user = JSON.parse(localStorage.getItem('user'));
         if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
-            voucherNo: user.branchCode,
+            branchCode: user.branchCode,
+            userId: user.seqId,
+            userName: user.userName
           });
+          this.setBranchCode();
           this.genarateVoucherNo(user.branchCode);
+          this.formGroup();
         }
-        this.getCashReceiptBranchesList();
-        this.addTableRow();
+	this.addTableRow();
       }
     });
   }
@@ -125,12 +130,12 @@ export class CreateCashreceiptComponent implements OnInit {
       this.branchFormData.controls['memberName'].disable();
       this.branchFormData.controls['customerGstin'].disable();
       this.branchFormData.controls['generalNo'].disable();
-      this.branchFormData.controls['amountInWords'].disable();
+      this.branchFormData.controls['narration'].disable();
       this.branchFormData.controls['suppliedTo'].disable();
     }
 
-    this.branchFormData.controls['voucherNo'].disable();
-    this.branchFormData.controls['totalAmount'].disable();
+    // this.branchFormData.controls['voucherNo'].disable();
+    // this.branchFormData.controls['totalAmount'].disable();
   }
 
 
@@ -172,6 +177,18 @@ export class CreateCashreceiptComponent implements OnInit {
         }
       });
   }
+  setBranchCode() {
+    const bname = this.GetBranchesListArray.filter(branchCode => {
+      if (branchCode.id == this.branchFormData.get('branchCode').value) {
+        return branchCode;
+      }
+    });
+    if (bname.length) {
+      this.branchFormData.patchValue({
+        branchName: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+      });
+    }
+  }
 
   private filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -180,7 +197,7 @@ export class CreateCashreceiptComponent implements OnInit {
   
   addTableRow() {
     const tableObj = {
-      accountCode: '', accountName: '', amount: '', delete: '', text: 'obj'
+      toLedgerCode: '', toLedgerName: '', amount: '', delete: '', text: 'obj'
     };
     if (!isNullOrUndefined(this.dataSource)) {
       this.dataSource.data.push(tableObj);
@@ -195,36 +212,13 @@ export class CreateCashreceiptComponent implements OnInit {
     this.tableFormData = this.formBuilder.group({
       voucherNo: [null],
       cashPaymentDate: [null],
-      stateCode: [null],
       shiftId: [null],
       userId: [null],
       employeeId: [null],
       productId: [null],
-      hsnNo: [null],
-      accountCode: [null, [Validators.required]],
-      accountName: [null, [Validators.required]],
-      rate: [null],
-      productGroupId: [null],
-      productGroupCode: [null],
-      pumpID: [null],
-      pumpNo: [null],
-      qty: [null],
-      fQty: [null],
-      slipNo: [null],
-      unitId: [null],
-      unitName: [null],
-      discount: [null],
-      taxGroupId: [null],
-      taxGroupCode: [null],
-      taxGroupName: [null],
-      taxStructureId: [null],
-      taxStructureCode: [null],
-      cgst: [null],
-      sgst: [null],
-      igst: [null],
-      grossAmount: [null],
-      totalGST: [null],
-      availStock: [null],
+      toLedgerCode: [null, [Validators.required]],
+      toLedgerName: [null, [Validators.required]],
+      amount:[null]
     });
   }
 
@@ -296,11 +290,11 @@ export class CreateCashreceiptComponent implements OnInit {
     for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
       if (this.getAccountLedgerListArray[t]['id'] == value.value) {
         for (let d = 0; d < this.dataSource.data.length; d++) {
-          if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-            this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+          if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+            this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
             this.tableFormData.patchValue({
-              accountCode : this.getAccountLedgerListArray[t].id,
-              accountName : this.getAccountLedgerListArray[t].text
+              toLedgerCode : this.getAccountLedgerListArray[t].id,
+              toLedgerName : this.getAccountLedgerListArray[t].text
             });
             flag = false;
             break;
@@ -309,15 +303,15 @@ export class CreateCashreceiptComponent implements OnInit {
       }
     }
     if(flag) {
-        this.dataSource.data[this.dataSource.data.length - 1].accountCode = value.value;
+        this.dataSource.data[this.dataSource.data.length - 1].toLedgerCode = value.value;
         for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
           if (this.getAccountLedgerListArray[t]['id'] == value.value) {
             for (let d = 0; d < this.dataSource.data.length; d++) {
-              if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-                this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+              if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+                this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
                 this.tableFormData.patchValue({
-                  accountCode : this.getAccountLedgerListArray[t].id,
-                          accountName : this.getAccountLedgerListArray[t].text
+                  toLedgerCode : this.getAccountLedgerListArray[t].id,
+                  toLedgerName : this.getAccountLedgerListArray[t].text
                         });
                 break;
               }
@@ -367,7 +361,7 @@ export class CreateCashreceiptComponent implements OnInit {
 
     console.log(this.branchFormData, this.dataSource.data);
 
-    this.registerInvoice();
+    this.registerCashReceipt();
   }
 
   reset() {
@@ -377,16 +371,18 @@ export class CreateCashreceiptComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  registerInvoice() {
-    const registerInvoiceUrl = String.Join('/', this.apiConfigService.registerInvoice);
-    const requestObj = { InvoiceHdr: this.branchFormData, InvoiceDetail: this.dataSource.data };
-    this.apiService.apiPostRequest(registerInvoiceUrl, requestObj).subscribe(
+  registerCashReceipt() {
+    const registerCashReceiptUrl = String.Join('/', this.apiConfigService.registerCashReceipt);
+    const requestObj = { CashreceiptHdr: this.branchFormData.value, CashreceiptDetail: this.dataSource.data };
+    this.apiService.apiPostRequest(registerCashReceiptUrl, requestObj).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
           }
+          this.reset();
+          this.spinner.hide();
         }
       });
   }

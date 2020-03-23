@@ -1,8 +1,8 @@
 <div class="pt-1">
     <h5 >   {{ 'STOCKTRANSFER.TITLE' | translate }} </h5>
   </div>
-  
-  
+
+
   <mat-card>
       <mat-card-content class="mt-2">
         <form [formGroup]="dateForm" autocomplete="off">
@@ -25,7 +25,7 @@
                   class="button-color-bule text-white m-2"
                   (click)="search()"
                 >
-                  
+
                   {{ "COMMON.SEARCH" | translate }}
                 </button>
                 <button
@@ -33,7 +33,7 @@
                   class="button-color-red text-white m-2"
                   (click)="reset()"
                 >
-                  
+
                   {{ "COMMON.RESET" | translate }}
                 </button>
               </div>
@@ -49,57 +49,57 @@
             </div>
           </div>
         </form>
-  
+
         <!-- <mat-card class="mt-2">
         <mat-card-content> -->
-  
+
         <div class="table">
           <table
             mat-table
             [dataSource]="dataSource"
             class="mat-elevation-z8 w-100"
           >
-  
+
             <ng-container matColumnDef="fromBranchCode">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.FromBranchCode" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.fromBranchCode }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="fromBranchName">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.FromBranchName" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.fromBranchName }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="toBranchCode">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.ToBranchCode" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.toBranchCode }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="toBranchName">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.ToBranchName" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.toBranchName }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="stockTransferDate">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.StockTransferDate" | translate }}</th>
-              <td mat-cell *matCellDef="let element">{{ element.stockTransferDate }}</td>
+              <td mat-cell *matCellDef="let element">{{ element.stockTransferDate | date: 'dd/MM/yyyy' }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="userId">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.UserId" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="stockTransferNo">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.StockTransferNo" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.stockTransferNo }}</td>
             </ng-container>
-  
+
             <ng-container matColumnDef="shiftId">
               <th mat-header-cell *matHeaderCellDef>{{ "STOCKTRANSFER.ShiftId" | translate }}</th>
               <td mat-cell *matCellDef="let element">{{ element.shiftId }}</td>
             </ng-container>
-    
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns" (dblclick)="openStock(row)"></tr>
           </table>
@@ -107,16 +107,15 @@
         <div *ngIf="!dataSource" class="d-flex justify-content-center p-2">
           <strong> No records found </strong>
         </div>
-  
+
         <mat-paginator
           [pageSizeOptions]="[8, 10, 20]"
           showFirstLastButtons
         ></mat-paginator>
-  
+
       <!-- </mat-card-content>
         </mat-card> -->
-  
+
       </mat-card-content>
   </mat-card>
-  
-  
+

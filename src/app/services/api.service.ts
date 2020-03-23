@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of  } from 'rxjs';
+
 import { tap, map, catchError } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { isNullOrUndefined } from 'util';
 import { StatusCodes } from '../enums/common/common';
 import { AlertService } from './alert.service';
@@ -26,9 +27,9 @@ export class ApiService {
 
 
   // get API requests
-  public apiGetRequest(url: any): Observable<any> {
+  public apiGetRequest(url: any,obj?: any): Observable<any> {
     setTimeout(() => this.spinner.show());
-    return this.http.get(url, { headers: this.options, observe: 'response' })
+    return this.http.get(url, { headers: this.options, observe: 'response', params:obj })
       .pipe((tap<any>(res => {
         if (!isNullOrUndefined(res) && res.body.status === StatusCodes.fail) {
           this.alertService.openSnackBar(res.body.response, Static.Close, SnackBar.error);

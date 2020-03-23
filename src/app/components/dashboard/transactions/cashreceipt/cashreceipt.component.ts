@@ -26,7 +26,7 @@ export class CashReceiptComponent implements OnInit {
   displayedColumns: string[] = ['cashReceiptMasterId', 'cashReceiptDate', 'branchCode', 'branchName', 'fromLedgerCode',
   'fromLedgerName', 'totalAmount','voucherNo'
 ];
-
+branchCode:any;
   constructor(
     private formBuilder: FormBuilder,
     private commonService: CommonService,
@@ -46,30 +46,24 @@ export class CashReceiptComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.branchCode = JSON.parse(localStorage.getItem('user'));
+    this.search();
   }
 
-  getInvoiceList() {
-    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList);
-    // this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
-
-    const date = {
-        'fromDate':'3/7/2020 1:10:57 PM',
-          'toDate':'1/7/2020 1:10:57 PM',
-          'voucherNo':null
-      }
-    this.apiService.apiPostRequest(getInvoiceListUrl, date).subscribe(
+  getCashReceiptList() {
+    const getCashReceiptListUrl = String.Join('/', this.apiConfigService.getCashReceiptList, this.branchCode.branchCode);
+    this.apiService.apiPostRequest(getCashReceiptListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-        if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
-          this.dataSource = new MatTableDataSource( res.response['InvoiceList']);
+        if (!isNullOrUndefined(res.response['CashReceiptList']) && res.response['CashReceiptList'].length) {
+          this.dataSource = new MatTableDataSource( res.response['CashReceiptList']);
           this.dataSource.paginator = this.paginator;
           this.spinner.hide();
         }
       }
       });
   }
-
   openSale(row) {
     localStorage.setItem('selectedBill', JSON.stringify(row));
     this.router.navigate(['dashboard/transactions/cashreceipt/createCashreceipt', row.voucherNo]);
@@ -88,7 +82,7 @@ export class CashReceiptComponent implements OnInit {
         }
     }
 
-    this.getInvoiceList();
+    this.getCashReceiptList();
   }
 
   reset() {

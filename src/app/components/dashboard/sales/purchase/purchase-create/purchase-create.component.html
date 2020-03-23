@@ -37,16 +37,18 @@
                             formControlName="purchaseInvNo" appFocusOnEnter tabIndex="1">
                     </mat-form-field>
 
-
                     <mat-form-field>
-                        <mat-label>{{ 'SALESINVOICE.ledgerCode' | translate }}</mat-label>
-                        <mat-select formControlName="ledgerCode"
-                            (selectionChange)="getCashPartyAccount(); setLedgerName();">
-                            <mat-option *ngFor="let cash of getCashPartyAccountListArray" [value]="cash.id">
-                                {{ cash.id}} - {{cash.text}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                      <mat-label>{{ 'SALESINVOICE.ledgerCode' | translate }}</mat-label>
+                      <input class="typeahead" matInput
+                          placeholder="{{ 'SALESINVOICE.ledgerCode' | translate }}" formControlName="ledgerCode"
+                          (typeaheadOnSelect)="setLedgerName()" (input)="getCashPartyAccountList($event.target.value)"
+                          [typeahead]="getCashPartyAccountListArray" typeaheadOptionField='id' autocomplete="off"
+                          [typeaheadItemTemplate]="customItemTemplate" [typeaheadMinLength]="0" [minLength]="1"
+                          [typeaheadWaitMs]="200" >
+                      <ng-template #customItemTemplate let-model="item">
+                          <span><strong>{{model.id}}</strong> - {{model.text}}</span>
+                      </ng-template>
+                  </mat-form-field>
 
 
                     <mat-form-field>
@@ -102,7 +104,9 @@
                                 [disabled]="element.text != 'obj'"
                                 (typeaheadOnSelect)="getProductDeatilsSectionRcd($event)"
                                 (input)="getProductByProductCode($event.target.value)"
-                                [typeahead]="getProductByProductCodeArray" typeaheadOptionField='text'>
+                                [typeahead]="getProductByProductCodeArray" typeaheadOptionField='text'
+                                autocomplete="off"
+                                [typeaheadMinLength]="0" [minLength]="1" [typeaheadWaitMs]="200">
                         </td>
                     </ng-container>
 
@@ -112,7 +116,9 @@
                             <input class="typeAhead" [(ngModel)]="element.productName" type="search"
                                 [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setProductName($event)"
                                 (input)="getProductByProductName($event.target.value)"
-                                [typeahead]="getProductByProductNameArray" typeaheadOptionField='text'>
+                                [typeahead]="getProductByProductNameArray" typeaheadOptionField='text'
+                                autocomplete="off"
+                                [typeaheadMinLength]="0" [minLength]="1" [typeaheadWaitMs]="200">
                         </td>
                     </ng-container>
 
@@ -221,7 +227,7 @@
     </mat-card>
 
 
-      
+
     <mat-card class="mt-2">
 
         <mat-card-content class="p-2">
@@ -235,7 +241,7 @@
                         <textarea matInput formControlName="amountInWords" cdkTextareaAutosize
                             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea>
                     </mat-form-field>
-					
+
 					<mat-form-field> <mat-label>{{ 'PURCHASE.narration' | translate }}</mat-label> <textarea matInput formControlName="narration" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"></textarea> </mat-form-field>
 
                     <div class="d-flex justify-content-end">
@@ -287,12 +293,12 @@
                     </mat-slide-toggle>
                 </div>
                 <button mat-raised-button type="submit" class="button-color-bule mr-3 text-white" (click)="save()">
-                    
+
                     {{ 'COMMON.SAVE' | translate }}
                 </button>
                 <button mat-raised-button class="button-color-red text-white mr-3" [disabled]="routeUrl != ''"
                     (click)="reset();">
-                    
+
                     {{ 'COMMON.RESET' | translate }}
                 </button>
             </div>

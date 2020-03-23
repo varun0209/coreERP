@@ -346,18 +346,18 @@ export class CreateStockTransferComponent implements OnInit {
     }
     let content = '';
     let availStock = this.dataSource.data.filter(stock => {
-      // if (stock.availStock == 0) {
-      //   content = '0 Availablilty Stock';
-      //   return stock;
-      // }
-      // if (isNullOrUndefined(stock.qty) && isNullOrUndefined(stock.fQty)) {
-      //   content = 'qty or Fqty is null';
-      //   return stock;
-      // }
-      // if ((stock.qty > stock.availStock) || (stock.fQty > stock.availStock)) {
-      //   content = 'qty or Fqty cannot be greater than available stock';
-      //   return stock;
-      // }
+      if (stock.availStock == 0) {
+        content = '0 Availablilty Stock';
+        return stock;
+      }
+      if (isNullOrUndefined(stock.qty) && isNullOrUndefined(stock.fQty)) {
+        content = 'qty or Fqty is null';
+        return stock;
+      }
+      if ((stock.qty > stock.availStock) || (stock.fQty > stock.availStock)) {
+        content = 'qty or Fqty cannot be greater than available stock';
+        return stock;
+      }
     });
     if (availStock.length) {
       this.alertService.openSnackBar(`This Product(${availStock[0].productCode}) ${content}`, Static.Close, SnackBar.error);
@@ -374,11 +374,14 @@ export class CreateStockTransferComponent implements OnInit {
   }
 
   enableFileds() {
-    this.formData.controls['stockTransferNo'].disable();
+    this.formData.controls['stockTransferNo'].enable();
   }
 
-  setProductName(){
-
+  setProductName(name) {
+    this.tableFormData.patchValue({
+      productName: name.value
+    });
+    this.setToFormModel(null, null, null);
   }
 
   registerStockTransfer(data) {

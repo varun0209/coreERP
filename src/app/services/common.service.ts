@@ -73,6 +73,18 @@ export class CommonService {
   }
 
 
+formatReportDate(event) {
+  var time = new Date();
+  var date = new Date(event),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2),
+    hours = ("0" + time.getHours()).slice(-2),
+    minutes = ("0" + time.getMinutes()).slice(-2),
+    seconds = ("0" + time.getSeconds()).slice(-2);
+  return `${[date.getFullYear(), mnth,day ].join("/")} ${[hours, minutes, seconds].join(":")}`
+}
+
+
   public closeNav() {
     if (!isNullOrUndefined(this.appDrawer)) {
       this.appDrawer.close();

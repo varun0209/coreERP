@@ -9,6 +9,12 @@ import { ApiConfigService } from '../../../../services/api-config.service';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../../../services/api.service';
 import { CommonService } from '../../../../services/common.service';
+
+interface affectGrossProfit {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-undersubgroup',
   templateUrl: './undersubgroup.component.html',
@@ -22,6 +28,13 @@ export class UndersubGroupComponent  implements OnInit {
   formData: any;
   glAccgrpList:any;
   getAccSubGrpList:any;
+  glAccNameList:any;
+
+  affectGrossProfit : affectGrossProfit[]=
+  [
+    { value: 'Yes', viewValue: 'Yes' },
+    { value: 'No', viewValue: 'No' }
+  ];
 
   constructor(
     private alertService: AlertService,
@@ -35,27 +48,29 @@ export class UndersubGroupComponent  implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
       this.modelFormData  =  this.formBuilder.group({
-        underSubGroupCode: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-        groupName: [null, [Validators.required]],
-        underSubGroupName: [null,[Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-        numberRange: [null],
-        active: [null],
-        ext1: [null],
-        ext2: [null],
-        subGroupName: [null, [Validators.required]]
+        accountGroupId: 0,
+        accountGroupName: [null, [Validators.required]],
+        nature: [null, [Validators.required]],
+        narration: [null],
+        affectGrossProfit: [null],
+        extraDate: [null],
+        extra1: [null],
+        extra2:[null],
+        groupUnder:[null, [Validators.required]]
       });
 
 
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['underSubGroupCode'].disable();
+       this.modelFormData.controls['accountGroupId'].disable();
       }
 
   }
 
   ngOnInit() {
 this.getglAccgrpList();
+this.getAccountNamelist();
   }
 
   getglAccgrpList() {
@@ -68,6 +83,22 @@ this.getglAccgrpList();
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
             this.glAccgrpList = res.response['GLAccGroupList'];
+          }
+        }
+        this.spinner.hide();
+      });
+  }
+
+  getAccountNamelist() {
+    const getAccountNamelist = String.Join('/', this.apiConfigService.getAccountNamelist);
+    this.apiService.apiGetRequest(getAccountNamelist)
+      .subscribe(
+        response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            console.log(res);
+            this.glAccNameList = res.response['GetAccountNamelist'];
           }
         }
         this.spinner.hide();
@@ -100,7 +131,7 @@ this.getglAccgrpList();
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['underSubGroupCode'].enable();
+    this.modelFormData.controls['accountGroupId'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

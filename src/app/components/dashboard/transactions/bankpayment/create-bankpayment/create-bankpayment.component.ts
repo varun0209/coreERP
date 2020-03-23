@@ -32,8 +32,9 @@ export class CreateBankpaymentComponent implements OnInit {
   branchesList = [];
   getmemberNamesArray=[];
   GetBPAccountLedgerListArray=[];
+  GetBankPAccountLedgerListArray=[];
 
-  displayedColumns: string[] = ['accountCode', 'accountName', 'amount', 'delete'
+  displayedColumns: string[] = ['SlNo','toLedgerCode', 'toLedgerName', 'amount', 'delete'
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -66,14 +67,22 @@ export class CreateBankpaymentComponent implements OnInit {
       userName: [null],
       employeeId: [null],
       totalAmount: [null],
-      amountInWords: [null],
+      narration: [null],
       printBill: [false],
+      realized:[null],
+      postingDate:[null],
+      chequeNo:[null],
+      bankLedgerCode:[null]
     });
 
   }
 
   ngOnInit() {
-    this.formGroup();
+    this.loadData();
+  }
+  loadData() {
+    this.getBankPaymentBranchesList();
+    this.getBankPAccountLedgerList();
     this.activatedRoute.params.subscribe(params => {
       console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
@@ -88,17 +97,17 @@ export class CreateBankpaymentComponent implements OnInit {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
-            voucherNo: user.branchCode,
+            branchCode: user.branchCode,
+            userId: user.seqId,
+            userName: user.userName
           });
+          this.setBranchCode();
           this.genarateVoucherNo(user.branchCode);
+          this.formGroup();
         }
-        this.getBankPaymentBranchesList();
-        this.getBPAccountLedgerList();
-        this.addTableRow();
       }
     });
   }
-
   getInvoiceDeatilList(id) {
     const getInvoiceDeatilListUrl = String.Join('/', this.apiConfigService.getInvoiceDeatilList, id);
     this.apiService.apiGetRequest(getInvoiceDeatilListUrl).subscribe(
@@ -121,12 +130,12 @@ export class CreateBankpaymentComponent implements OnInit {
       this.branchFormData.controls['branchCode'].disable();
       this.branchFormData.controls['cashPaymentDate'].disable();
       this.branchFormData.controls['ledgerName'].disable();
-      this.branchFormData.controls['amountInWords'].disable();
+      this.branchFormData.controls['narration'].disable();
       this.branchFormData.controls['suppliedTo'].disable();
     }
 
-    this.branchFormData.controls['voucherNo'].disable();
-    this.branchFormData.controls['totalAmount'].disable();
+    // this.branchFormData.controls['voucherNo'].disable();
+    // this.branchFormData.controls['totalAmount'].disable();
   }
 
 
@@ -162,6 +171,22 @@ export class CreateBankpaymentComponent implements OnInit {
       });
   }
 
+  getBankPAccountLedgerList() {
+    const getBankPAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBankPAccountLedgerList);
+    this.apiService.apiGetRequest(getBankPAccountLedgerListUrl).subscribe(
+      response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response)) {
+            if (!isNullOrUndefined(res.response['AccountLedgerList']) && res.response['AccountLedgerList'].length) {
+              this.GetBankPAccountLedgerListArray = res.response['AccountLedgerList'];
+              this.spinner.hide();
+            }
+          }
+        }
+      });
+  }
+
   genarateVoucherNo(branch?) {
     let genarateVoucherNoUrl;
     if (!isNullOrUndefined(branch)) {
@@ -185,6 +210,19 @@ export class CreateBankpaymentComponent implements OnInit {
       });
   }
 
+  setBranchCode() {
+    const bname = this.GetBranchesListArray.filter(branchCode => {
+      if (branchCode.id == this.branchFormData.get('branchCode').value) {
+        return branchCode;
+      }
+    });
+    if (bname.length) {
+      this.branchFormData.patchValue({
+        branchName: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+      });
+    }
+  }
+
   private filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.getmemberNamesArray.filter(option => option.text.toLowerCase().includes(filterValue));
@@ -192,7 +230,7 @@ export class CreateBankpaymentComponent implements OnInit {
   
   addTableRow() {
     const tableObj = {
-      accountCode: '', accountName: '', totalAmount: '', delete: '', text: 'obj'
+      toLedgerCode: '', toLedgerName: '', amount: '', delete: '', text: 'obj'
     };
     if (!isNullOrUndefined(this.dataSource)) {
       this.dataSource.data.push(tableObj);
@@ -210,8 +248,8 @@ export class CreateBankpaymentComponent implements OnInit {
       shiftId: [null],
       userId: [null],
       employeeId: [null],
-      accountCode: [null, [Validators.required]],
-      accountName: [null, [Validators.required]],
+      toLedgerCode: [null, [Validators.required]],
+      toLedgerName: [null, [Validators.required]],
       amount: [null],
     });
   }
@@ -284,11 +322,11 @@ export class CreateBankpaymentComponent implements OnInit {
     for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
       if (this.getAccountLedgerListArray[t]['id'] == value.value) {
         for (let d = 0; d < this.dataSource.data.length; d++) {
-          if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-            this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+          if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+            this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
             this.tableFormData.patchValue({
-              accountCode : this.getAccountLedgerListArray[t].id,
-              accountName : this.getAccountLedgerListArray[t].text
+              toLedgerCode : this.getAccountLedgerListArray[t].id,
+              toLedgerName : this.getAccountLedgerListArray[t].text
             });
             flag = false;
             break;
@@ -297,15 +335,15 @@ export class CreateBankpaymentComponent implements OnInit {
       }
     }
     if(flag) {
-        this.dataSource.data[this.dataSource.data.length - 1].accountCode = value.value;
+        this.dataSource.data[this.dataSource.data.length - 1].toLedgerCode = value.value;
         for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
           if (this.getAccountLedgerListArray[t]['id'] == value.value) {
             for (let d = 0; d < this.dataSource.data.length; d++) {
-              if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-                this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+              if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+                this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
                 this.tableFormData.patchValue({
-                  accountCode : this.getAccountLedgerListArray[t].id,
-                          accountName : this.getAccountLedgerListArray[t].text
+                  toLedgerCode : this.getAccountLedgerListArray[t].id,
+                  toLedgerName : this.getAccountLedgerListArray[t].text
                         });
                 break;
               }
@@ -331,7 +369,7 @@ export class CreateBankpaymentComponent implements OnInit {
 
     console.log(this.branchFormData, this.dataSource.data);
 
-    this.registerCashPayment();
+    this.registerBankPayment();
   }
 
   reset() {
@@ -341,10 +379,10 @@ export class CreateBankpaymentComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  registerCashPayment() {
-    const registerCashPaymentUrl = String.Join('/', this.apiConfigService.registerCashPayment);
-    const requestObj = { CashpaymentHdr: this.branchFormData, CashpaymentDetail: this.dataSource.data };
-    this.apiService.apiPostRequest(registerCashPaymentUrl, requestObj).subscribe(
+  registerBankPayment() {
+    const registerBankPaymentUrl = String.Join('/', this.apiConfigService.registerBankPayment);
+    const requestObj = { BankpaymentHdr: this.branchFormData.value, BankpaymentDetail: this.dataSource.data };
+    this.apiService.apiPostRequest(registerBankPaymentUrl, requestObj).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {

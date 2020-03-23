@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, ViewEncapsulation, AfterViewInit, OnInit, Input } from '@angular/core';
+import {Component, ViewChild, ElementRef, ViewEncapsulation, AfterViewInit, OnInit, Input} from '@angular/core';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../services/api.service';
 import { CommonService } from '../../services/common.service';
@@ -13,7 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class DashboardComponent implements OnInit, AfterViewInit {
 
 
-  @ViewChild('appDrawer', { static: false }) appDrawer: ElementRef;
+  @ViewChild('appDrawer', {static: false}) appDrawer: ElementRef;
   navItems = [
     {
       displayName: 'Master',
@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'subgroup'
         },
         {
-          displayName: 'UnderSubgroup',
+          displayName: 'GL',
           iconName: 'group',
           route: 'undersubgroup'
         },
@@ -388,6 +388,41 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           displayName: 'Bank Payment',
           iconName: 'account_balance',
           route: 'bankpayment'
+        },
+        {
+          displayName: 'Bank Receipt',
+          iconName: 'account_balance',
+          route: 'bankreceipt'
+        },
+        {
+          displayName: 'Journal Voucher',
+          iconName: 'account_balance',
+          route: 'journalvoucher'
+        },
+	  {
+          displayName: 'Stock Issues',
+          iconName: 'account_balance',
+          route: 'stockissues'
+        },
+        {
+          displayName: 'Stock Receipt',
+          iconName: 'account_balance',
+          route: 'stockreceipt'
+        },
+        {
+          displayName: 'Stock Short',
+          iconName: 'account_balance',
+          route: 'stockshort'
+        },
+        {
+          displayName: 'oil  Conversion',
+          iconName: 'account_balance',
+          route: 'oilconversion'
+        },
+        {
+          displayName: 'Bank Payment',
+          iconName: 'account_balance',
+          route: 'bankpayment'
         }
       ]
     },
@@ -403,6 +438,88 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       ]
     },
+    {
+      displayName: 'Reports',
+      iconName: 'recent_actors',
+      route: 'reports',
+      children: [
+        // {
+        //   displayName: 'Bonus',
+        //   iconName: 'account_balance',
+        //   route: 'bonus'
+        // },
+        // {
+        //   displayName:'Member Master',
+        //   iconName:'account_balance',
+        //   route:'membermaster'
+        // },
+        // {
+        //   displayName:"Employee Register",
+        //   iconName:'account_balance',
+        //   route:'employeeregister'
+        // },
+        {
+          displayName:"Account Ledger",
+          iconName:'account_balance',
+          route:'AccountLedger'
+        },
+        {
+          displayName:"24Hrs Sale Value",
+          iconName:'monetization_on',
+          route:'24HrsSaleValue'
+        },
+        {
+          displayName:"24Hrs sales stock",
+          iconName:"timeline",
+          route:"24HrsSalesStock"
+        },
+        {
+          displayName:"Shift Reports",
+          iconName:'schedule',
+          route:'Shift'
+        },
+        {
+          displayName:"Vehical Report",
+          iconName:'commute',
+          route:'Vehical'
+        },
+        {
+          displayName:"Intimate Sale Report",
+          iconName:"euro_symbol",
+          route:"Intimate Sale"
+        },
+        // {
+        //   displayName:"Sales GST Report",
+        //   iconName:"account_balance",
+        //   route:"Sales GST"
+        // },
+        // {
+        //   displayName:"Daily Sales Report",
+        //   iconName:"account_balance",
+        //   route:"Daily Sales"
+        // },
+        {
+          displayName:"Stock Verification Report",
+          iconName:"ev_station",
+          route:"Stock Verification"
+        },
+        {
+          displayName:"Stock Ledger For All Products",
+          iconName:"track_changes",
+          route:"Stock Ledger"
+        },
+        {
+          displayName:"Sales analysis by branch",
+          iconName:"score",
+          route:"Sales analysis by branch"
+        },
+        {
+          displayName:"Product Wise Monthly Purchase",
+          iconName:"category",
+          route:"Product Wise Monthly Purchase"
+        }
+      ]
+    }
   ];
 
   constructor(

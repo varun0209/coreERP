@@ -5,6 +5,10 @@
   overflow-x: unset;
 }
 
+::ng-deep typeahead-container {
+  max-height: 300px !important;
+}
+
 :host ::ng-deep table {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   & > thead {

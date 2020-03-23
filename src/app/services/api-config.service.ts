@@ -30,6 +30,7 @@ export class ApiConfigService {
    registerInvoice = `${this.environment.runtimeConfig.serverUrl}sales/Billing/RegisterInvoice`;
    getStateList = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GeStateList`;
    getSelectedState = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GeSelectedState`;
+   getVechiels = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetVechiels`;
    getInvoiceDeatilList = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetInvoiceDeatilList`;
    getPupms = `${this.environment.runtimeConfig.serverUrl}sales/Billing/GetPupms`;
    generateSalesReturnInvNo = `${this.environment.runtimeConfig.serverUrl}transaction/SalesReturn/GenerateSalesReturnInvNo`;
@@ -52,45 +53,92 @@ export class ApiConfigService {
    registerPurchase = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/RegisterPurchase`;
    getPurchaseInvoiceList = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetInvoiceList`;
    getPurchaseInvoiceDeatilList = `${this.environment.runtimeConfig.serverUrl}Purchase/purchases/GetInvoiceDeatilList`;
-   
+
    // *******************************   Transaction *****************************************
 
    // Cash Payment
-   getCashPaymentList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetCashPaymentList`;
-   // getCashPaymentBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetBranchesList`;
-   getCashPaymentBranchesList = '${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetBranchesList';
+   getCashPaymentList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetCashpaymentList`;
+   getCashPaymentBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetBranchesList`;
    getCashPaymentVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetVoucherNo`;
-   // getAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetAccountLedgerList`;
    getAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetAccountLedgerList`;
-   // registerCashPayment = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/RegisterCashPayment`;
    registerCashPayment = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/RegisterCashPayment`;
+   getCashPaymentDetailsList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetCashPaymentDetailsList`;
 
 
    // Cash Receipt
-   getCashReceiptList = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetCashReceiptList`;
+   getCashReceiptList = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetCashreceiptList`;
    getCashReceiptBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetBranchesList`;
-   //  getCashReceiptBranchesList = 'http://localhost:51414/api/transactions/CashReceipt/GetBranchesList'; 
    getCashReceiptVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetVoucherNo`;
-   // getCashReceiptVoucherNo= '${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetVoucherNo';
    // // getAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetAccountLedgerList`;
-   getCashRAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetAccountLedgerList`;
-   // // registerCashPayment = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/RegisterCashPayment`;
+   // getCashRAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetAccountLedgerList`;
+   getCashRAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/GetAccountLedgerList`;
+   registerCashReceipt = `${this.environment.runtimeConfig.serverUrl}transactions/CashReceipt/RegisterCashReceipt`;
    // registerCashPayment = `http://localhost:51414/api/transactions/CashPayment/RegisterCashPayment`;
 
    // Bank Payment
-   //getCashPaymentList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetCashPaymentList`;
+   getBankpaymentList = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetBankpaymentList`;
    getBankPaymentBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetBranchesList`;
-   // getBankPaymentBranchesList = '${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetBranchesList';
-   //getCashPaymentVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetVoucherNo`;
    getBankPaymentVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetVoucherNo`;
-   // getAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/GetAccountLedgerList`;
    getBPAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetAccountLedgerList`;
-   // registerCashPayment = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/RegisterCashPayment`;
+   getBankPAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/GetAccountLedger`;
+   registerBankPayment = `${this.environment.runtimeConfig.serverUrl}transactions/BankPayment/RegisterBankPayment`;
    //registerCashPayment = `http://localhost:51414/api/transactions/CashPayment/RegisterCashPayment`;
 
+   // Bank Receipt
+   getBankreceiptList = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/GetBankreceiptList`;
+   getBankReceiptBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/GetBranchesList`;
+   getBankReceiptVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/GetVoucherNo`;
+   getBRAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/GetAccountLedgerList`;
+   getBankRAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/GetAccountLedger`;
+   registerBankReceipt = `${this.environment.runtimeConfig.serverUrl}transactions/BankReceipt/RegisterBankReceipt`;
+   //registerCashPayment = `http://localhost:51414/api/transactions/CashPayment/RegisterCashPayment`;
+
+   // Journal Voucher
+   getJournalvoucherList = `${this.environment.runtimeConfig.serverUrl}transactions/JournalVoucher/GetJournalvoucherList`;
+   getJournalVoucherBranchesList = `${this.environment.runtimeConfig.serverUrl}transactions/JournalVoucher/GetBranchesList`;
+   getJournalVoucherNo = `${this.environment.runtimeConfig.serverUrl}transactions/JournalVoucher/GetVoucherNo`;
+   getJournalVoucherAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/JournalVoucher/GetAccountLedgerList`;
+   getJVAccountLedgerList = `${this.environment.runtimeConfig.serverUrl}transactions/JournalVoucher/GetAccountLedger`;
+   //registerCashPayment = `http://localhost:51414/api/transactions/CashPayment/RegisterCashPayment`;
+   // registerCashPayment = `${this.environment.runtimeConfig.serverUrl}transactions/CashPayment/RegisterCashPayment`;
+
+  //Stockissues
+  getStockissuesList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetStockissuesList`;
+  getStockissuesnosList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetStackissueNo`;
+  gettingtobranchesList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GettobranchesList`;
+  registerStockissues = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/RegisterStockissues`;
+  GetProductLists = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetProductLists`;
+  GetBranchesList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetBranchesList`;
+  getStockissuesDeatilList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetStockissuesDeatilList`;
+  GetToBranchesList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockissues/GetToBranchesList`;
+
+   //Stockreceipts
+
+  getStockreceiptsList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GetStockreceiptsList`;
+  getStockissuesreceiptnosList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GetReceiptNo`;
+  GetProductListsforStockreceipts = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GetProductLists`;
+  registerStockreceipts = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/RegisterStockreceipts`;
+  gettingtobranchesListforstockreceipt = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GettobranchesList`;
+  getStockreceiptDeatilList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GetStockreceiptDeatilList`;
+  GetToBranchesStockreceiptsList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockreceipt/GetToBranchesList`;
+
+  //Stockshorts
+  GetCostCentersList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/GetCostCentersList`;
+  getstockshortvochernosList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/GetstockshortVoucherNo`;
+  GetProductListsforStockshortsList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/GetProductLists`;
+  registerStockshorts =`${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/RegisterStockshort`;
+  getStockshortList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/GetStockshortsList`;
+  getStockshortsDeatilList = `${this.environment.runtimeConfig.serverUrl}Transactions/Stockshort/GetStockshortsDeatilList`;
+
+  //oilconversion
+  getOilconversionList = `${this.environment.runtimeConfig.serverUrl}Transactions/Oilconversion/GetOilconversionList`;
+  getoilconversionvocherNo = `${this.environment.runtimeConfig.serverUrl}Transactions/Oilconversion/GetoilconversionVoucherNo`;
+  GetProductListsforoilconversionList = `${this.environment.runtimeConfig.serverUrl}Transactions/Oilconversion/GetProductLists`;
+  registerOilconversion = `${this.environment.runtimeConfig.serverUrl}Transactions/Oilconversion/RegisterOilconversion`;
+  getOilconversionDeatilList = `${this.environment.runtimeConfig.serverUrl}Transactions/Oilconversion/GetOilconversionsDeatilList`;
 
    // *******************************  End Transaction *****************************************
-   
+
 
    // ******************************** GeneralLedger *********************************
 
@@ -108,10 +156,11 @@ export class ApiConfigService {
    getAccgrpList = `${this.environment.runtimeConfig.serverUrl}gl/GLAccSubGroup/GetGLAccountGroupList`;
 
    // UnderSubGroup //
-   getGLUnderSubGroupList = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/GetGLUnderSubGroupList`;
-   registerGLUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/RegisterGlaccUnderSubGroup`;
-   updateGLAccUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/UpdateGLAccUnderSubGroup`;
-   deleteGLAccUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/DeleteGLAccUnderSubGroup`;
+   getGLUnderSubGroupList = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/GetTblAccountGroupList`;
+   getAccountNamelist = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/GetAccountNamelist`;
+   registerGLUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/RegisterTblAccGroup`;
+   updateGLAccUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/UpdateTblAccountGroup`;
+   deleteGLAccUnderSubGroup = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/DeleteTblAccountGroup`;
    getglAccgrpList = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/GetGLAccountGrouplist`;
    getAccountSubGrouplist = `${this.environment.runtimeConfig.serverUrl}gl/GLAccUnderSubGroup/GetAccountSubGrouplist`;
 
@@ -416,6 +465,39 @@ export class ApiConfigService {
    getLeaveApplDetailsList = `${this.environment.runtimeConfig.serverUrl}Selfservice/LeaveApproval/GetLeaveApplDetailsList`;
    // ******************************* End  master *****************************************
 
+
+ //Reports
+   getMemberMaster = `${this.environment.runtimeConfig.serverUrl}Reports/MemberMasterReport/GetMemberMasterReportData`;
+
+   getEmployeeRegister = `${this.environment.runtimeConfig.serverUrl}Reports/EmployeeRegisterReport/GetEmployeeRegisterReportData`;
+
+   getAccountLedger = `${this.environment.runtimeConfig.serverUrl}Reports/AccountLedgerReport/GetAccountLedgerReportData`;
+   getAccountLedgersList=`${this.environment.runtimeConfig.serverUrl}Reports/AccountLedgerReport/GetAccountLedgersList`;
+
+   getSaleValueReport = `${this.environment.runtimeConfig.serverUrl}Reports/SaleValueReport/GetSaleValueReportData`;
+   getReportBranchList=`${this.environment.runtimeConfig.serverUrl}Reports/SaleValueReport/GetReportBranchList`;
+
+   getDefaultShiftReport=`${this.environment.runtimeConfig.serverUrl}Reports/ShiftViewReport/GetDefaultShiftReportDataTableList`
+   getShiftViewReport = `${this.environment.runtimeConfig.serverUrl}Reports/ShiftViewReport/GetShiftViewReportList`;
+
+   getVehicalReport=`${this.environment.runtimeConfig.serverUrl}Reports/VehicalReport/GetVehicalReportData`;
+
+   getIntimateSaleReport=`${this.environment.runtimeConfig.serverUrl}Reports/IntimateSaleReport/GetIntimateSaleReportData`;
+
+   getSalesGSTReport=`${this.environment.runtimeConfig.serverUrl}Reports/SalesGSTReport/GetSalesGSTReportData`;
+
+   getDailySalesReport=`${this.environment.runtimeConfig.serverUrl}Reports/DailySalesReport/GetDailySalesReportData`;
+
+   getStockVerificationReport=`${this.environment.runtimeConfig.serverUrl}Reports/StockVerificationReport/GetStockVerificationReportData`;
+
+   getStockLedgerForAllProducts=`${this.environment.runtimeConfig.serverUrl}Reports/StockLedgerReport/GetStockLedgerReportData`;
+   getStockProducts=`${this.environment.runtimeConfig.serverUrl}Reports/StockLedgerReport/GetProductList`;
+
+   getSalesAnalysisByBranch=`${this.environment.runtimeConfig.serverUrl}Reports/SalesAnalysisByBranch/GetSalesAnalysisByBranchrReportData`;
+
+   getTwoFourehrsSalesStockReport=`${this.environment.runtimeConfig.serverUrl}Reports/TwoFourehrsSalesStockReport/Get24hrsSalesStockReportData`;
+
+   getProductWiseMonthlyPurchaseReport=`${this.environment.runtimeConfig.serverUrl}Reports/ProductWiseMonthlyPurchaseReport/GetProductWiseMonthlyPurchaseReportData`;
 
 }
 

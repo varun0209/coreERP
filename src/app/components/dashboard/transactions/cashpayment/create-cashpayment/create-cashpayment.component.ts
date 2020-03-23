@@ -32,7 +32,7 @@ export class CreateCashpaymentComponent implements OnInit {
   branchesList = [];
   getmemberNamesArray=[];
 
-  displayedColumns: string[] = ['accountCode', 'accountName', 'amount', 'delete'
+  displayedColumns: string[] = ['SlNo','toLedgerCode', 'toLedgerName', 'amount', 'delete'
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -65,31 +65,61 @@ export class CreateCashpaymentComponent implements OnInit {
       userName: [null],
       employeeId: [null],
       totalAmount: [null],
-      amountInWords: [null],
+      narration: [null],
       printBill: [false],
     });
 
   }
 
   ngOnInit() {
-    this.formGroup();
+    this.loadData();
+    // this.formGroup();
+    // this.activatedRoute.params.subscribe(params => {
+    //   console.log(params.id1);
+    //   if (!isNullOrUndefined(params.id1)) {
+    //     this.routeUrl = params.id1;
+    //     this.disableForm(params.id1);
+    //     this.getInvoiceDeatilList(params.id1);
+    //     let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
+    //     this.branchFormData.setValue(billHeader);
+    //     console.log(billHeader);
+    //   } else {
+    //     this.disableForm();
+    //     const user = JSON.parse(localStorage.getItem('user'));
+    //     if (!isNullOrUndefined(user.branchCode)) {
+    //       this.branchFormData.patchValue({
+    //         voucherNo: user.branchCode,
+    //       });
+    //       this.genarateVoucherNo(user.branchCode);
+    //     }
+    //     this.setBranchCode();
+    //     this.getCashPaymentBranchesList();
+    //     this.addTableRow();
+    //   }
+    // });
+  }
+
+  loadData() {
+    
     this.activatedRoute.params.subscribe(params => {
-      console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         this.disableForm(params.id1);
-        this.getInvoiceDeatilList(params.id1);
-        let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
+        this.getCashPaymentDetailsList(params.id1);
+        const billHeader = JSON.parse(localStorage.getItem('selectedBill'));
         this.branchFormData.setValue(billHeader);
-        console.log(billHeader);
       } else {
         this.disableForm();
         const user = JSON.parse(localStorage.getItem('user'));
         if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
-            voucherNo: user.branchCode,
+            branchCode: user.branchCode,
+            userId: user.seqId,
+            userName: user.userName
           });
+          this.setBranchCode();
           this.genarateVoucherNo(user.branchCode);
+          this.formGroup();
         }
         this.getCashPaymentBranchesList();
         this.addTableRow();
@@ -97,15 +127,14 @@ export class CreateCashpaymentComponent implements OnInit {
     });
   }
 
-  getInvoiceDeatilList(id) {
-    const getInvoiceDeatilListUrl = String.Join('/', this.apiConfigService.getInvoiceDeatilList, id);
-    this.apiService.apiGetRequest(getInvoiceDeatilListUrl).subscribe(
+  getCashPaymentDetailsList(id) {
+    const getCashPaymentDetailsListUrl = String.Join('/', this.apiConfigService.getCashPaymentDetailsList, id);
+    this.apiService.apiGetRequest(getCashPaymentDetailsListUrl).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response['InvoiceDetailList']) && res.response['InvoiceDetailList'].length) {
-            this.dataSource = new MatTableDataSource(res.response['InvoiceDetailList']);
-            this.dataSource.paginator = this.paginator;
+          if (!isNullOrUndefined(res.response['CashpaymentDetails']) && res.response['CashpaymentDetails'].length) {
+            this.dataSource = new MatTableDataSource(res.response['CashpaymentDetails']);
             this.spinner.hide();
           }
         }
@@ -115,15 +144,15 @@ export class CreateCashpaymentComponent implements OnInit {
   disableForm(route?) {
     if (!isNullOrUndefined(route)) {
       this.branchFormData.controls['voucherNo'].disable();
-      this.branchFormData.controls['ledgerCode'].disable();
+      //this.branchFormData.controls['ledgerCode'].disable();
       this.branchFormData.controls['branchCode'].disable();
       this.branchFormData.controls['cashPaymentDate'].disable();
-      this.branchFormData.controls['ledgerName'].disable();
-      this.branchFormData.controls['amountInWords'].disable();
-      this.branchFormData.controls['suppliedTo'].disable();
+      //this.branchFormData.controls['ledgerName'].disable();
+      this.branchFormData.controls['narration'].disable();
+      //this.branchFormData.controls['suppliedTo'].disable();
     }
 
-    // this.branchFormData.controls['voucherNo'].disable();
+    //this.branchFormData.controls['voucherNo'].disable();
     // this.branchFormData.controls['totalAmount'].disable();
   }
 
@@ -167,6 +196,18 @@ export class CreateCashpaymentComponent implements OnInit {
       });
   }
 
+  setBranchCode() {
+    const bname = this.GetBranchesListArray.filter(branchCode => {
+      if (branchCode.id == this.branchFormData.get('branchCode').value) {
+        return branchCode;
+      }
+    });
+    if (bname.length) {
+      this.branchFormData.patchValue({
+        branchName: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+      });
+    }
+  }
   private filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.getmemberNamesArray.filter(option => option.text.toLowerCase().includes(filterValue));
@@ -174,7 +215,7 @@ export class CreateCashpaymentComponent implements OnInit {
   
   addTableRow() {
     const tableObj = {
-      accountCode: '', accountName: '', totalAmount: '', delete: '', text: 'obj'
+      toLedgerCode: '', toLedgerName: '', amount: '', delete: '', text: 'obj'
     };
     if (!isNullOrUndefined(this.dataSource)) {
       this.dataSource.data.push(tableObj);
@@ -192,8 +233,8 @@ export class CreateCashpaymentComponent implements OnInit {
       shiftId: [null],
       userId: [null],
       employeeId: [null],
-      accountCode: [null, [Validators.required]],
-      accountName: [null, [Validators.required]],
+      toLedgerCode: [null, [Validators.required]],
+      toLedgerName: [null, [Validators.required]],
       amount: [null],
     });
   }
@@ -259,6 +300,7 @@ export class CreateCashpaymentComponent implements OnInit {
     this.branchFormData.patchValue({
       totalAmount : amount
     });
+  
   }
 
   setAccountName(value) {
@@ -266,11 +308,11 @@ export class CreateCashpaymentComponent implements OnInit {
     for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
       if (this.getAccountLedgerListArray[t]['id'] == value.value) {
         for (let d = 0; d < this.dataSource.data.length; d++) {
-          if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-            this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+          if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+            this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
             this.tableFormData.patchValue({
-              accountCode : this.getAccountLedgerListArray[t].id,
-              accountName : this.getAccountLedgerListArray[t].text
+              toLedgerCode : this.getAccountLedgerListArray[t].id,
+              toLedgerName : this.getAccountLedgerListArray[t].text
             });
             flag = false;
             break;
@@ -279,15 +321,15 @@ export class CreateCashpaymentComponent implements OnInit {
       }
     }
     if(flag) {
-        this.dataSource.data[this.dataSource.data.length - 1].accountCode = value.value;
+        this.dataSource.data[this.dataSource.data.length - 1].toLedgerCode = value.value;
         for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
           if (this.getAccountLedgerListArray[t]['id'] == value.value) {
             for (let d = 0; d < this.dataSource.data.length; d++) {
-              if (this.dataSource.data[d]['accountCode'] == this.getAccountLedgerListArray[t]['id']) {
-                this.dataSource.data[d]['accountName'] = this.getAccountLedgerListArray[t]['text'];
+              if (this.dataSource.data[d]['toLedgerCode'] == this.getAccountLedgerListArray[t]['id']) {
+                this.dataSource.data[d]['toLedgerName'] = this.getAccountLedgerListArray[t]['text'];
                 this.tableFormData.patchValue({
-                  accountCode : this.getAccountLedgerListArray[t].id,
-                          accountName : this.getAccountLedgerListArray[t].text
+                  toLedgerCode : this.getAccountLedgerListArray[t].id,
+                  toLedgerName : this.getAccountLedgerListArray[t].text
                         });
                 break;
               }
@@ -310,7 +352,7 @@ export class CreateCashpaymentComponent implements OnInit {
     this.dataSource.data.forEach(element => {
       totalAmount = element.amount + totalAmount;
     });
-
+  
     console.log(this.branchFormData, this.dataSource.data);
 
     this.registerCashPayment();
@@ -325,7 +367,7 @@ export class CreateCashpaymentComponent implements OnInit {
 
   registerCashPayment() {
     const registerCashPaymentUrl = String.Join('/', this.apiConfigService.registerCashPayment);
-    const requestObj = { CashpaymentHdr: this.branchFormData, CashpaymentDetail: this.dataSource.data };
+    const requestObj = { CashpaymentHdr: this.branchFormData.value, CashpaymentDetail: this.dataSource.data };
     this.apiService.apiPostRequest(registerCashPaymentUrl, requestObj).subscribe(
       response => {
         const res = response.body;
@@ -333,6 +375,8 @@ export class CreateCashpaymentComponent implements OnInit {
           if (!isNullOrUndefined(res.response)) {
             this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
           }
+          this.reset();
+          this.spinner.hide();
         }
       });
   }

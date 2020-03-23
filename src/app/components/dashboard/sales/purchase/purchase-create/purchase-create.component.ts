@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+const numberToWords = require('number-to-words');
 
 @Component({
   selector: 'app-purchase-create',
@@ -27,7 +28,6 @@ export class PurchaseCreateComponent implements OnInit {
   getCashPartyAccountListArray = [];
   myControl = new FormControl();
   filteredOptions: Observable<any[]>;
-  getmemberNamesArray = [];
   getStateListArray = [];
   getProductByProductCodeArray = [];
   getProductByProductNameArray = [];
@@ -108,7 +108,7 @@ export class PurchaseCreateComponent implements OnInit {
 
   loadData() {
     this.GetBranchesList();
-    this.getCashPartyAccountList();
+    this.getCashPartyAccountList('100');
     this.getStateList();
     this.activatedRoute.params.subscribe(params => {
       if (!isNullOrUndefined(params.id1)) {
@@ -159,7 +159,6 @@ export class PurchaseCreateComponent implements OnInit {
       this.branchFormData.controls['stateCode'].disable();
       this.branchFormData.controls['supplierInvNo'].disable();
       this.branchFormData.controls['gstin'].disable();
-      this.branchFormData.controls['amountInWords'].disable();
       this.branchFormData.controls['narration'].disable();
     }
     this.branchFormData.controls['paymentMode'].disable();
@@ -170,6 +169,7 @@ export class PurchaseCreateComponent implements OnInit {
     this.branchFormData.controls['totalCgst'].disable();
     this.branchFormData.controls['totalSgst'].disable();
     this.branchFormData.controls['totalIgst'].disable();
+    this.branchFormData.controls['amountInWords'].disable();
   }
 
 
@@ -189,24 +189,30 @@ export class PurchaseCreateComponent implements OnInit {
       });
   }
 
-  getCashPartyAccountList() {
-    const getCashPartyAccountListUrl = String.Join('/', this.apiConfigService.getCashPartyAccountList);
-    this.apiService.apiGetRequest(getCashPartyAccountListUrl).subscribe(
-      response => {
-        const res = response.body;
-        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response)) {
-            if (!isNullOrUndefined(res.response['CashPartyAccountList']) && res.response['CashPartyAccountList'].length) {
-              this.getCashPartyAccountListArray = res.response['CashPartyAccountList'];
-              this.branchFormData.patchValue({
-                ledgerCode: "100"
-              });
-              this.getCashPartyAccount();
-              this.spinner.hide();
+  getCashPartyAccountList(value) {
+    if (!isNullOrUndefined(value) && value != '') {
+      const getCashPartyAccountListUrl = String.Join('/', this.apiConfigService.getCashPartyAccountList, value);
+      this.apiService.apiGetRequest(getCashPartyAccountListUrl).subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              if (!isNullOrUndefined(res.response['CashPartyAccountList']) && res.response['CashPartyAccountList'].length) {
+                this.getCashPartyAccountListArray = res.response['CashPartyAccountList'];
+                this.branchFormData.patchValue({
+                  ledgerCode: "100"
+                });
+                this.getCashPartyAccount();
+              } else {
+                this.getCashPartyAccountListArray = [];
+              }
             }
+            this.spinner.hide();
           }
-        }
-      });
+        });
+    } else {
+      this.getCashPartyAccountListArray = [];
+    }
   }
 
   genarateBillNo(branch?) {
@@ -322,7 +328,7 @@ export class PurchaseCreateComponent implements OnInit {
       });
   }
 
- 
+
 
 
 
@@ -458,15 +464,17 @@ export class PurchaseCreateComponent implements OnInit {
       grandTotal: (this.branchFormData.get('totalAmount').value + this.branchFormData.get('totaltaxAmount').value),
       totalCgst: (this.taxPercentage) ? (totalTax / 2) : null,
       totalSgst: (this.taxPercentage) ? (totalTax / 2) : null,
-      totalIgst: (!this.taxPercentage) ? (totalTax) : null,
+      totalIgst: (this.taxPercentage) ? (totalTax) : null,
     })
-
+    this.branchFormData.patchValue({
+      amountInWords: numberToWords.toWordsOrdinal(this.branchFormData.get('grandTotal').value),
+    });
   }
 
   getProductDeatilsSectionRcd(productCode) {
     if (!isNullOrUndefined(this.branchFormData.get('branchCode').value) && this.branchFormData.get('branchCode').value != '' &&
       !isNullOrUndefined(productCode.value) && productCode.value != '') {
-      const getProductDeatilsSectionRcdUrl = String.Join('/', this.apiConfigService.getProductDeatilsSectionRcd, 
+      const getProductDeatilsSectionRcdUrl = String.Join('/', this.apiConfigService.getProductDeatilsSectionRcd,
         this.branchFormData.get('branchCode').value, productCode.value);
       this.apiService.apiGetRequest(getProductDeatilsSectionRcdUrl).subscribe(
         response => {
@@ -559,14 +567,15 @@ export class PurchaseCreateComponent implements OnInit {
   }
 
   enableFileds() {
-    this.branchFormData.controls['purchaseInvNo'].disable();
-    this.branchFormData.controls['totalAmount'].disable();
-    this.branchFormData.controls['totaltaxAmount'].disable();
-    this.branchFormData.controls['grandTotal'].disable();
-    this.branchFormData.controls['totalCgst'].disable();
-    this.branchFormData.controls['totalSgst'].disable();
-    this.branchFormData.controls['totalIgst'].disable();
-    this.branchFormData.controls['paymentMode'].disable();
+    this.branchFormData.controls['purchaseInvNo'].enable();
+    this.branchFormData.controls['totalAmount'].enable();
+    this.branchFormData.controls['totaltaxAmount'].enable();
+    this.branchFormData.controls['grandTotal'].enable();
+    this.branchFormData.controls['totalCgst'].enable();
+    this.branchFormData.controls['totalSgst'].enable();
+    this.branchFormData.controls['totalIgst'].enable();
+    this.branchFormData.controls['paymentMode'].enable();
+    this.branchFormData.controls['amountInWords'].enable();
 
   }
 

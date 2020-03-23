@@ -11,7 +11,7 @@ import { SnackBar, StatusCodes } from '../../../../enums/common/common';
 import { Static } from '../../../../enums/common/static';
 import { AlertService } from '../../../../services/alert.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-stocktransfer',
@@ -19,7 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./stocktransfer.component.scss']
 })
 export class StocktransferComponent implements OnInit {
-
+  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
@@ -42,7 +42,7 @@ export class StocktransferComponent implements OnInit {
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [null],
+      selected: [this.selectedDate],
       fromDate: [null],
       toDate: [null],
       invoiceNo: [null]
@@ -51,6 +51,7 @@ export class StocktransferComponent implements OnInit {
 
   ngOnInit() {
       this.branchCode = JSON.parse(localStorage.getItem('user'));
+      this.search();
   }
 
   getInvoiceList() {

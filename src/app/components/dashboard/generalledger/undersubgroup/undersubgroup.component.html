@@ -9,38 +9,45 @@
        <form [formGroup]="modelFormData" autocomplete="off">
 
         <div class="d--flex">
+          <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.accountGroupName.valid }" >
+            <input matInput placeholder="{{'undersubgroup.accountGroupName' | translate }}" disabled formControlName="accountGroupName" appFocusOnEnter tabIndex="1">
+            <mat-error *ngIf="formControls.accountGroupName.errors" class="help-block">
+              <div *ngIf="formControls.accountGroupName.errors.required">Account Group Name is required </div>
+            </mat-error>
+          </mat-form-field>
+
           <mat-form-field>
-            <mat-label>{{'undersubgroup.groupName' | translate }}</mat-label>
-            <mat-select formControlName="groupName" (selectionChange)="getAccountSubGrouplist()">
-              <mat-option *ngFor="let accgrp of glAccgrpList" [value]="accgrp.id">
+            <mat-label>{{'undersubgroup.groupUnder' | translate }}</mat-label>
+            <mat-select formControlName="groupUnder">
+              <mat-option *ngFor="let under of glAccNameList" [value]="under.id">
+                {{under.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+           <mat-form-field>
+            <mat-label>{{'undersubgroup.nature' | translate }}</mat-label>
+            <mat-select formControlName="nature" >
+              <mat-option *ngFor="let accgrp of glAccgrpList" [value]="accgrp.text">
                 {{accgrp.text}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <mat-label>{{'undersubgroup.subGroupName' | translate }}</mat-label>
-            <mat-select formControlName="subGroupName">
-              <mat-option *ngFor="let subgrp of getAccSubGrpList" [value]="subgrp.id">
-                {{subgrp.text}}
+            <mat-label>{{'undersubgroup.affectGrossProfit' | translate }}</mat-label>
+            <mat-select formControlName="affectGrossProfit" placeholder="affectGrossProfit" >
+              <mat-option *ngFor="let agp of affectGrossProfit" [value]="agp.value">
+                {{agp.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
+          
+          <mat-form-field class="form-element">
+            <input matInput placeholder="{{'undersubgroup.narration' | translate }}" formControlName="narration" appFocusOnEnter tabIndex="2">
+          </mat-form-field>
 
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.underSubGroupCode.valid }" >
-          <input matInput placeholder="{{'undersubgroup.underSubGroupCode' | translate }}" disabled formControlName="underSubGroupCode" appFocusOnEnter tabIndex="1">
-          <mat-error *ngIf="formControls.underSubGroupCode.errors" class="help-block">
-            <div *ngIf="formControls.underSubGroupCode.errors.required">Under SubGroup Code is required </div>
-          </mat-error>
-
-        </mat-form-field>
-
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.underSubGroupName.valid }">
-          <input matInput placeholder="{{'undersubgroup.underSubGroupName' | translate }}" formControlName="underSubGroupName" appFocusOnEnter tabIndex="2">
-          <mat-error *ngIf="formControls.underSubGroupName.errors" class="help-block">
-            <div *ngIf="formControls.underSubGroupName.errors.required">Under SubGroup Name is required</div>
-          </mat-error>
-        </mat-form-field>
+        
       </div>
       <mat-divider></mat-divider>
 

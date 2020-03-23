@@ -48,8 +48,8 @@ export class GeneralledgerService {
           this.dynamicData.registerUrl = this.apiConfigService.registerGLUnderSubGroup;
           this.dynamicData.updateUrl = this.apiConfigService.updateGLAccUnderSubGroup;
           this.dynamicData.deleteUrl = this.apiConfigService.deleteGLAccUnderSubGroup;
-          this.dynamicData.listName = 'GLUnderSubGroupList';
-          this.dynamicData.primaryKey = 'underSubGroupCode';
+          this.dynamicData.listName = 'tblAccountGroupList';
+          this.dynamicData.primaryKey = 'accountGroupId';
           return this.dynamicData;
           break;
           case 'glaccounts':
