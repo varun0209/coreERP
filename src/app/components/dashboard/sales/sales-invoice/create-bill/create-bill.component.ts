@@ -5,13 +5,14 @@ import { ApiConfigService } from '../../../../../services/api-config.service';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../../../../services/api.service';
 import { isNullOrUndefined } from 'util';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 import { SnackBar, StatusCodes } from '../../../../../enums/common/common';
 import { AlertService } from '../../../../../services/alert.service';
 import { Static } from '../../../../../enums/common/static';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { PrintComponent } from '../../../../../reuse-components/print/print.component';
 const numberToWords = require('number-to-words');
 
 @Component({
@@ -56,6 +57,7 @@ export class CreateBillComponent implements OnInit {
     private alertService: AlertService,
     private activatedRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
+    public dialog: MatDialog,
   ) {
 
     this.formDataGroup();
@@ -137,6 +139,9 @@ export class CreateBillComponent implements OnInit {
             branchCode: user.branchCode,
             userId: user.seqId,
             userName: user.userName
+          });
+          this.branchFormData.patchValue({
+            ledgerCode: "100"
           });
           this.setBranchCode();
           this.genarateBillNo(user.branchCode);
@@ -353,9 +358,6 @@ export class CreateBillComponent implements OnInit {
             if (!isNullOrUndefined(res.response)) {
               if (!isNullOrUndefined(res.response['CashPartyAccountList']) && res.response['CashPartyAccountList'].length) {
                 this.getCashPartyAccountListArray = res.response['CashPartyAccountList'];
-                this.branchFormData.patchValue({
-                  ledgerCode: "100"
-                });
                 this.getCashPartyAccount();
               } else {
                 this.getCashPartyAccountListArray = [];
@@ -754,6 +756,13 @@ export class CreateBillComponent implements OnInit {
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            if(this.printBill) {
+              this.dialog.open(PrintComponent, {
+                width: '1024px',
+                data: requestObj,
+                disableClose: true
+              });
+            }
           }
           this.reset();
           this.spinner.hide();

@@ -1,0 +1,84 @@
+<div id="print-section" style="    font-size: 9px;">
+    <div style="    padding-left: 42%;padding-top: 1%;">
+        {{ invoiceHdr.stateCode }}
+    </div>
+    <div style="    padding-left: 4%;">
+        {{ invoiceHdr.branchName }}
+    </div>
+    <div>
+        <span style="    padding-left: 4%;">  {{ invoiceHdr.ledgerName }} </span> <span style="    padding-left: 17%;">  {{ invoiceHdr.invoiceNo }} </span>
+    </div>
+    <div>
+        <span style="    padding-left: 4%;">  {{ invoiceHdr.vehicleRegNo }} </span> <span style="    padding-left: 12%;">  {{ invoiceHdr.invoiceDate }} </span>
+    </div>
+
+    <div style="    padding-left: 4%;">
+        {{ invoiceHdr.suppliedTo }}
+    </div>
+
+    <table  style="width: 50%;     margin-left: 4%;">
+        <tr *ngFor="let detail of invoiceDetail; let i = index;">
+          <td>{{ i + 1 }}</td>
+          <td style="    width: 55%; 
+          word-break: break-all;">{{ detail.productName}}</td>
+          <td style="    width: 10%; 
+          word-break: break-all;">{{ detail.unitName}}</td>
+          <td style="    width: 10%; 
+          word-break: break-all;">{{ detail.qty}}</td>
+          <td style="    width: 10%; 
+          word-break: break-all;">{{ detail.rate}}</td>
+          <td style="    width: 15%; 
+          word-break: break-all;">{{ detail.grossAmount}}</td>
+        </tr>
+      </table>
+      
+    <table  style="width: 50%; margin-top: 5%;     margin-left: 4%;">
+        <tr *ngFor="let detail of invoiceDetail; let i = index;">
+            <td  style="    width: 10%; 
+          word-break: break-all;">{{ detail.hsnNo}}</td>
+            <td  style="    width: 10%; 
+          word-break: break-all;"></td>
+            <td  style="    width: 10%; 
+          word-break: break-all;"></td>
+            <td  style="    width: 10%; 
+          word-break: break-all;">{{ detail.cgst}}</td>
+            <td  style="    width: 10%; 
+          word-break: break-all;">{{ detail.sgst}}</td>
+            <td  style="    width: 10%; 
+          word-break: break-all;">{{ detail.igst}}</td>
+        </tr>
+      </table>
+    <table  style="width: 50%; margin-top: 5%;     margin-left: 4%;">
+        <tr>
+            <td  style="    width: 10%; 
+            word-break: break-all;"></td>
+            <td  style="    width: 10%; 
+            word-break: break-all;"></td>
+              <td  style="    width: 10%; 
+            word-break: break-all;">{{ invoiceHdr.tt}}</td>
+              <td  style="    width: 10%; 
+            word-break: break-all;">{{ invoiceHdr.totalCgst}}</td>
+              <td  style="    width: 10%; 
+            word-break: break-all;">{{ invoiceHdr.totalSgst}}</td>
+              <td  style="    width: 10%; 
+            word-break: break-all;">{{ invoiceHdr.totalIgst}}</td>
+        </tr>
+      </table>
+    <table  style="width: 50%;  margin-left: 4%;">
+        <tr>
+            <td  style="padding-left: 33%;">{{ invoiceHdr.totaltaxAmount}}</td>
+              <td  style="">{{ invoiceHdr.grandTotal}}</td>
+        </tr>
+      </table>
+      
+    <table  style="width: 50%;    margin-left: 4%;">
+        <tr>
+            <td  style="">{{ invoiceHdr.amountInWords}}</td>
+      </tr>
+      </table>
+      
+
+    <div style="  padding-left: 42%;padding-top: 10%;">
+        {{ invoiceHdr.userName }}
+    </div>
+</div>

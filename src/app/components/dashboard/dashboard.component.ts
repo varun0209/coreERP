@@ -418,11 +418,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           displayName: 'oil  Conversion',
           iconName: 'account_balance',
           route: 'oilconversion'
-        },
-        {
-          displayName: 'Bank Payment',
-          iconName: 'account_balance',
-          route: 'bankpayment'
         }
       ]
     },
