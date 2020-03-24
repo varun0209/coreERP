@@ -5,13 +5,11 @@ import { ApiConfigService } from '../../../../../services/api-config.service';
 import { String } from 'typescript-string-operations';
 import { ApiService } from '../../../../../services/api.service';
 import { isNullOrUndefined } from 'util';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 import { SnackBar, StatusCodes } from '../../../../../enums/common/common';
 import { AlertService } from '../../../../../services/alert.service';
 import { Static } from '../../../../../enums/common/static';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 const numberToWords = require('number-to-words');
@@ -27,7 +25,6 @@ export class PurchaseCreateComponent implements OnInit {
   GetBranchesListArray = [];
   getCashPartyAccountListArray = [];
   myControl = new FormControl();
-  filteredOptions: Observable<any[]>;
   getStateListArray = [];
   getProductByProductCodeArray = [];
   getProductByProductNameArray = [];
@@ -40,13 +37,11 @@ export class PurchaseCreateComponent implements OnInit {
     'fQty', 'totalLiters', 'tankNo', 'rate', 'discount', 'grossAmount', 'delete'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   date = new Date((new Date().getTime() - 3888000000));
   modelFormData: FormGroup;
   tableFormData: FormGroup;
   printBill = false;
-  tableFormObj = false;
   routeUrl = '';
   taxPercentage: any;
 
@@ -127,6 +122,9 @@ export class PurchaseCreateComponent implements OnInit {
             userId: user.seqId,
             userName: user.userName
           });
+          this.branchFormData.patchValue({
+            ledgerCode: "100"
+          });
           this.setBranchCode();
           this.genarateBillNo(user.branchCode);
           this.formGroup();
@@ -143,7 +141,6 @@ export class PurchaseCreateComponent implements OnInit {
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response['InvoiceDetailList']) && res.response['InvoiceDetailList'].length) {
             this.dataSource = new MatTableDataSource(res.response['InvoiceDetailList']);
-            this.dataSource.paginator = this.paginator;
             this.spinner.hide();
           }
         }
@@ -170,6 +167,7 @@ export class PurchaseCreateComponent implements OnInit {
     this.branchFormData.controls['totalSgst'].disable();
     this.branchFormData.controls['totalIgst'].disable();
     this.branchFormData.controls['amountInWords'].disable();
+    this.branchFormData.controls['userName'].disable();
   }
 
 
@@ -199,9 +197,6 @@ export class PurchaseCreateComponent implements OnInit {
             if (!isNullOrUndefined(res.response)) {
               if (!isNullOrUndefined(res.response['CashPartyAccountList']) && res.response['CashPartyAccountList'].length) {
                 this.getCashPartyAccountListArray = res.response['CashPartyAccountList'];
-                this.branchFormData.patchValue({
-                  ledgerCode: "100"
-                });
                 this.getCashPartyAccount();
               } else {
                 this.getCashPartyAccountListArray = [];
@@ -576,6 +571,7 @@ export class PurchaseCreateComponent implements OnInit {
     this.branchFormData.controls['totalIgst'].enable();
     this.branchFormData.controls['paymentMode'].enable();
     this.branchFormData.controls['amountInWords'].enable();
+    this.branchFormData.controls['userName'].enable();
 
   }
 

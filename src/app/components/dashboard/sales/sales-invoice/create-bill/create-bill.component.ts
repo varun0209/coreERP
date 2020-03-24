@@ -195,7 +195,6 @@ export class CreateBillComponent implements OnInit {
       this.branchFormData.controls['suppliedTo'].disable();
       this.branchFormData.controls['customerName'].disable();
       this.branchFormData.controls['mobile'].disable();
-      this.branchFormData.controls['userName'].disable();
     }
 
     this.branchFormData.controls['invoiceNo'].disable();
@@ -209,6 +208,8 @@ export class CreateBillComponent implements OnInit {
     this.branchFormData.controls['totalSgst'].disable();
     this.branchFormData.controls['totalIgst'].disable();
     this.branchFormData.controls['amountInWords'].disable();
+    this.branchFormData.controls['userName'].disable();
+
   }
 
 
@@ -282,10 +283,9 @@ export class CreateBillComponent implements OnInit {
   }
 
   getAccountBalance() {
-    if (!isNullOrUndefined(this.branchFormData.get('branchCode').value) && this.branchFormData.get('branchCode').value != '' &&
-      !isNullOrUndefined(this.branchFormData.get('ledgerCode').value) && this.branchFormData.get('ledgerCode').value != '') {
+    if (!isNullOrUndefined(this.branchFormData.get('ledgerCode').value) && this.branchFormData.get('ledgerCode').value != '') {
       const getAccountBalanceUrl = String.Join('/', this.apiConfigService.getAccountBalance,
-        this.branchFormData.get('ledgerCode').value, this.branchFormData.get('branchCode').value);
+        this.branchFormData.get('ledgerCode').value);
       this.apiService.apiGetRequest(getAccountBalanceUrl).subscribe(
         response => {
           const res = response.body;
@@ -735,6 +735,8 @@ export class CreateBillComponent implements OnInit {
     this.branchFormData.controls['totalSgst'].enable();
     this.branchFormData.controls['totalIgst'].enable();
     this.branchFormData.controls['amountInWords'].enable();
+    this.branchFormData.controls['userName'].enable();
+
   }
 
   reset() {
