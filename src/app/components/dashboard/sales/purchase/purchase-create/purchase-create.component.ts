@@ -12,7 +12,7 @@ import { Static } from '../../../../../enums/common/static';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-const numberToWords = require('number-to-words');
+var curValue = require("multilingual-number-to-words");
 
 @Component({
   selector: 'app-purchase-create',
@@ -462,7 +462,7 @@ export class PurchaseCreateComponent implements OnInit {
       totalIgst: (this.taxPercentage) ? (totalTax) : null,
     })
     this.branchFormData.patchValue({
-      amountInWords: numberToWords.toWordsOrdinal(this.branchFormData.get('grandTotal').value),
+      amountInWords: curValue.lakhWord(this.branchFormData.get('grandTotal').value)[0],
     });
   }
 

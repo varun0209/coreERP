@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PrintComponent } from '../../../../../reuse-components/print/print.component';
-const numberToWords = require('number-to-words');
+var curValue = require("multilingual-number-to-words");
 
 @Component({
   selector: 'app-create-bill',
@@ -593,7 +593,7 @@ export class CreateBillComponent implements OnInit {
       totalIgst: (this.taxPercentage) ? (totalTax) : null,
     });
     this.branchFormData.patchValue({
-      amountInWords: numberToWords.toWordsOrdinal(this.branchFormData.get('grandTotal').value),
+      amountInWords: curValue.lakhWord(this.branchFormData.get('grandTotal').value)[0],
     });
   }
 
