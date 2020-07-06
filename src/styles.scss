@@ -4,6 +4,10 @@ body {
   background-color: $background-color !important;
 }
 
+.no_data_height {
+  height: 300px;
+}
+
 .mat-card {
   padding: 0px !important;
 }
@@ -13,6 +17,16 @@ body {
 }
 
 
+.mat-input-element:disabled {
+  color: rgba(0,0,0,.87);
+}
+
+
+ .mat-form-field  {
+  & .mat-select-value {
+  color: rgba(0,0,0,.87) !important;
+  }
+}
 
 .mat-raised-button {
   box-shadow: none !important;
@@ -165,4 +179,10 @@ mat-option  {
   border: none;
   outline: none;
   text-align: center;
+}
+
+table {
+  & input:focus {
+    background: #f6ff0091;
+  }
 }

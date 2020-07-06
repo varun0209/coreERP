@@ -26,6 +26,7 @@ export class ReportsComponent implements OnInit {
   tableUrl: any;
 
   @ViewChild(ReportTableComponent, { static: false }) reportTableComponent: ReportTableComponent;
+  routeParams: any;
 
   constructor(
     private apiService: ApiService,
@@ -36,6 +37,7 @@ export class ReportsComponent implements OnInit {
     private alertService: AlertService,
   ) { 
     activatedRoute.params.subscribe(params => {
+      this.routeParams = params.id;
       this.tableUrl = reportsService.getRouteUrls(params.id);
       if (!isNullOrUndefined(this.tableUrl)) {
         this.getTableData();

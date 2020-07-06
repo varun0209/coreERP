@@ -79,7 +79,7 @@ export class InventoryService {
         this.dynamicData.updateUrl = this.apiConfigService.updateMaterialGroupsList;
         this.dynamicData.deleteUrl = this.apiConfigService.deleteMaterialGroupsList;
         this.dynamicData.listName = 'materialGroupList';
-        this.dynamicData.primaryKey = 'code';
+        this.dynamicData.primaryKey = 'groupId';
         return this.dynamicData;
         break;
 

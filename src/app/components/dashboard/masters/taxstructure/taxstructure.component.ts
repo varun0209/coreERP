@@ -62,6 +62,7 @@ export class TaxstructuresComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
+      this.modelFormData.controls['taxStructureCode'].disable();
     }
 
   }
@@ -116,6 +117,7 @@ export class TaxstructuresComponent implements OnInit {
     }
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
+    this.modelFormData.controls['taxStructureCode'].enable();
   }
 
   cancel() {

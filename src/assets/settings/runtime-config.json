@@ -1,4 +1,4 @@
 {
-  "serverUrl": "http://183.82.48.82:89/api/",
+  "serverUrl": "http://183.82.48.82:9092/api/",
   "env": ""
 }

@@ -42,7 +42,7 @@ export class ProfitCenterComponent implements OnInit {
       this.modelFormData  =  this.formBuilder.group({
         code: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
         name: [null, [Validators.required, Validators.minLength(2)]],
-        seqId: [null],
+        seqId: ['0'],
         compCode: [null],
         address1: [null],
         address2: [null],

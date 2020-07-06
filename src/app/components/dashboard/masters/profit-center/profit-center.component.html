@@ -22,21 +22,19 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="form-element">
+        <!--<mat-form-field class="form-element">
           <input matInput placeholder="seqId" formControlName="seqId"  appFocusOnEnter tabIndex="3">
-        </mat-form-field>
+        </mat-form-field>-->
 
 
         <mat-form-field>
           <mat-label [translate]="'profitCenter.compCode'"></mat-label>
           <mat-select formControlName="compCode" >
-            <mat-option *ngFor="let comp of companyList" [value]="comp.companyCode">
-              {{comp.companyCode}}
+            <mat-option *ngFor="let comp of companyList" [value]="comp.companyId">
+              {{comp.companyId}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-
-
 
 
         <mat-form-field class="form-element">

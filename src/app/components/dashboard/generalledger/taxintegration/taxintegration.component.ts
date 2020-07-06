@@ -52,7 +52,7 @@ export class TaxIntegrationComponent  implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['taxCode'].disable();
+        //this.modelFormData.controls['taxCode'].disable();
       }
 
   }
@@ -87,7 +87,7 @@ this.getGLTaxAccountList();
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
-            this.taxaccList = res.response['TaxcodesList'];
+            this.taxaccList = res.response['GLTaxAccountList'];
           }
         }
         this.spinner.hide();

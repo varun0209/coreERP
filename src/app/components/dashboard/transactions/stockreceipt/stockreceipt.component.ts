@@ -11,6 +11,7 @@ import { SnackBar, StatusCodes } from '../../../../enums/common/common';
 import { Static } from '../../../../enums/common/static';
 import { AlertService } from '../../../../services/alert.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-stockreceipt',
@@ -18,7 +19,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./stockreceipt.component.scss']
 })
 export class StockreceiptsComponent implements OnInit {
-
+  selectedDate = { start: moment().add(-1, 'day'), end: moment().add(0, 'day') };
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
@@ -28,6 +29,7 @@ export class StockreceiptsComponent implements OnInit {
   ];
     receiptNo: any;
     fromBranchCode: any;
+    branchCode: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,58 +39,78 @@ export class StockreceiptsComponent implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private spinner: NgxSpinnerService,
-
   )
   {
+   
     this.dateForm = this.formBuilder.group({
       selected: [null],
       fromDate: [null],
       toDate: [null],
-      receiptNo: [null]
+      receiptNo: [null],
+      role: [null]
     });
   }
 
   ngOnInit()
   {
-    this.fromBranchCode = JSON.parse(localStorage.getItem('user'));
-    this.receiptNo = JSON.parse(localStorage.getItem('user'));
+    this.branchCode = JSON.parse(localStorage.getItem('user'));
+    this.dateForm.patchValue({ role: this.branchCode.role })
+    this.getInvoiceDetails();
+  }
+  getInvoiceDetails() {
+    //debugger;
+    const getInvoiceDetailstUrl = String.Join('/', this.apiConfigService.getStockreceiptsDeatilListLoad, this.branchCode.branchCode);
+    this.apiService.apiPostRequest(getInvoiceDetailstUrl, this.dateForm.value).subscribe(
+      response => {
+        const res = response.body;
+        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+          if (!isNullOrUndefined(res.response['StockreceiptList']) && res.response['StockreceiptList'].length) {
+            this.dataSource = new MatTableDataSource(res.response['StockreceiptList']);
+            this.dataSource.paginator = this.paginator;
+            this.spinner.hide();
+          }
+        }
+      });
+  }
+  
+
+  openStockreceipt(row) {
+    // debugger;
+    localStorage.setItem('selectedstockissues', JSON.stringify(row));
+    this.router.navigate(['dashboard/transactions/stockreceipt/CreateStockreceipts', row.operatorStockReceiptId]);
   }
 
-
-
-  openStockreceipt(row)
-  {
-    debugger;
-    localStorage.setItem('selectedStockreceipt', JSON.stringify(row));
-    this.router.navigate(['dashboard/transactions/stockreceipt/CreateStockreceipts', row.receiptNo]);
+  returnSdeale() {
+    this.router.navigate(['dashboard/transactions/stockreceipt/CreateStockreceipts', 'return']);
   }
 
   //Search and datadisplay code
-  search() {
-    if (isNullOrUndefined(this.dateForm.value.receiptNo)) {
-      if (isNullOrUndefined(this.dateForm.value.selected)) {
-        this.alertService.openSnackBar('Select Stockreceipt or Date', Static.Close, SnackBar.error);
+  search()
+  {
+    if (isNullOrUndefined(this.dateForm.value.receiptNo))
+    {
+      if (isNullOrUndefined(this.dateForm.value.selected))
+      {
+        this.alertService.openSnackBar('Select issueNo or Date', Static.Close, SnackBar.error);
         return;
-      } else {
-        this.dateForm.patchValue
-        ({
+      }
+      else {
+        this.dateForm.patchValue({
           fromDate: this.commonService.formatDate(this.dateForm.value.selected.start._d),
-          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d)
+          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d),
+          receiptNo: this.dateForm.value.receiptNo
         });
       }
     }
 
     this.getStockreceiptList();
   }
-  getStockreceiptList() {
-    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getStockreceiptsList);
+  getStockreceiptList()
+  {
+    //debugger;
+    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getStockreceiptsList, this.branchCode.branchCode);
 
-    const date = {
-      'fromDate': '3/7/2020 1:10:57 PM',
-      'toDate': '1/7/2020 1:10:57 PM',
-      'receiptNo': null
-    }
-    this.apiService.apiPostRequest(getInvoiceListUrl, date).subscribe(
+    this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {

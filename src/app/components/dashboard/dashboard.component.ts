@@ -31,56 +31,56 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'branches'
         },
         {
+          displayName: 'Designation',
+          iconName: 'speaker_notes',
+          route: 'designation'
+        },
+        {
+          displayName: 'PartnerType',
+          iconName: 'speaker_notes',
+          route: 'partnerType'
+        },
+        {
+          displayName: 'PartnerCreation',
+          iconName: 'speaker_notes',
+          route: 'partnerCreation'
+        },
+        {
+          displayName: 'EmployeeInBranch',
+          iconName: 'speaker_notes',
+          route: 'employeeInBranch'
+        },
+        {
+          displayName: 'NoSeries',
+          iconName: 'speaker_notes',
+          route: 'noSeries'
+        },
+        
+        {
           displayName: 'Division',
-          iconName: 'feedback',
+          iconName: 'speaker_notes',
           route: 'division'
         },
         {
           displayName: 'Segment',
-          iconName: 'feedback',
+          iconName: 'speaker_notes',
           route: 'segment'
         },
         {
-          displayName: 'ProfitCenter',
-          iconName: 'feedback',
-          route: 'profitCenter'
-        },
-        {
-          displayName: 'PartnerCreation',
-          iconName: 'feedback',
-          route: 'partnerCreation'
-        },
-        {
           displayName: 'CostCenter',
-          iconName: 'feedback',
-          route: 'costCenter'
+          iconName: 'speaker_notes',
+          route: 'costcenter'
         },
         {
-          displayName: 'NoSeries',
-          iconName: 'feedback',
-          route: 'noSeries'
-        },
-        {
-          displayName: 'PartnerType',
-          iconName: 'feedback',
-          route: 'partnerType'
-        },
-        {
-          displayName: 'EmployeeInBranch',
-          iconName: 'feedback',
-          route: 'employeeInBranch'
+          displayName: 'ProfitCenter',
+          iconName: 'speaker_notes',
+          route: 'profitCenter'
         },
         {
           displayName: 'Employee',
           iconName: 'feedback',
           route: 'employee'
         },
-        {
-          displayName: 'TaxMaster',
-          iconName: 'feedback',
-          route: 'taxMaster'
-        },
-
         {
           displayName: 'ProductPacking',
           iconName: 'feedback',
@@ -111,6 +111,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           iconName: 'feedback',
           route: 'pump'
         },
+        {
+        displayName: 'MSHSD Rates',
+        iconName: 'recent_actors',
+        route: 'mshsdrates'
+        },
+        {
+          displayName:'Product',
+          iconName:'recent_actors',
+          route:'product'
+        },
+     	 {
+          displayName: 'MemberMaster',
+          iconName: 'feedback',
+          route: 'membermaster'
+        }
       ]
     },
     {
@@ -124,44 +139,31 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'accountsgroup'
         },
         {
-          displayName: 'SubGroup',
-          iconName: 'group',
-          route: 'subgroup'
-        },
-        {
           displayName: 'GL',
           iconName: 'group',
           route: 'undersubgroup'
         },
         {
-          displayName: 'GLAccounts',
-          iconName: 'group',
-          route: 'glaccounts'
-        },
-        {
-          displayName: 'GLSubcode',
-          iconName: 'group',
-          route: 'glsubcode'
-        },
-        {
-          displayName: 'TaxIntegration',
-          iconName: 'group',
-          route: 'taxintegration'
-        },
-        {
-          displayName: 'CashAccToBranches',
+          displayName: 'CashAccBranch',
           iconName: 'group',
           route: 'cashacctobranches'
         },
         {
-          displayName: 'AccToAccClass',
+          displayName: 'AsigAcctoAccclass',
           iconName: 'group',
           route: 'acctoaccclass'
         },
+        
         {
-          displayName: 'VoucherTypes',
+          displayName: 'Taxintigration',
           iconName: 'group',
-          route: 'vouchertypes'
+          route: 'taxintegration'
+        },
+        
+        {
+          displayName: 'Account Ledger',
+          iconName: 'group',
+          route: 'glaccounts'
         }
       ]
     },
@@ -200,93 +202,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           iconName: 'speaker_notes',
           route: 'materialgroups'
         },
-        {
-          displayName: 'Payroll',
-          iconName: 'recent_actors',
-          route: 'payroll',
-          children: [
-            {
-              displayName: 'Leavebalances',
-              iconName: 'speaker_notes',
-              route: 'leaveopeningbalances'
-            },
-            {
-              displayName: 'LeaveType',
-              iconName: 'speaker_notes',
-              route: 'leavetype'
-            },
-            {
-              displayName: 'LeaveRequest',
-              iconName: 'speaker_notes',
-              route: 'Leaverequest'
-            },
-            {
-              displayName: 'Component Master',
-              iconName: 'speaker_notes',
-              route: 'componentmaster'
-            },
-            {
-              displayName: 'PT Master',
-              iconName: 'speaker_notes',
-              route: 'ptmaster'
-
-            },
-            {
-              displayName: 'CTCBreakup',
-              iconName: 'account_balance',
-              route: 'CTCBreakup'
-            },
-            {
-              displayName: 'Structure Creation',
-              iconName: 'account_balance',
-              route: 'structureCreation'
-            },
-            {
-              displayName: 'Leave Approval',
-              iconName: 'account_balance',
-              route: 'leaveApproval'
-            },
-            {
-              displayName: 'PF Master',
-              iconName: 'account_balance',
-              route: 'pfmaster'
-            },
-            {
-              displayName: 'Salary Process',
-              iconName: 'account_balance',
-              route: 'salaryprocess'
-            }
-
-          ]
-        },
-        {
-          displayName: 'Sales',
-          iconName: 'videocam',
-          route: 'sales',
-          children: [
-            {
-              displayName: 'Sales Invoice',
-              iconName: 'videocam',
-              route: 'salesInvoice',
-            },
-            {
-              displayName: 'Sales Return',
-              iconName: 'videocam',
-              route: 'salesReturn',
-            }
-          ]
-        },
       ]
     },
+
     {
-      displayName: 'Payroll',
+      displayName: 'SelfServices',
       iconName: 'recent_actors',
-      route: 'payroll',
+      route: 'selfservice',
       children: [
         {
-          displayName: 'Leavebalances',
+          displayName: 'Leaveopeningbalances',
           iconName: 'speaker_notes',
-          route: 'leaveopeningbalances'
+          route: 'leaveopeningbalance'
         },
         {
           displayName: 'LeaveType',
@@ -294,10 +221,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'leavetype'
         },
         {
+          displayName: 'Applyod',
+          iconName: 'speaker_notes',
+          route: 'applyod'
+        },
+        {
           displayName: 'LeaveRequest',
           iconName: 'speaker_notes',
           route: 'Leaverequest'
         },
+        {
+          displayName: 'Leave Approval',
+          iconName: 'account_balance',
+          route: 'leaveApproval'
+        }
+      ]
+    },
+    {
+      displayName: 'Payroll',
+      iconName: 'recent_actors',
+      route: 'payroll',
+      children: [
         {
           displayName: 'Component Master',
           iconName: 'speaker_notes',
@@ -320,11 +264,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'structureCreation'
         },
         {
-          displayName: 'Leave Approval',
-          iconName: 'account_balance',
-          route: 'leaveApproval'
-        },
-        {
           displayName: 'PF Master',
           iconName: 'account_balance',
           route: 'pfmaster'
@@ -337,6 +276,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       ]
     },
+
     {
       displayName: 'Sales',
       iconName: 'videocam',
@@ -400,12 +340,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'journalvoucher'
         },
 	  {
-          displayName: 'Stock Issues',
+          displayName: 'OP Stock Issues',
           iconName: 'account_balance',
           route: 'stockissues'
         },
         {
-          displayName: 'Stock Receipt',
+          displayName: 'OP Stock Receipt',
           iconName: 'account_balance',
           route: 'stockreceipt'
         },
@@ -415,9 +355,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route: 'stockshort'
         },
         {
-          displayName: 'oil  Conversion',
+          displayName: 'Oil  Convertion',
           iconName: 'account_balance',
           route: 'oilconversion'
+        },
+       {
+          displayName: 'Package Conversion',
+          iconName: 'account_balance',
+          route: 'packageconversion'
+        },
+        {
+          displayName: 'Stock Excess',
+          iconName: 'account_balance',
+          route: 'stockexcess'
+        },
+        {
+          displayName: 'Meter Reading',
+          iconName: 'account_balance',
+          route: 'meterreading'
         }
       ]
     },
@@ -438,21 +393,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       iconName: 'recent_actors',
       route: 'reports',
       children: [
-        // {
-        //   displayName: 'Bonus',
-        //   iconName: 'account_balance',
-        //   route: 'bonus'
-        // },
-        // {
-        //   displayName:'Member Master',
-        //   iconName:'account_balance',
-        //   route:'membermaster'
-        // },
-        // {
-        //   displayName:"Employee Register",
-        //   iconName:'account_balance',
-        //   route:'employeeregister'
-        // },
         {
           displayName:"Account Ledger",
           iconName:'account_balance',
@@ -474,9 +414,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           route:'Shift'
         },
         {
-          displayName:"Vehical Report",
+          displayName:"Vehical Enquiry Report",
           iconName:'commute',
-          route:'Vehical'
+          route:'Vehical Enquiry'
         },
         {
           displayName:"Intimate Sale Report",
@@ -506,13 +446,48 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         {
           displayName:"Sales analysis by branch",
           iconName:"score",
-          route:"Sales analysis by branch"
+          route:"Sales_Analysis_By_Branch"
         },
         {
           displayName:"Product Wise Monthly Purchase",
           iconName:"category",
           route:"Product Wise Monthly Purchase"
-        }
+        },
+        {
+          displayName:"Daily Sales",
+          iconName:"score",
+          route:"Daily Sales"
+        },
+        {
+          displayName:"Product Price List",
+          iconName:"category",
+          route:"Product Price List"
+        },
+        {
+          displayName:"Receipts And Payments Detailed",
+          iconName:"track_changes",
+          route:"Receipts And Payments Detailed"
+        },
+        {
+          displayName:"Receipts And Payments Summary",
+          iconName:"category",
+          route:"Receipts And Payments Summary"
+        },
+        {
+          displayName:"SMS Summary",
+          iconName:"category",
+          route:"SMS Summary"
+        },
+        {
+          displayName:"Sales GST",
+          iconName:"category",
+          route:"Sales GST"
+        },
+        {
+          displayName:"24Hrs Sale Value 6Am To 6Am",
+          iconName:"category",
+          route:"24Hrs Sale Value 6Am To 6Am"
+        },
       ]
     }
   ];

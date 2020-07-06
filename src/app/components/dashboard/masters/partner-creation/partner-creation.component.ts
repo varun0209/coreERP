@@ -80,7 +80,7 @@ export class PartnerCreationComponent implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['code'].disable();
+       // this.modelFormData.controls['code'].disable();
       }
 
   }
@@ -180,7 +180,7 @@ export class PartnerCreationComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['code'].disable();
+    //this.modelFormData.controls['code'].disable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

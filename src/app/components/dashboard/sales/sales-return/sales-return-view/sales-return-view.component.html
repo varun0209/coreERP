@@ -16,7 +16,7 @@
 
                     <mat-form-field class="form-element">
                         <mat-label>{{ 'SALESINVOICE.branchName' | translate }}</mat-label>
-                        <mat-select formControlName="branchCode" (selectionChange)="genarateBillNo(); setBranchCode();">
+                        <mat-select formControlName="branchCode" (selectionChange)="genarateBillNo();">
                             <mat-option *ngFor="let branch of GetBranchesListArray" [value]="branch.id">
                                 {{ branch.id }} - {{branch.text}}
                             </mat-option>
@@ -33,7 +33,24 @@
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.INVOICENO' | translate }}"
-                            formControlName="invoiceNo" appFocusOnEnter tabIndex="1">
+                            formControlName="invoiceNo">
+                    </mat-form-field>
+
+                    
+                    <mat-form-field>
+                        <mat-label>{{ 'SALESINVOICE.stateCode' | translate }}</mat-label>
+                        <mat-select formControlName="stateCode" (selectionChange)="getSelectedState()">
+                            <mat-option *ngFor="let state of getStateListArray" [value]="state.id">
+                                {{ state.id}} - {{state.text}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    
+                    <mat-form-field>
+                        <mat-label>{{ 'SALESINVOICE.paymentMode' | translate }}</mat-label>
+                        <input matInput placeholder="{{ 'SALESINVOICE.paymentMode' | translate }}"
+                            formControlName="paymentMode" >
                     </mat-form-field>
 
 
@@ -49,54 +66,41 @@
                             <span><strong>{{model.id}}</strong> - {{model.text}}</span>
                         </ng-template>
                     </mat-form-field>
-
+                    
                     <mat-form-field>
-                        <input matInput placeholder="{{ 'SALESINVOICE.ledgerName' | translate }}"
-                            formControlName="ledgerName" appFocusOnEnter tabIndex="2">
-                    </mat-form-field>
+                        <input matInput placeholder="Account Name"
+                            formControlName="ledgerName">
+                    </mat-form-field> 
 
                     <mat-form-field class="form-element">
                             <input class="typeahead" matInput
-                            placeholder="{{ 'SALESINVOICE.vehicleRegNo' | translate }}" formControlName="vehicleId"
-                            (typeaheadOnSelect)="setLedgerName()" (input)="getVechiels($event.target.value)"
+                            placeholder="{{ 'SALESINVOICE.vehicleRegNo' | translate }}" formControlName="vehicleRegNo"
+                            (typeaheadOnSelect)="getmemberNamesByCode($event)" (input)="getVechiels($event.target.value)"
                             [typeahead]="getVechielsArray" typeaheadOptionField='text' autocomplete="off" [typeaheadMinLength]="0" [minLength]="1"
                             [typeaheadWaitMs]="200" >
                     </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>{{ 'SALESINVOICE.stateCode' | translate }}</mat-label>
-                        <mat-select formControlName="stateCode" (selectionChange)="getSelectedState()">
-                            <mat-option *ngFor="let state of getStateListArray" [value]="state.id">
-                                {{ state.id}} - {{state.text}}
-                            </mat-option>
-                        </mat-select>
+                    
+                    <mat-form-field class="form-element">
+                        <input matInput type="number" placeholder="{{ 'SALESINVOICE.mobile' | translate }}"
+                            formControlName="mobile" >
                     </mat-form-field>
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.customerName' | translate }}"
-                            formControlName="customerName" appFocusOnEnter tabIndex="3">
+                            formControlName="customerName" >
                     </mat-form-field>
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.suppliedTo' | translate }}"
-                            formControlName="suppliedTo" appFocusOnEnter tabIndex="4">
+                            formControlName="suppliedTo" >
                     </mat-form-field>
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.customerGstin' | translate }}"
-                            formControlName="customerGstin" appFocusOnEnter tabIndex="5">
+                            formControlName="customerGstin" >
                     </mat-form-field>
 
-                    <mat-form-field>
-                        <mat-label>{{ 'SALESINVOICE.paymentMode' | translate }}</mat-label>
-                        <input matInput placeholder="{{ 'SALESINVOICE.paymentMode' | translate }}"
-                            formControlName="paymentMode" appFocusOnEnter tabIndex="6">
-                    </mat-form-field>
-
-                    <mat-form-field class="form-element">
-                        <input matInput type="number" placeholder="{{ 'SALESINVOICE.mobile' | translate }}"
-                            formControlName="mobile" appFocusOnEnter tabIndex="7">
-                    </mat-form-field>
 
 
                     <mat-form-field class="form-element">
@@ -112,12 +116,12 @@
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.generalNo' | translate }}"
-                            formControlName="generalNo" appFocusOnEnter tabIndex="8">
+                            formControlName="generalNo">
                     </mat-form-field>
 
                     <mat-form-field class="form-element">
                         <input matInput placeholder="{{ 'SALESINVOICE.accountBalance' | translate }}"
-                            formControlName="accountBalance" appFocusOnEnter tabIndex="9">
+                            formControlName="accountBalance" >
                     </mat-form-field>
 
 
@@ -128,10 +132,6 @@
                 </div>
             </form>
 
-            <mat-form-field *ngIf="routeUrl == 'return'" class="form-element w-25 pr-4 mb-3">
-                <input matInput disabled placeholder="Sales Return Invoice Number" [(ngModel)]="isSalesReturnInvoice"
-                    appFocusOnEnter tabIndex="11">
-            </mat-form-field>
 
         </mat-card-content>
 
@@ -156,10 +156,9 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.productCode' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input class="typeAhead" [(ngModel)]="element.productCode"
-                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="getBillingDetailsRcd($event)"
+                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="getBillingDetailsRcd($event, dataSource.filteredData.indexOf(element))"
                                 (input)="getProductByProductCode($event.target.value)"
-                                [typeahead]="getProductByProductCodeArray" typeaheadOptionField='text' appFocusOnEnter
-                                tabIndex="10" autocomplete="off"
+                                [typeahead]="getProductByProductCodeArray" typeaheadOptionField='text'  autocomplete="off"
                                 [typeaheadMinLength]="0" [minLength]="1" [typeaheadWaitMs]="200">
                         </td>
                     </ng-container>
@@ -168,10 +167,9 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.productName' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input class="typeAhead" [(ngModel)]="element.productName"
-                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setProductName($event)"
+                                [disabled]="element.text != 'obj'" (typeaheadOnSelect)="setProductName($event, element)"
                                 (input)="getProductByProductName($event.target.value)"
-                                [typeahead]="getProductByProductNameArray" typeaheadOptionField='text' appFocusOnEnter
-                                tabIndex="11" autocomplete="off"
+                                [typeahead]="getProductByProductNameArray" typeaheadOptionField='text'  autocomplete="off"
                                 [typeaheadMinLength]="0" [minLength]="1" [typeaheadWaitMs]="200">
                         </td>
                     </ng-container>
@@ -181,17 +179,16 @@
                         <td mat-cell *matCellDef="let element;">
                             <input matInput type="number" [disabled]="element.text != 'obj'" [value]="element.hsnNo"
                                 [(ngModel)]="element.hsnNo"
-                                (input)="setToFormModel(element.text, 'hsnNo', element.hsnNo)" appFocusOnEnter
-                                tabIndex="12" /> </td>
+                                (input)="setToFormModel(element.text, 'hsnNo', element.hsnNo)"  /> </td>
                     </ng-container>
 
 
                     <ng-container matColumnDef="pumpNo">
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.pumpNo' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
-                            <input class="typeAhead" [(ngModel)]="element.pumpNo"
-                                [disabled]="element.text != 'obj'" (input)="getPupms($event.target.value)"
-                                [typeahead]="getPupmsArray" typeaheadOptionField='text' appFocusOnEnter tabIndex="13"
+                            <input class="typeAhead" [(ngModel)]="element.pumpNo" 
+                                [disabled]="element.text != 'obj' || disabledPump(element.productCode)" (input)="getPupms($event.target.value)"
+                                [typeahead]="getPupmsArray" typeaheadOptionField='text' 
                                 autocomplete="off"  [typeaheadMinLength]="0"
                                 [minLength]="1" [typeaheadWaitMs]="200">
                         </td>
@@ -202,8 +199,8 @@
                         <td mat-cell *matCellDef="let element;">
                             <input matInput type="number" [disabled]="element.text != 'obj'" [value]="element.qty"
                                 (change)="calculateAmount(element, dataSource.filteredData.indexOf(element))"
-                                [(ngModel)]="element.qty" appFocusOnEnter tabIndex="14"
-                                (input)="setToFormModel(element.text, 'qty', element.qty); clearQty(dataSource.filteredData.indexOf(element), element.qty, 'qty');" />
+                                [(ngModel)]="element.qty" 
+                                (input)="setToFormModel(element.text, 'qty', element.qty); clearQty(dataSource.filteredData.indexOf(element), element.qty, 'qty', element);" />
                         </td>
                     </ng-container>
 
@@ -215,8 +212,7 @@
                             <input *ngIf="dataSource.filteredData.indexOf(element) != 0" matInput type="number"
                                 [disabled]="element.text != 'obj'" [value]="element.fQty" [(ngModel)]="element.fQty"
                                 (change)="calculateAmount(element, dataSource.filteredData.indexOf(element))"
-                                appFocusOnEnter tabIndex="15"
-                                (input)="setToFormModel(element.text, 'fQty', element.fQty); clearQty(dataSource.filteredData.indexOf(element), element.fQty, 'fQty');" />
+                                (input)="setToFormModel(element.text, 'fQty', element.fQty); clearQty(dataSource.filteredData.indexOf(element), element.fQty, 'fQty', element);" />
                         </td>
                     </ng-container>
 
@@ -224,8 +220,9 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.slipNo' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input matInput type="number"
+                            [ngClass]="setBackGroundColor(element.slipNo, disableSlipVal(element.productCode))"
                                 [disabled]="element.text != 'obj' || disableSlipVal(element.productCode)"
-                                [value]="element.slipNo" [(ngModel)]="element.slipNo" appFocusOnEnter tabIndex="16"
+                                [value]="element.slipNo" [(ngModel)]="element.slipNo" 
                                 (input)="setToFormModel(element.text, 'slipNo', element.slipNo)" /> </td>
                     </ng-container>
 
@@ -233,7 +230,7 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.unitName' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input matInput [disabled]="element.text != 'obj'" [value]="element.unitName"
-                                [(ngModel)]="element.unitName" appFocusOnEnter tabIndex="17"
+                                [(ngModel)]="element.unitName" 
                                 (input)="setToFormModel(element.text, 'unitName', element.unitName)" /> </td>
                     </ng-container>
 
@@ -241,7 +238,7 @@
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.discount' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
                             <input matInput type="number" [disabled]="element.text != 'obj'" [value]="element.discount"
-                                [(ngModel)]="element.discount" appFocusOnEnter tabIndex="18"
+                                [(ngModel)]="element.discount"
                                 (input)="setToFormModel(element.text, 'discount', element.discount)" /> </td>
                     </ng-container>
 
@@ -256,7 +253,8 @@
                     <ng-container matColumnDef="rate">
                         <th mat-header-cell *matHeaderCellDef> {{ 'SALESINVOICE.rate' | translate }} </th>
                         <td mat-cell *matCellDef="let element;">
-                            <input matInput disabled [value]="element.rate" [(ngModel)]="element.rate"
+                            <input matInput  [value]="element.rate" [(ngModel)]="element.rate"
+                            (change)="calculateAmount(element, dataSource.filteredData.indexOf(element))"
                                 (input)="setToFormModel(element.text, 'rate', element.rate)" />
                         </td>
                     </ng-container>
@@ -314,7 +312,7 @@
                             <div class="w-75">
                                 <mat-form-field class="form-element">
                                     <input matInput placeholder="{{ 'SALESINVOICE.userName' | translate }}"
-                                        formControlName="userName" appFocusOnEnter tabIndex="10">
+                                        formControlName="userName" >
                                 </mat-form-field>
             
                                 <mat-form-field>
@@ -374,13 +372,11 @@
                     <mat-slide-toggle [(ngModel)]="printBill" [checked]="printBill">
                     </mat-slide-toggle>
                 </div>
-                <button mat-raised-button type="submit" class="button-color-bule mr-3 text-white" (click)="save()">
-
-                    {{ 'COMMON.SAVE' | translate }}
+                <button  mat-raised-button type="submit" class="button-color-bule mr-3 text-white" (click)="print()">
+                    {{ 'COMMON.PRINT' | translate }}
                 </button>
                 <button mat-raised-button class="button-color-red text-white mr-3" [disabled]="routeUrl != ''"
                     (click)="reset();">
-
                     {{ 'COMMON.RESET' | translate }}
                 </button>
             </div>

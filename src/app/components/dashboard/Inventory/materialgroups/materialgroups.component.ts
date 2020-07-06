@@ -37,21 +37,22 @@ export class MaterialGroupsComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.modelFormData = this.formBuilder.group({
-      code: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
+      groupId:0,
+      groupCode: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
       groupName: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-      hsnCode: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-      compCode: [null],
-      ext1: [null],
-      ext2: [null],
-      accClass:[null],
-      active: [null]
+      // hsnCode: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      // compCode: [null],
+      // ext1: [null],
+      // ext2: [null],
+      // accClass:[null],
+      narration: [null]
     });
 
 
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
-      this.modelFormData.controls['code'].disable();
+      this.modelFormData.controls['groupId'].disable();
     }
 
   }
@@ -105,7 +106,7 @@ export class MaterialGroupsComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['code'].enable();
+    this.modelFormData.controls['groupId'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

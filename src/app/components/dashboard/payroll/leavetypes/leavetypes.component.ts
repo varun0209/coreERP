@@ -37,18 +37,23 @@ export class LeavetypesComponent implements OnInit {
 
     this.modelFormData = this.formBuilder.group({
       leaveCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
-      leaveName: ['', [Validators.required, Validators.minLength(2)]],
-      leaveMaxLimit: [null],
-      ext1: [null],
-      leaveMinLimit: [null],
       companyCode: [null],
-      active: [null],
-      addDate: [null],
-      branchCode: [null],
-      remarks: [null],
+      companyName: [null],
+      id: 0,
+      leaveMaxLimit: [null],
+      leaveName: [null]
     });
 
-
+    //leaveCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
+      //leaveName: ['', [Validators.required, Validators.minLength(2)]],
+      //leaveMaxLimit: [null],
+      //ext1: [null],
+      //leaveMinLimit: [null],
+      //companyCode: [null],
+      //active: [null],
+      //addDate: [null],
+      //branchCode: [null],
+      //remarks: [null],
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);

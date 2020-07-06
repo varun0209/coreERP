@@ -38,8 +38,8 @@
         <mat-form-field>
           <mat-label>{{'componentmaster.duration' | translate }}</mat-label>
           <mat-select formControlName="duration">
-            <mat-option *ngFor="let conflist of configureList" [value]="conflist.id">
-              {{conflist.text}}
+            <mat-option *ngFor="let conflist of duration" [value]="conflist.value">
+              {{conflist.viewValue}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -47,8 +47,8 @@
         <mat-form-field>
           <mat-label>{{'componentmaster.specificMonth' | translate }}</mat-label>
           <mat-select formControlName="specificMonth">
-            <mat-option *ngFor="let conflist of configureList" [value]="conflist.id">
-              {{conflist.text}}
+            <mat-option *ngFor="let conflist of months" [value]="conflist.value">
+              {{conflist.viewValue}}
             </mat-option>
           </mat-select>
         </mat-form-field>

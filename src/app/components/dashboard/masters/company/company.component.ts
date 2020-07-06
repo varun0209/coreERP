@@ -31,39 +31,36 @@ export class CompanyComponent  implements OnInit {
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
-      this.modelFormData  =  this.formBuilder.group({
-        companyCode: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
-        name: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-        address1: [null],
-        address2: [null],
-        address3: [null],
-        address4: [null],
-        email: [null],
-        ext1: [null],  // hide
-        ext2: [null], // hide
-        ext3: [null], // hide
-        ext4: [null], // hide
-        finacialYear: ['2020'],  // current year
-        fromMonth: ['1'],  // currnet month
-        gstNo: [null],
-        active: ['Y'],
-        place: [null],
-        state: [null],
-        pinCode: [null],
-        phone1: [null],
-        phone2: [null],
-        phone3: [null],
-        panNo: [null],
-        tanNo: [null],
-        natureOfBusiness: [null],
-        toMonth: ['1'] // currnet month
+    this.modelFormData = this.formBuilder.group({
+     //companyId: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
+      companyId:0,
+      companyName: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      mailingName: [null],
+      address: [null],
+      phone: [null],
+      emailId: [null],
+      web: [null],
+      country: [null],
+      state: [null],
+      pin: [null],
+      currencyId: [null],
+      financialYearFrom: [null],
+      booksBeginingFrom: [null],
+      gstin: [null],
+      cst: [null],
+      currentDate: [null],
+      logo: [null],
+      extra1: [null],
+      extra2: [null],
+      extraDate: [null],
+      city: [null],       
       });
 
 
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['companyCode'].disable();
+        this.modelFormData.controls['companyId'].disable();
       }
 
   }
@@ -79,7 +76,8 @@ export class CompanyComponent  implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['companyCode'].enable();
+    
+    this.modelFormData.controls['companyId'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

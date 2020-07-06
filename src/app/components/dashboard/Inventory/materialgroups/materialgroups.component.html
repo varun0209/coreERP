@@ -9,10 +9,10 @@
     <form [formGroup]="modelFormData" autocomplete="off">
 
       <div class="d--flex">
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.code.valid }">
-          <input matInput placeholder="{{'materialgroups.code' | translate }}" disabled formControlName="code" appFocusOnEnter tabIndex="1">
-          <mat-error *ngIf="formControls.code.errors" class="help-block">
-            <div *ngIf="formControls.code.errors.required">Code is required Min-2 Letters</div>
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.groupCode.valid }">
+          <input matInput placeholder="{{'materialgroups.groupCode' | translate }}" disabled formControlName="groupCode" appFocusOnEnter tabIndex="1">
+          <mat-error *ngIf="formControls.groupCode.errors" class="help-block">
+            <div *ngIf="formControls.groupCode.errors.required">Code is required Min-2 Letters</div>
           </mat-error>
 
         </mat-form-field>
@@ -24,14 +24,11 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.hsnCode.valid }">
-          <input matInput placeholder="{{'materialgroups.hsnCode' | translate }}" formControlName="hsnCode" appFocusOnEnter tabIndex="3">
-          <mat-error *ngIf="formControls.hsnCode.errors" class="help-block">
-            <div *ngIf="formControls.hsnCode.errors.required">hsnCode is required</div>
-          </mat-error>
+        <mat-form-field class="form-element">
+          <input matInput placeholder="{{'materialgroups.narration' | translate }}" formControlName="narration" appFocusOnEnter tabIndex="4">
         </mat-form-field>
 
-
+<!-- 
         <mat-form-field>
           <mat-label [translate]="'materialgroups.accClass'"></mat-label>
           <mat-select formControlName="accClass" >
@@ -39,20 +36,20 @@
               {{aclist.description}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <mat-form-field>
+        <!-- <mat-form-field>
           <mat-label [translate]="'materialgroups.compCode'"></mat-label>
           <mat-select formControlName="compCode">
             <mat-option *ngFor="let comp of companyList" [value]="comp.companyCode">
               {{comp.companyCode}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <mat-form-field class="form-element">
+        <!-- <mat-form-field class="form-element">
           <input matInput placeholder="{{'materialgroups.active' | translate }}" formControlName="active" appFocusOnEnter tabIndex="4">
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       <mat-divider></mat-divider>
     </form>

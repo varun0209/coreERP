@@ -34,8 +34,8 @@
         <mat-form-field>
           <mat-label [translate]="'partnerCreation.compCode'"></mat-label>
           <mat-select formControlName="compCode" >
-            <mat-option *ngFor="let comp of companyList" [value]="comp.companyCode">
-              {{comp.companyCode}}
+            <mat-option *ngFor="let comp of companyList" [value]="comp.companyId">
+              {{comp.companyName}}
             </mat-option>
           </mat-select>
         </mat-form-field>

@@ -8,7 +8,15 @@
   <mat-card-content class="pt-5 p-2 m-0 overflow-auto">
     <form [formGroup]="modelFormData" autocomplete="off">
       <div class="d--flex">
+        
+        <mat-form-field class="form-element">
+          <input matInput placeholder="{{'taxgroup.taxGroupCode' | translate }}" formControlName="taxGroupCode" appFocusOnEnter tabIndex="2">
+        </mat-form-field>
 
+        <mat-form-field class="form-element">
+          <input matInput placeholder="{{'taxgroup.taxGroupName' | translate }}" formControlName="taxGroupName" appFocusOnEnter tabIndex="1">
+        </mat-form-field>
+        
         <mat-form-field>
           <mat-label>Product Group</mat-label>
           <mat-select placeholder="{{'taxgroup.productGroupName' | translate }}" formControlName="productGroupName" (selectionChange)="getGetProductGroupsNamesList()" >
@@ -18,17 +26,8 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'taxgroup.taxGroupName' | translate }}" formControlName="taxGroupName" appFocusOnEnter tabIndex="1">
-        </mat-form-field>
-
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'taxgroup.taxGroupCode' | translate }}" formControlName="taxGroupCode" appFocusOnEnter tabIndex="2">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Textarea</mat-label>
-          <textarea matInput placeholder="{{'taxgroup.narration' | translate }}" formControlName="narration" appFocusOnEnter tabIndex="3"></textarea>
-        </mat-form-field>
+        
+        
 
       </div>
       <mat-divider></mat-divider>

@@ -4,6 +4,11 @@
   overflow-x: scroll;
 }
 
+
+.header-boader {
+  border-bottom: 1px solid #8080804d;
+}
+
 :host ::ng-deep table {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   & > tbody  {

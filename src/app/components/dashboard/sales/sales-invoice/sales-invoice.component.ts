@@ -19,15 +19,15 @@ import * as moment from 'moment';
   styleUrls: ['./sales-invoice.component.scss']
 })
 export class SalesInvoiceComponent implements OnInit {
-  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+  selectedDate = {start : moment().add(0, 'day'), end: moment().add(0, 'day')};
 
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['invoiceMasterId', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
-    'ledgerName', 'totalAmount', 'stateCode',
-    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry', 'salesInvoice'
+  displayedColumns: string[] = ['invoiceNo', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
+    'ledgerName', 'grandTotal', 'stateCode', 'vehicleRegNo', 'userId', 'salesInvoice', 'isManualEntry', 'shiftId',
+    'customerGstin', 
   ];
   branchCode: any;
 
@@ -43,16 +43,20 @@ export class SalesInvoiceComponent implements OnInit {
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [this.selectedDate],
+      selected: [null],
       fromDate: [null],
       toDate: [null],
-      invoiceNo: [null]
+      invoiceNo: [null],
+      Role:[null]
     });
   }
 
   ngOnInit() {
     this.branchCode = JSON.parse(localStorage.getItem('user'));
-    this.search();
+    this.dateForm.patchValue({
+      Role: this.branchCode.role
+    })
+    this.getInvoiceList();
   }
 
   getInvoiceList() {
@@ -72,11 +76,12 @@ export class SalesInvoiceComponent implements OnInit {
 
   openSale(row) {
     localStorage.setItem('selectedBill', JSON.stringify(row));
-    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', row.invoiceNo]);
+    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice','create', row.invoiceNo ]);
   }
 
-  returnSale() {
-    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', 'return']);
+  returnSale(row) {
+    localStorage.setItem('selectedBill', JSON.stringify(row));
+    this.router.navigate(['dashboard/sales/salesInvoice/viewSaleInvoice', 'return',  row.invoiceNo]);
   }
 
   search() {
@@ -87,7 +92,8 @@ export class SalesInvoiceComponent implements OnInit {
       } else {
         this.dateForm.patchValue({
           fromDate: this.commonService.formatDate(this.dateForm.value.selected.start._d),
-          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d)
+          toDate: this.commonService.formatDate(this.dateForm.value.selected.end._d),
+          role:this.branchCode.role
         });
       }
     }

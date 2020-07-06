@@ -52,7 +52,7 @@ export class LeaveopeningbalancesComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
-     this.modelFormData.controls['EmpCode'].disable();
+      this.modelFormData.controls['empCode'].disable();
     }
 
   }
@@ -67,7 +67,7 @@ export class LeaveopeningbalancesComponent implements OnInit {
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['EmpCode'].enable();
+    this.modelFormData.controls['empCode'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

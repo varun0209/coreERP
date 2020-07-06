@@ -33,37 +33,19 @@ export class EmployeeInBranchComponent implements OnInit {
     // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
-      this.modelFormData  =  this.formBuilder.group({
-        branchCode: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
-        name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-        address1: [null],
-        address2: [null],
-        address3: [null],
-        address4: [null],
-        advanceAmount: [null],
-        bankAccountNumber: [null],
-        bankBranch: [null],
-        bankName: [null],
-        building: [null],
-        companyCode: [null],
-        email: [null],
-        ext1: [null],
-        ext2: [null],
-        gstNo: [null],
-        ifsccode: [null],
-        leaseAmount: [null],
-        leaseExpiryDate: [null],
-        leaseStartDate: [null],
-        ownerName: [null],
-        phoneNo: [null],
-        phone1: [null],
-        phone2: [null],
-        phone3: [null],
-        active: ['Y'],
-        place: [null],
-        state: [null],
-        pinCode: [null],
-        companyCodeNavigation: [null]
+    this.modelFormData = this.formBuilder.group({
+      
+      branchCode: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(4)]],
+      empCode: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(6)]],
+      empName: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(40)]],
+      ext1: [null],
+      ext2: [null],
+      fromDate: [null],
+      toDate: [null],
+      active: ['Y'],
+      seqId: ['0'],
+      addDate: [null]
+
       });
 
       this.formData = {...data};

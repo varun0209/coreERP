@@ -18,12 +18,12 @@ import * as moment from 'moment';
   styleUrls: ['./purchase-return.component.scss']
 })
 export class PurchaseReturnComponent implements OnInit {
-selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+selectedDate = {start : moment().add(0, 'day'), end: moment().add(0, 'day')};
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['purchaseInvNo', 'purchaseInvDate', 'ledgerCode',
+  displayedColumns: string[] = ['purchaseReturnInvNo','purchaseInvNo', 'purchaseInvDate', 'ledgerCode',
   'ledgerName', 'totalAmount', 'stateCode',
   'userId', 'shiftId'];
   branchCode: any;
@@ -40,26 +40,30 @@ selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [this.selectedDate],
+      selected: [null],
       fromDate: [null],
       toDate: [null],
-      invoiceNo: [null]
+      invoiceNo: [null],
+      Role: [null]
     });
   }
 
   ngOnInit() {
     this.branchCode = JSON.parse(localStorage.getItem('user'));
+    this.dateForm.patchValue({
+      Role: this.branchCode.role
+    })
     this.search();
   }
 
   getPurchaseInvoiceList() {
-    const getPurchaseInvoiceListUrl = String.Join('/', this.apiConfigService.getPurchaseInvoiceList, this.branchCode.branchCode);
+    const getPurchaseInvoiceListUrl = String.Join('/', this.apiConfigService.getPurchaseReturns, this.branchCode.branchCode);
     this.apiService.apiPostRequest(getPurchaseInvoiceListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-        if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
-          this.dataSource = new MatTableDataSource( res.response['InvoiceList']);
+        if (!isNullOrUndefined(res.response['PurchaseReturnHdr']) && res.response['PurchaseReturnHdr'].length) {
+          this.dataSource = new MatTableDataSource( res.response['PurchaseReturnHdr']);
           this.dataSource.paginator = this.paginator;
           this.spinner.hide();
         }
@@ -68,7 +72,7 @@ selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
   }
 
   openPurchase(row) {
-    localStorage.setItem('purchase', JSON.stringify(row));
+    localStorage.setItem('purchaseReturn', JSON.stringify(row));
     this.router.navigate(['dashboard/sales/purchaseReturn/purchaseReturnView', row.purchaseInvNo]);
   }
 

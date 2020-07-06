@@ -69,20 +69,20 @@ export class CommonService {
       hours = ('0' + time.getHours()).slice(-2),
       minutes = ('0' + time.getMinutes()).slice(-2),
       seconds = ('0' + time.getSeconds()).slice(-2);
-    return `${[mnth, day, date.getFullYear()].join('-')} ${[hours, minutes,  seconds].join(':')}`;
+    return `${[mnth, day, date.getFullYear()].join('-')} ${[hours, minutes, seconds].join(':')}`;
   }
 
 
-formatReportDate(event) {
-  var time = new Date();
-  var date = new Date(event),
-    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-    day = ("0" + date.getDate()).slice(-2),
-    hours = ("0" + time.getHours()).slice(-2),
-    minutes = ("0" + time.getMinutes()).slice(-2),
-    seconds = ("0" + time.getSeconds()).slice(-2);
-  return `${[date.getFullYear(), mnth,day ].join("/")} ${[hours, minutes, seconds].join(":")}`
-}
+  formatReportDate(event) {
+    var time = new Date();
+    var date = new Date(event),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2),
+      hours = ("0" + time.getHours()).slice(-2),
+      minutes = ("0" + time.getMinutes()).slice(-2),
+      seconds = ("0" + time.getSeconds()).slice(-2);
+    return `${[date.getFullYear(), mnth, day].join("/")} ${[hours, minutes, seconds].join(":")}`
+  }
 
 
   public closeNav() {
@@ -95,6 +95,16 @@ formatReportDate(event) {
     if (!isNullOrUndefined(this.appDrawer)) {
       this.appDrawer.open();
     }
+  }
+
+  //To Set Focus
+  setFocus(id) {
+    window.setTimeout(function () {
+      let inputElement = <HTMLInputElement>document.getElementById(id);
+      if (inputElement) {
+        inputElement.focus();
+      }
+    }, 0);
   }
 
   // showSpinner() {

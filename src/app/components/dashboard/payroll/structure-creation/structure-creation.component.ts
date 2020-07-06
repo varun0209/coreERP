@@ -3,11 +3,11 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ApiConfigService } from '../../../../services/api-config.service';
 import { String } from 'typescript-string-operations';
 import { CommonService } from '../../../../services/common.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { isNullOrUndefined } from 'util';
 import { ApiService } from '../../../../services/api.service';
 import { StatusCodes } from '../../../../enums/common/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-structure-creation',
@@ -20,6 +20,7 @@ export class StructureCreationComponent implements OnInit {
   structionName: any;
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['id', "text", "amount", "percentage", "select"];
+  params: any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -28,12 +29,13 @@ export class StructureCreationComponent implements OnInit {
     private commonService: CommonService,
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    public dialogRef: MatDialogRef<StructureCreationComponent>,
-    // @Optional() is used to prevent error if no data is passed
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+    private activatedRoute: ActivatedRoute
   ) {
-    console.log(data);
-  }
+    activatedRoute.params.subscribe(params => {
+      console.log(params)
+      this.params = params;
+    });
+    }
 
   ngOnInit() {
     this.getComponentsList();
@@ -86,10 +88,6 @@ export class StructureCreationComponent implements OnInit {
     }
   }
 
-
-  cancel() {
-    this.dialogRef.close();
-  }
 
 
 }

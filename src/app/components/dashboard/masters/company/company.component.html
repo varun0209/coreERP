@@ -9,74 +9,64 @@
     <form [formGroup]="modelFormData" autocomplete="off">
 
       <div class="d--flex">
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.companyCode.valid }">
-          <input matInput placeholder="{{'company.companyCode' | translate }}" disabled formControlName="companyCode" appFocusOnEnter tabIndex="1">
-          <mat-error *ngIf="formControls.companyCode.errors" class="help-block">
-            <div *ngIf="formControls.companyCode.errors.required">Code is required</div>
-          </mat-error>
-
-        </mat-form-field>
-
-        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.name.valid }">
-          <input matInput placeholder="{{'company.name' | translate }}" formControlName="name" appFocusOnEnter tabIndex="2">
-          <mat-error *ngIf="formControls.name.errors" class="help-block">
-            <div *ngIf="formControls.name.errors.required">Name is required</div>
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.companyId.valid }">
+          <input matInput placeholder="{{'company.companyId' | translate }}" disabled formControlName="companyId" appFocusOnEnter tabIndex="1">
+          <mat-error *ngIf="formControls.companyId.errors" class="help-block">
+            <div *ngIf="formControls.companyId.errors.required">Code is required</div>
           </mat-error>
         </mat-form-field>
 
+        <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.companyName.valid }">
+          <input matInput placeholder="{{'company.companyName' | translate }}" formControlName="companyName" appFocusOnEnter tabIndex="2">
+          <mat-error *ngIf="formControls.companyName.errors" class="help-block">
+            <div *ngIf="formControls.companyName.errors.required">Name is required</div>
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.address1' | translate }}" formControlName="address1" appFocusOnEnter tabIndex="3">
+          <input matInput placeholder="{{'company.mailingName' | translate }}" formControlName="mailingName" appFocusOnEnter tabIndex="3">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.address2' | translate }}" formControlName="address2" appFocusOnEnter tabIndex="4">
+          <input matInput placeholder="{{'company.address' | translate }}" formControlName="address" appFocusOnEnter tabIndex="4">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.address3' | translate }}" formControlName="address3" appFocusOnEnter tabIndex="5">
+          <input matInput placeholder="{{'company.phone' | translate }}" formControlName="phone" appFocusOnEnter tabIndex="5">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.address4' | translate }}" formControlName="address4" appFocusOnEnter tabIndex="6">
+          <input matInput placeholder="{{'company.emailId' | translate }}" formControlName="emailId" appFocusOnEnter tabIndex="6">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.finacialYear' | translate }}" formControlName="finacialYear" appFocusOnEnter tabIndex="7">
+          <input matInput placeholder="{{'company.web' | translate }}" formControlName="web" appFocusOnEnter tabIndex="7">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.fromMonth' | translate }}" formControlName="fromMonth" appFocusOnEnter tabIndex="8">
+          <input matInput placeholder="{{'company.country' | translate }}" formControlName="country" appFocusOnEnter tabIndex="8">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.gstno' | translate }}" formControlName="gstNo" appFocusOnEnter tabIndex="9">
+          <input matInput placeholder="{{'company.state' | translate }}" formControlName="state" appFocusOnEnter tabIndex="9">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.active' | translate }}" formControlName="active" appFocusOnEnter tabIndex="10">
+          <input matInput placeholder="{{'company.pin' | translate }}" formControlName="pin" appFocusOnEnter tabIndex="10">
         </mat-form-field>
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.place' | translate }}" formControlName="place" appFocusOnEnter tabIndex="11">
+          <input matInput placeholder="{{'company.currencyId' | translate }}" formControlName="currencyId" appFocusOnEnter tabIndex="11">
         </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.state' | translate }}" formControlName="state" appFocusOnEnter tabIndex="12">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker1" placeholder="{{'company.financialYearFrom' | translate }}" formControlName="financialYearFrom" tabIndex="12">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.pinCode' | translate }}" formControlName="pinCode" appFocusOnEnter tabIndex="13">
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker2" placeholder="{{'company.booksBeginingFrom' | translate }}" formControlName="booksBeginingFrom" tabIndex="13">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
+
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.phone1' | translate }}" formControlName="phone1" appFocusOnEnter tabIndex="14">
-        </mat-form-field>
+          <input matInput placeholder="{{'company.gstin' | translate }}" formControlName="gstin" appFocusOnEnter tabIndex="14">
+        </mat-form-field>              
         <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.phone2' | translate }}" formControlName="phone2" appFocusOnEnter tabIndex="15">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.phone3' | translate }}" formControlName="phone3" appFocusOnEnter tabIndex="16">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.panNo' | translate }}" formControlName="panNo" appFocusOnEnter tabIndex="17">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.tanNo' | translate }}" formControlName="tanNo" appFocusOnEnter tabIndex="18">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.natureOfBusiness' | translate }}" formControlName="natureOfBusiness" appFocusOnEnter tabIndex="19">
-        </mat-form-field>
-        <mat-form-field class="form-element">
-          <input matInput placeholder="{{'company.toMonth' | translate }}" formControlName="toMonth" appFocusOnEnter tabIndex="20">
+          <input matInput placeholder="{{'company.city' | translate }}" formControlName="city" appFocusOnEnter tabIndex="20">
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>

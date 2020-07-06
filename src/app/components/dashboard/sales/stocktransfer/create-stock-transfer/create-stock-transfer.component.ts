@@ -14,21 +14,29 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../../../../directives/format-datepicker';
 
 @Component({
   selector: 'app-create-stock-transfer',
   templateUrl: './create-stock-transfer.component.html',
-  styleUrls: ['./create-stock-transfer.component.scss']
+  styleUrls: ['./create-stock-transfer.component.scss'],
+  providers: [
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}
+  ]
 })
 export class CreateStockTransferComponent implements OnInit {
   formData: FormGroup;
   routeUrl = '';
   GetBranchesListArray = [];
   tableFormData: FormGroup;
-
+  totalQty: any;
+  totalAmount: any;
   getProductByProductCodeArray = [];
   getProductByProductNameArray = [];
   printBill = false;
+  setFocus: any;
 
   displayedColumns: string[] = ['SlNo', 'productCode', 'productName', 'hsnNo', 'qty', 'fQty', 'unitId', 'rate', 'totalAmount', 'availStock', 'batchNo', 'delete'];
   dataSource: MatTableDataSource<any>;
@@ -68,6 +76,8 @@ export class CreateStockTransferComponent implements OnInit {
     this.loadData();
   }
 
+
+
   loadData() {
     this.GetBranchesList();
     this.activatedRoute.params.subscribe(params => {
@@ -101,7 +111,6 @@ export class CreateStockTransferComponent implements OnInit {
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
             this.dataSource = new MatTableDataSource(res.response['InvoiceList']);
-
             this.spinner.hide();
           }
         }
@@ -118,12 +127,12 @@ export class CreateStockTransferComponent implements OnInit {
       this.formData.controls['toBranchName'].disable();
       this.formData.controls['shiftId'].disable();
       this.formData.controls['userId'].disable();
-      this.formData.controls['userName'].disable();
       this.formData.controls['employeeId'].disable();
       this.formData.controls['narration'].disable();
       this.formData.controls['serverDateTime'].disable();
     }
     this.formData.controls['stockTransferNo'].disable();
+    this.formData.controls['userName'].disable();
 
   }
 
@@ -145,17 +154,33 @@ export class CreateStockTransferComponent implements OnInit {
   }
 
   setBranchCode(code, text) {
-    const bname = this.GetBranchesListArray.filter(branchCode => {
-      if (branchCode.id == this.formData.get(code).value) {
-        return branchCode;
+    let flag = false;
+    const branchList = JSON.parse(localStorage.getItem('branchList'));
+    for (let b = 0; b < branchList.length; b++) {
+      if (this.formData.get('fromBranchCode').value == branchList[b]) {
+        flag = true;
       }
-    });
-    if (bname.length) {
+    }
+    if (!flag) {
+      this.alertService.openSnackBar(`You are not eligible to use this Branch(${this.formData.get('fromBranchCode').value}) code`, Static.Close, SnackBar.error);
       this.formData.patchValue({
-        [text]: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+        fromBranchCode: null,
+        fromBranchName: null,
+        stockTransferNo: null
       });
-      if(code == 'fromBranchCode') {
-        this.generateStockTranfNo();
+    } else {
+      const bname = this.GetBranchesListArray.filter(branchCode => {
+        if (branchCode.id == this.formData.get(code).value) {
+          return branchCode;
+        }
+      });
+      if (bname.length) {
+        this.formData.patchValue({
+          [text]: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+        });
+        if (code == 'fromBranchCode') {
+          this.generateStockTranfNo();
+        }
       }
     }
   }
@@ -172,11 +197,16 @@ export class CreateStockTransferComponent implements OnInit {
     } else {
       this.dataSource = new MatTableDataSource([tableObj]);
     }
+    this.commonService.setFocus(this.setFocus);
   }
 
-  clearQty(index, value, column) {
+  clearQty(index, value, column, row) {
     this.dataSource.data[index].qty = null;
     this.dataSource.data[index].fQty = null;
+    if (row.availStock < value) {
+      this.alertService.openSnackBar(`This Product(${row.productCode}) qty or Fqty cannot be greater than available stock`, Static.Close, SnackBar.error);
+      return;
+    }
     this.dataSource.data[index][column] = value;
     this.dataSource = new MatTableDataSource(this.dataSource.data);
   }
@@ -189,6 +219,7 @@ export class CreateStockTransferComponent implements OnInit {
       return index !== i;
     });
     this.dataSource = new MatTableDataSource(this.dataSource.data);
+    this.calculateAmount();
   }
 
   formGroup() {
@@ -198,8 +229,8 @@ export class CreateStockTransferComponent implements OnInit {
       stockTransferDetailsDate: [null],
       productId: [null],
       STockTransferDetail: [null],
-      productCode: [null],
-      productName: [null],
+      productCode: [null, [Validators.required]],
+      productName: [null, [Validators.required]],
       hsnNo: [null],
       rate: [null],
       productGroupId: [null],
@@ -221,10 +252,12 @@ export class CreateStockTransferComponent implements OnInit {
       });
     }
     if (this.tableFormData.valid) {
-      if (this.dataSource.data.length < 6) {
-        this.addTableRow();
+      // if (this.dataSource.data.length) {
+        if (this.dataSource.data[this.dataSource.data.length - 1].productCode != '') {
+          this.addTableRow();
+        }
         this.formGroup();
-      }
+      // }
     }
   }
 
@@ -249,8 +282,8 @@ export class CreateStockTransferComponent implements OnInit {
 
   getProductByProductCode(value) {
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode, value);
-      this.apiService.apiGetRequest(getProductByProductCodeUrl).subscribe(
+      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode);
+      this.apiService.apiPostRequest(getProductByProductCodeUrl, { productCode: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -268,44 +301,76 @@ export class CreateStockTransferComponent implements OnInit {
   }
 
 
-  getStockTransferDetailsSection(productCode) {
+  getStockTransferDetailsSection(productCode, index, id) {
+    this.setFocus = id + index;
+    this.commonService.setFocus(id + index)
+    // if (this.checkProductCode(productCode, index)) {
     if (!isNullOrUndefined(this.formData.get('fromBranchCode').value) && this.formData.get('fromBranchCode').value != '' &&
       !isNullOrUndefined(productCode.value) && productCode.value != '') {
-      const getStockTransferDetailsSectionUrl = String.Join('/', this.apiConfigService.getStockTransferDetailsSection, this.formData.get('fromBranchCode').value, productCode.value);
-      this.apiService.apiGetRequest(getStockTransferDetailsSectionUrl).subscribe(
+      const getStockTransferDetailsSectionUrl = String.Join('/', this.apiConfigService.getStockTransferDetailsSection);
+      this.apiService.apiPostRequest(getStockTransferDetailsSectionUrl, {branchCode: this.formData.get('fromBranchCode').value, productCode : productCode.value
+    }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
             if (!isNullOrUndefined(res.response)) {
               if (!isNullOrUndefined(res.response['SateteList'])) {
-                this.detailsSection(res.response['SateteList']);
+                this.detailsSection(res.response['SateteList'], index);
+                this.getProductByProductCodeArray = [];
                 this.spinner.hide();
               }
             }
           }
         });
     }
+    // } else {
+    //   this.dataSource.data[index].productCode = null;
+    //   this.dataSource = new MatTableDataSource(this.dataSource.data);
+    //   this.alertService.openSnackBar(`Product Code( ${productCode.value} ) Allready Selected`, Static.Close, SnackBar.error);
+    // }
   }
 
-  detailsSection(obj) {
-    this.dataSource.data = this.dataSource.data.map(val => {
-      if (val.productCode == obj.productCode) {
-        this.tableFormData.patchValue({
-          productCode: obj.productCode,
-          productName: obj.productName
-        });
-        val = obj;
-      }
-      val.text = 'obj';
-      return val;
+  // checkProductCode(code, index) {
+  //   if (!isNullOrUndefined(code.value)) {
+  //     for (let c = 0; c < this.dataSource.data.length; c++) {
+  //       if ((this.dataSource.data[c].productCode == code.value) && c != index) {
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   }
+  // }
+
+
+  detailsSection(obj, index) {
+    if (isNullOrUndefined(obj.availStock) || (obj.availStock == 0)) {
+      this.alertService.openSnackBar(`This Product(${obj.productCode}) available stock is 0`, Static.Close, SnackBar.error);
+    }
+    obj.text = 'obj';
+    this.dataSource.data[index] = obj;
+    this.dataSource = new MatTableDataSource(this.dataSource.data);
+    this.tableFormData.patchValue({
+      productCode: obj.productCode,
+      productName: obj.productName
     });
+    // this.dataSource.data = this.dataSource.data.map(val => {
+    //   if (val.productCode == obj.productCode) {
+    //     this.tableFormData.patchValue({
+    //       productCode: obj.productCode,
+    //       productName: obj.productName
+    //     });
+    //     val = obj;
+    //   }
+    //   val.text = 'obj';
+    //   return val;
+    // });
     this.setToFormModel(null, null, null);
   }
 
   getProductByProductName(value) {
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName, value);
-      this.apiService.apiGetRequest(getProductByProductNameUrl).subscribe(
+      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName);
+      this.apiService.apiPostRequest(getProductByProductNameUrl, { productName: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -322,21 +387,31 @@ export class CreateStockTransferComponent implements OnInit {
     }
   }
 
-  calculateAmount(row, index) {
-    if (!isNullOrUndefined(row.qty) && (row.qty != '')) {
-      this.dataSource.data[index].totalAmount = row.qty * row.rate;
-    } else if (!isNullOrUndefined(row.fQty) && (row.fQty != '')) {
-      this.dataSource.data[index].totalAmount = row.fQty * row.rate;
+  calculateAmount(row?, index?) {
+    if(!isNullOrUndefined(row)) {
+      if (!isNullOrUndefined(row.qty) && (row.qty != '')) {
+        this.dataSource.data[index].totalAmount = (row.qty * row.rate).toFixed(2);
+      } else if (!isNullOrUndefined(row.fQty) && (row.fQty != '')) {
+        this.dataSource.data[index].totalAmount = (0 * row.rate).toFixed(2);
+      }
     }
     this.dataSource = new MatTableDataSource(this.dataSource.data);
     let amount = 0;
+    let qty = 0;
     for (let a = 0; a < this.dataSource.data.length; a++) {
       if (this.dataSource.data[a].totalAmount) {
-        amount = amount + this.dataSource.data[a].totalAmount;
+        amount = amount + (+this.dataSource.data[a].totalAmount);
+      }
+      if (!isNullOrUndefined(this.dataSource.data[a].qty)) {
+        qty = qty + this.dataSource.data[a].qty;
+      } else if (!isNullOrUndefined(this.dataSource.data[a].fQty)) {
+        qty = qty + this.dataSource.data[a].fQty;
       }
     }
+    this.totalQty = qty;
+    this.totalAmount = !isNullOrUndefined(amount) ? amount : null
     this.formData.patchValue({
-      totalAmount: !isNullOrUndefined(amount) ? amount : null,
+      totalAmount: !isNullOrUndefined(amount) ? amount.toFixed(2) : null,
     });
   }
 
@@ -344,8 +419,14 @@ export class CreateStockTransferComponent implements OnInit {
     if (this.routeUrl != '' || this.dataSource.data.length == 0) {
       return;
     }
+    let tableData = [];
+    for (let d = 0; d < this.dataSource.data.length; d++) {
+      if (this.dataSource.data[d]['productCode'] != '') {
+        tableData.push(this.dataSource.data[d]);
+      }
+    }
     let content = '';
-    let availStock = this.dataSource.data.filter(stock => {
+    let availStock = tableData.filter(stock => {
       if (stock.availStock == 0) {
         content = '0 Availablilty Stock';
         return stock;
@@ -363,18 +444,13 @@ export class CreateStockTransferComponent implements OnInit {
       this.alertService.openSnackBar(`This Product(${availStock[0].productCode}) ${content}`, Static.Close, SnackBar.error);
       return;
     }
-    let tableData = [];
-    for (let d = 0; d < this.dataSource.data.length; d++) {
-      if (this.dataSource.data[d]['productCode'] != '') {
-        tableData.push(this.dataSource.data[d]);
-      }
-    }
     this.enableFileds();
     this.registerStockTransfer(tableData);
   }
 
   enableFileds() {
     this.formData.controls['stockTransferNo'].enable();
+    this.formData.controls['userName'].enable();
   }
 
   setProductName(name) {
@@ -392,10 +468,10 @@ export class CreateStockTransferComponent implements OnInit {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            this.alertService.openSnackBar('Stock Trasfer Created Successfully..', Static.Close, SnackBar.success);
           }
-        this.spinner.hide();
-        this.reset();
+          this.spinner.hide();
+          this.reset();
         }
       });
   }

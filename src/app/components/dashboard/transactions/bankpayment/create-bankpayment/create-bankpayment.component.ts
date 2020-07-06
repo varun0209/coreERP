@@ -14,11 +14,17 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../../../../directives/format-datepicker';
 
 @Component({
   selector: 'app-create-bankpayment',
   templateUrl: './create-bankpayment.component.html',
-  styleUrls: ['./create-bankpayment.component.scss']
+  styleUrls: ['./create-bankpayment.component.scss'],
+  providers: [
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}
+  ]
 })
 export class CreateBankpaymentComponent implements OnInit {
 
@@ -58,8 +64,8 @@ export class CreateBankpaymentComponent implements OnInit {
   ) {
     this.branchFormData = this.formBuilder.group({
       voucherNo: [null],
-      voucherTypeId: [null],
       bankPaymentDate: [(new Date()).toISOString()],
+      branchId:[null],
       branchCode: [null],
       branchName: [null],
       shiftId: [null],
@@ -68,11 +74,16 @@ export class CreateBankpaymentComponent implements OnInit {
       employeeId: [null],
       totalAmount: [null],
       narration: [null],
-      printBill: [false],
+      //printBill: [false],
       realized:[null],
       postingDate:[null],
       chequeNo:[null],
-      bankLedgerCode:[null]
+      bankLedgerCode:[null],
+      bankPaymentMasterId:[null],
+      bankPaymentVchNo:[null],
+      bankLedgerId:[null],
+      bankLedgerName:[null],
+      serverDate:[null]
     });
 
   }
@@ -82,18 +93,19 @@ export class CreateBankpaymentComponent implements OnInit {
   }
   loadData() {
     this.getBankPaymentBranchesList();
-    this.getBankPAccountLedgerList();
+   // this.getBankPAccountLedgerList();
     this.activatedRoute.params.subscribe(params => {
       console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         this.disableForm(params.id1);
-        this.getInvoiceDeatilList(params.id1);
+        this.getBankPaymentDetailsList(params.id1);
         let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
         this.branchFormData.setValue(billHeader);
         console.log(billHeader);
       } else {
         this.disableForm();
+        this.addTableRow();
         const user = JSON.parse(localStorage.getItem('user'));
         if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
@@ -108,14 +120,14 @@ export class CreateBankpaymentComponent implements OnInit {
       }
     });
   }
-  getInvoiceDeatilList(id) {
-    const getInvoiceDeatilListUrl = String.Join('/', this.apiConfigService.getInvoiceDeatilList, id);
-    this.apiService.apiGetRequest(getInvoiceDeatilListUrl).subscribe(
+  getBankPaymentDetailsList(id) {
+    const getBankPaymentDetailsListUrl = String.Join('/', this.apiConfigService.getBankPaymentDetailsList, id);
+    this.apiService.apiGetRequest(getBankPaymentDetailsListUrl).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response['InvoiceDetailList']) && res.response['InvoiceDetailList'].length) {
-            this.dataSource = new MatTableDataSource(res.response['InvoiceDetailList']);
+          if (!isNullOrUndefined(res.response['BankPaymentDetails']) && res.response['BankPaymentDetails'].length) {
+            this.dataSource = new MatTableDataSource(res.response['BankPaymentDetails']);
             this.dataSource.paginator = this.paginator;
             this.spinner.hide();
           }
@@ -126,12 +138,15 @@ export class CreateBankpaymentComponent implements OnInit {
   disableForm(route?) {
     if (!isNullOrUndefined(route)) {
       this.branchFormData.controls['voucherNo'].disable();
-      this.branchFormData.controls['ledgerCode'].disable();
+      this.branchFormData.controls['bankLedgerCode'].disable();
       this.branchFormData.controls['branchCode'].disable();
-      this.branchFormData.controls['cashPaymentDate'].disable();
-      this.branchFormData.controls['ledgerName'].disable();
+      this.branchFormData.controls['bankPaymentDate'].disable();
+      this.branchFormData.controls['postingDate'].disable();
       this.branchFormData.controls['narration'].disable();
-      this.branchFormData.controls['suppliedTo'].disable();
+      this.branchFormData.controls['userName'].disable();
+      this.branchFormData.controls['totalAmount'].disable();
+      this.branchFormData.controls['chequeNo'].disable();
+      this.branchFormData.controls['realized'].disable();
     }
 
     // this.branchFormData.controls['voucherNo'].disable();
@@ -171,22 +186,57 @@ export class CreateBankpaymentComponent implements OnInit {
       });
   }
 
-  getBankPAccountLedgerList() {
-    const getBankPAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBankPAccountLedgerList);
-    this.apiService.apiGetRequest(getBankPAccountLedgerListUrl).subscribe(
-      response => {
-        const res = response.body;
-        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response)) {
-            if (!isNullOrUndefined(res.response['AccountLedgerList']) && res.response['AccountLedgerList'].length) {
-              this.GetBankPAccountLedgerListArray = res.response['AccountLedgerList'];
-              this.spinner.hide();
+  // getBankPAccountLedgerList() {
+  //   const getBankPAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBankPAccountLedgerList);
+  //   this.apiService.apiGetRequest(getBankPAccountLedgerListUrl).subscribe(
+  //     response => {
+  //       const res = response.body;
+  //       if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+  //         if (!isNullOrUndefined(res.response)) {
+  //           if (!isNullOrUndefined(res.response['AccountLedgerList']) && res.response['AccountLedgerList'].length) {
+  //             this.GetBankPAccountLedgerListArray = res.response['AccountLedgerList'];
+  //             this.spinner.hide();
+  //           }
+  //         }
+  //       }
+  //     });
+  // }
+
+  getBankPAccountLedgerList(value) {
+    if (!isNullOrUndefined(value) && value != '') {
+      const getBankPAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBPAccountLedgerList, value);
+      this.apiService.apiGetRequest(getBankPAccountLedgerListUrl).subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              if (!isNullOrUndefined(res.response['AccountLedgerList']) && res.response['AccountLedgerList'].length) {
+                this.GetBankPAccountLedgerListArray = res.response['AccountLedgerList'];
+                //this.getCashPartyAccount();
+              } else {
+                this.GetBankPAccountLedgerListArray = [];
+              }
             }
+            this.spinner.hide();
           }
-        }
-      });
+        });
+    } else {
+      this.GetBankPAccountLedgerListArray = [];
+    }
   }
 
+  setLedgerName(value) {
+    const lname = this.GetBankPAccountLedgerListArray.filter(lCode => {
+      if (lCode.id == this.branchFormData.get('bankLedgerCode').value) {
+        return lCode;
+      }
+    });
+    this.branchFormData.patchValue({
+      bankLedgerName: !isNullOrUndefined(lname[0]) ? lname[0].text : null
+    });
+  }
+
+  
   genarateVoucherNo(branch?) {
     let genarateVoucherNoUrl;
     if (!isNullOrUndefined(branch)) {
@@ -282,7 +332,7 @@ export class CreateBankpaymentComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.dataSource.data);
     this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    this.calculateAmount();
   }
 
   getAccountByAccountCode(value) {
@@ -305,7 +355,27 @@ export class CreateBankpaymentComponent implements OnInit {
     }
   }
 
-  calculateAmount(row, index) {
+  getAccountByAccountName(value) {
+    if (!isNullOrUndefined(value) && value != '') {
+      const getAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBPAccountLedgerListByName, value);
+      this.apiService.apiGetRequest(getAccountLedgerListUrl).subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              if (!isNullOrUndefined(res.response['AccountLedgerList'])) {
+                this.getAccountLedgerListArray = res.response['AccountLedgerList'];
+                this.spinner.hide();
+              }
+            }
+          }
+        });
+    } else {
+      this.getAccountLedgerListArray = [];
+    }
+  }
+
+  calculateAmount(row?, index?) {
     let amount = 0;
     for (let a = 0; a < this.dataSource.data.length; a++) {
       if (this.dataSource.data[a].amount) {
@@ -315,6 +385,44 @@ export class CreateBankpaymentComponent implements OnInit {
     this.branchFormData.patchValue({
       totalAmount : amount
     });
+  }
+
+  
+  setAccountCode(value) {
+    let flag = true;
+    for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
+      if (this.getAccountLedgerListArray[t]['text'] == value.value) {
+        for (let d = 0; d < this.dataSource.data.length; d++) {
+          if (this.dataSource.data[d]['toLedgerName'] == this.getAccountLedgerListArray[t]['text']) {
+            this.dataSource.data[d]['toLedgerCode'] = this.getAccountLedgerListArray[t]['id'];
+            this.tableFormData.patchValue({
+              toLedgerCode : this.getAccountLedgerListArray[t].id,
+              toLedgerName : this.getAccountLedgerListArray[t].text
+            });
+            flag = false;
+            break;
+          }
+        }
+      }
+    }
+    if(flag) {
+        this.dataSource.data[this.dataSource.data.length - 1].toLedgerName = value.value;
+        for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
+          if (this.getAccountLedgerListArray[t]['text'] == value.value) {
+            for (let d = 0; d < this.dataSource.data.length; d++) {
+              if (this.dataSource.data[d]['toLedgerName'] == this.getAccountLedgerListArray[t]['text']) {
+                this.dataSource.data[d]['toLedgerCode'] = this.getAccountLedgerListArray[t]['id'];
+                this.tableFormData.patchValue({
+                  toLedgerCode : this.getAccountLedgerListArray[t].id,
+                  toLedgerName : this.getAccountLedgerListArray[t].text
+                        });
+                break;
+              }
+            }
+          }
+        }
+    }
+    this.dataSource = new MatTableDataSource(this.dataSource.data);
   }
 
   setAccountName(value) {
@@ -358,10 +466,20 @@ export class CreateBankpaymentComponent implements OnInit {
 
   }
   save() {
-    if (!this.tableFormObj) {
-      this.dataSource.data.pop();
-      console.log(this.dataSource.data);
+    // if (!this.tableFormObj) {
+    //   this.dataSource.data.pop();
+    //   console.log(this.dataSource.data);
+    // }
+    if (this.routeUrl != '' || this.dataSource.data.length == 0) {
+      return;
     }
+    let tableData = [];
+    for (let d = 0; d < this.dataSource.data.length; d++) {
+      if (this.dataSource.data[d]['toLedgerCode'] != '') {
+        tableData.push(this.dataSource.data[d]);
+      }
+    }
+    let content = '';
     let totalAmount = null;
     this.dataSource.data.forEach(element => {
       totalAmount = element.amount + totalAmount;
@@ -369,26 +487,33 @@ export class CreateBankpaymentComponent implements OnInit {
 
     console.log(this.branchFormData, this.dataSource.data);
 
-    this.registerBankPayment();
+    this.registerBankPayment(tableData);
   }
 
   reset() {
-    console.log(this.branchFormData);
     this.branchFormData.reset();
-    this.dataSource = new MatTableDataSource(this.dataSource.data);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource();
+    this.formGroup();
+    this.loadData();
   }
 
-  registerBankPayment() {
+  registerBankPayment(data) {
+    this.branchFormData.patchValue({
+      bankPaymentMasterId: 0,
+      bankPaymentDate: this.commonService.formatDate(this.branchFormData.get('bankPaymentDate').value),
+      postingDate: this.commonService.formatDate(this.branchFormData.get('postingDate').value),
+    });
     const registerBankPaymentUrl = String.Join('/', this.apiConfigService.registerBankPayment);
-    const requestObj = { BankpaymentHdr: this.branchFormData.value, BankpaymentDetail: this.dataSource.data };
+    const requestObj = { BankpaymentHdr: this.branchFormData.value, BankpaymentDetail: data };
     this.apiService.apiPostRequest(registerBankPaymentUrl, requestObj).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            this.alertService.openSnackBar('Bank Payment Created Successfully..', Static.Close, SnackBar.success);
           }
+          this.reset();
+          this.spinner.hide();
         }
       });
   }

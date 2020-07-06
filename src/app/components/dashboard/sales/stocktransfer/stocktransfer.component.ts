@@ -19,7 +19,7 @@ import * as moment from 'moment';
   styleUrls: ['./stocktransfer.component.scss']
 })
 export class StocktransferComponent implements OnInit {
-  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+  selectedDate = {start : moment().add(0, 'day'), end: moment().add(0, 'day')};
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
@@ -42,15 +42,19 @@ export class StocktransferComponent implements OnInit {
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [this.selectedDate],
+      selected: [null],
       fromDate: [null],
       toDate: [null],
-      invoiceNo: [null]
+      invoiceNo: [null],
+      Role:[null]
     });
   }
 
   ngOnInit() {
       this.branchCode = JSON.parse(localStorage.getItem('user'));
+      this.dateForm.patchValue({
+        Role: this.branchCode.role
+      })
       this.search();
   }
 
@@ -71,7 +75,7 @@ export class StocktransferComponent implements OnInit {
 
   openStock(row) {
     localStorage.setItem('stockTransfer', JSON.stringify(row));
-    this.router.navigate(['dashboard/sales/stockTransfer/createStockTransfer', row.fromBranchCode]);
+    this.router.navigate(['dashboard/sales/stockTransfer/createStockTransfer', row.stockTransferMasterId]);
   }
 
   search() {

@@ -19,15 +19,15 @@ import * as moment from 'moment';
   styleUrls: ['./sales-return.component.scss']
 })
 export class SalesReturnComponent implements OnInit {
-  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+  selectedDate = {start : moment().add(0, 'day'), end: moment().add(0, 'day')};
 
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['invoiceMasterId', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
-    'ledgerName', 'totalAmount', 'stateCode',
-    'vehicleRegNo', 'userId', 'isManualEntry', 'isManualEntry'
+  displayedColumns: string[] = ['invoiceNo', 'invoiceDate', 'branchCode', 'branchName', 'ledgerCode',
+    'ledgerName', 'totalAmount', 'stateCode', 'vehicleRegNo', 'userId', 'isManualEntry', 'shiftId',
+    'customerGstin', 
   ];
   branchCode: any;
 
@@ -43,26 +43,30 @@ export class SalesReturnComponent implements OnInit {
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [this.selectedDate],
+      selected: [null],
       fromDate: [null],
       toDate: [null],
-      invoiceNo: [null]
+      invoiceNo: [null],
+      Role:[null]
     });
   }
 
   ngOnInit() {
     this.branchCode = JSON.parse(localStorage.getItem('user'));
+    this.dateForm.patchValue({
+      Role: this.branchCode.role
+    })
     this.search();
   }
 
   getInvoiceList() {
-    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceList, this.branchCode.branchCode);
+    const getInvoiceListUrl = String.Join('/', this.apiConfigService.getInvoiceGetInvoiceReturnList, this.branchCode.branchCode);
     this.apiService.apiPostRequest(getInvoiceListUrl, this.dateForm.value).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response['InvoiceList']) && res.response['InvoiceList'].length) {
-            this.dataSource = new MatTableDataSource(res.response['InvoiceList']);
+          if (!isNullOrUndefined(res.response['InvoiceReturnList']) && res.response['InvoiceReturnList'].length) {
+            this.dataSource = new MatTableDataSource(res.response['InvoiceReturnList']);
             this.dataSource.paginator = this.paginator;
             this.spinner.hide();
           }
@@ -71,7 +75,7 @@ export class SalesReturnComponent implements OnInit {
   }
 
   openSale(row) {
-    localStorage.setItem('selectedBill', JSON.stringify(row));
+    localStorage.setItem('selectedRetunBill', JSON.stringify(row));
     this.router.navigate(['dashboard/sales/salesReturn/salesReturnView', row.invoiceNo]);
   }
 

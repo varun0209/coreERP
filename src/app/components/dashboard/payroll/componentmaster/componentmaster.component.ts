@@ -9,6 +9,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiConfigService } from '../../../../services/api-config.service';
 import { ApiService } from '../../../../services/api.service';
 import { String } from 'typescript-string-operations';
+
+
+interface specificMonth {
+  value: string;
+  viewValue: string;
+}
+interface duration {
+  value: string;
+  viewValue: string;
+}
 @Component({
   selector: 'app-componentmaster',
   templateUrl: './componentmaster.component.html',
@@ -20,8 +30,31 @@ export class ComponentMasterComponent  implements OnInit {
   modelFormData: FormGroup;
   isSubmitted  =  false;
   formData: any;
-  configureList:any;
+  configureList: any;
 
+  duration: duration[] =
+    [
+      { value: 'Quarterly ', viewValue: 'Quarterly ' },
+      { value: 'Half-Yearly ', viewValue: 'Half-Yearly ' },
+      { value: 'Annually', viewValue: 'Annually' }
+    ];
+
+  months: specificMonth[] =
+    [
+      { value: 'January', viewValue: 'January' },
+      { value: 'February', viewValue: 'February' },
+      { value: 'March', viewValue: 'March' },
+      { value: 'April', viewValue: 'April' },
+      { value: 'May', viewValue: 'May' },
+      { value: 'June', viewValue: 'June' },
+      { value: 'July', viewValue: 'July' },
+      { value: 'August', viewValue: 'August' },
+      { value: 'September', viewValue: 'September' },
+      { value: 'Octomber', viewValue: 'Octomber' },
+      { value: 'November', viewValue: 'November' },
+      { value: 'December', viewValue: 'December' }
+
+    ];
   constructor(
     private alertService: AlertService,
     private formBuilder: FormBuilder,

@@ -1,0 +1,20 @@
+<div *ngIf="tableUrl">
+  <div *ngIf="tableUrl.coustom">
+
+    <app-table [tableData]="tableData"
+               (addOrUpdateEvent)="addOrUpdateEvent($event)">
+    </app-table>
+  </div>
+
+  <div *ngIf="!tableUrl.coustom && routeParams == 'leaveApproval'">
+    <app-leaveapproval></app-leaveapproval>
+  </div>
+
+  <div *ngIf="!tableUrl.coustom && routeParams == 'CTCBreakup'">
+    <app-ctcbreakup></app-ctcbreakup>
+  </div>
+
+  <div *ngIf="!tableUrl.coustom && routeParams == 'salaryprocess'">
+    <app-salaryprocess></app-salaryprocess>
+  </div>
+</div>

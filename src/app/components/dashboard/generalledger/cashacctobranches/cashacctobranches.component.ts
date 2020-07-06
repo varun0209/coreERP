@@ -36,7 +36,7 @@ export class CashAccToBranchesComponent  implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
       this.modelFormData  =  this.formBuilder.group({
-        code: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+        code: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]],
         branchCode: [null, [Validators.required]],
         active: [null],
         bankGlacc: [null],

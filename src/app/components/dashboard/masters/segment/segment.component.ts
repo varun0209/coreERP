@@ -41,7 +41,7 @@ export class SegmentComponent implements OnInit {
        
         id: [null, [Validators.required, Validators.minLength(1)]],
         name: [null, [Validators.required, Validators.minLength(0), Validators.maxLength(40)]],
-        seqId: [null],
+        seqId: ['0'],
         active: [null]
       });
 

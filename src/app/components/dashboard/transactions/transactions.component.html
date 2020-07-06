@@ -1,3 +1,8 @@
+ <div *ngIf="tableUrl">
+    <div *ngIf="tableUrl.coustom">
+      <app-table [tableData]="tableData"
+                 (addOrUpdateEvent)="addOrUpdateEvent($event)"></app-table>
+    </div>
 <div *ngIf="!tableUrl.coustom && routeParams == 'cashpayment'">
   <app-cashpayment></app-cashpayment>
 </div>
@@ -25,4 +30,7 @@
 </div>
 <div *ngIf="!tableUrl.coustom && routeParams == 'oilconversion'">
   <app-oilconversion></app-oilconversion>
+</div>
+<div *ngIf="!tableUrl.coustom && routeParams == 'stockexcess'">
+  <app-stockexcess></app-stockexcess>
 </div>

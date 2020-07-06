@@ -2,6 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
+import { String } from 'typescript-string-operations';
+import { ApiConfigService } from '../../services/api-config.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AlertService } from '../../services/alert.service';
+import { Static } from '../../enums/common/static';
+import { SnackBar, StatusCodes } from '../../enums/common/common';
 
 @Component({
   selector: 'app-navbar',
@@ -20,16 +27,29 @@ export class NavbarComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private apiService: ApiService,
+    private apiConfigService: ApiConfigService,
+    private spinner: NgxSpinnerService,
+    private alertService: AlertService,
+
   ) { }
 
   ngOnInit() {
   }
 
   logout() {
-    this.authService.logout();
-    localStorage.clear();
-    this.router.navigateByUrl('/login');
+    const logoutUrl = String.Join('/', this.apiConfigService.logoutUrl, this.loginUser.seqId);
+    this.apiService.apiGetRequest(logoutUrl).subscribe(
+      res => {
+        this.alertService.openSnackBar(res.Response, Static.Close, SnackBar.success);
+        this.authService.logout();
+        localStorage.clear();
+        this.router.navigateByUrl('/login');
+        this.spinner.hide();
+      });
+
+
   }
 
   openSetting() {
@@ -43,7 +63,6 @@ export class NavbarComponent implements OnInit {
     } else { 
       this.commonService.openNav();
       this.openMenu = true;
-
     }
   }
 }

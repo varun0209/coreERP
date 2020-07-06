@@ -104,3 +104,14 @@
 mat-form-field {
   height: 40px;
 }
+
+
+.flashLight {
+  -webkit-animation: glowing 1500ms infinite;
+}
+
+@-webkit-keyframes glowing {
+  0% { border: #B20000; -webkit-box-shadow: 0 0 1px #B20000; }
+  50% { border: #FF0000; -webkit-box-shadow: 0 0 20px #FF0000; }
+  100% { border: #B20000; -webkit-box-shadow: 0 0 1px #B20000; }
+}

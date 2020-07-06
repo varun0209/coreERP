@@ -29,7 +29,7 @@ export class AccountsGroupComponent  implements OnInit {
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['groupCode1'].disable();
+        this.modelFormData.controls['groupCode'].disable();
       }
   }
 

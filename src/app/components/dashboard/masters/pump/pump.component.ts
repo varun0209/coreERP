@@ -46,7 +46,6 @@ export class PumpComponent implements OnInit {
       productName: [null],
       tankId: [null],
       tankNo: [null],
-      //pumpId: [null],
       pumpNo: [null],
       pumpCapacityinLtrs: [null],
       meterReading: [null],
@@ -59,6 +58,7 @@ export class PumpComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
+      this.modelFormData.controls['pumpNo'].disable();
     }
 
   }
@@ -69,7 +69,7 @@ export class PumpComponent implements OnInit {
   }
 
   GetBranchesList() {
-    const getBranchesListUrl = String.Join('/', this.apiConfigService.GetBranches);
+    const getBranchesListUrl = String.Join('/', this.apiConfigService.getCashPaymentBranchesList);
     this.apiService.apiGetRequest(getBranchesListUrl)
       .subscribe(
         response => {
@@ -147,6 +147,7 @@ export class PumpComponent implements OnInit {
     }
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
+    this.modelFormData.controls['pumpNo'].enable();
   }
 
   cancel() {

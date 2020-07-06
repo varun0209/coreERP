@@ -22,19 +22,26 @@ import {
   from './components/dashboard/Inventory/index';
 
 import {
-  CompanyComponent, MastersComponent, BranchesComponent, DivisionComponent,
+  CompanyComponent, MastersComponent, BranchesComponent, DivisionComponent,DesignationComponent,
   SegmentComponent, ProfitCenterComponent, PartnerCreationComponent, CostCenterComponent,
   NoSeriesComponent, PartnerTypeComponent, EmployeeInBranchComponent, EmployeeComponent,
   TaxMasterComponent, UnitComponent, TanksComponent, PumpComponent, ProductpackingComponent,
-  TaxgroupsComponent, TaxstructuresComponent
+  TaxgroupsComponent, TaxstructuresComponent,MSHSDRatesComponent,ProductComponent
 } from './components/dashboard/masters/index';
 
 import {
-  PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent,
-  LeaveRequestComponent, PTMasterComponent, ComponentMasterComponent,
-  StructureCreationComponent, LeaveApprovalComponent,
+  PayrollComponent,
+  LeaveopeningbalancesComponent,
+  LeavetypesComponent,
+  StructureCreationComponent, 
+  PTMasterComponent, ComponentMasterComponent,
   PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent
 } from './components/dashboard/payroll/index';
+
+import {
+  SelfserviceComponent, LeavetypeComponent,ApplyodComponent,LeaveRequestComponent,LeaveopeningbalanceComponent,LeaveApprovalComponent
+  
+} from './components/dashboard/selfservice/index';
 
 import {
   SalesComponent, SalesInvoiceComponent, SalesReturnComponent,StocktransferComponent , SalesReturnViewComponent, CreateBillComponent, CreateStockTransferComponent, PurchaseComponent, PurchaseCreateComponent
@@ -45,7 +52,8 @@ import {
   CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent, BankReceiptComponent,
   CreateBankreceiptComponent,JournalVoucherComponent,CreateJournalvoucherComponent,
    CreateStockissuesComponent , StockissuesComponent, CreateStockreceiptsComponent, StockreceiptsComponent
-   ,CreateStockshortsComponent, StockshortComponent, CreateOilconversionsComponent, OilconversionComponent
+   ,CreateStockshortsComponent, StockshortComponent, CreateOilconversionsComponent, OilconversionComponent,PackageconversionComponent,
+    StockExcessComponent,CreateStockExcessComponent,MeterReadingComponent
 } from './components/dashboard/transactions/index';
 
 import {
@@ -65,7 +73,9 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { PurchaseReturnComponent } from './components/dashboard/sales/purchase-return/purchase-return.component';
 import { PurchaseReturnViewComponent } from './components/dashboard/sales/purchase-return/purchase-return-view/purchase-return-view.component';
 
-import { ReportsComponent } from './components/dashboard/reports/index';
+import { ReportsComponent, PdfConverterOneComponent } from './components/dashboard/reports/index';
+import { MemberMasterComponent } from './components/dashboard/masters/member-master/member-master.component';
+import { VehicleComponent } from './components/dashboard/masters/member-master/vehicle/vehicle.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -88,12 +98,19 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AccToAccClassComponent, VoucherTypesComponent,
     InventoryComponent, BrandModelComponent, SizesComponent, AccountingClassComponent,
     BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent,
-    CompanyComponent, MastersComponent, BranchesComponent, DivisionComponent,
+    CompanyComponent, MastersComponent, BranchesComponent, DivisionComponent,DesignationComponent,
     SegmentComponent, ProfitCenterComponent, PartnerCreationComponent, CostCenterComponent,
     NoSeriesComponent, PartnerTypeComponent, EmployeeInBranchComponent, EmployeeComponent,
     TaxMasterComponent, UnitComponent, TanksComponent, PumpComponent, ProductpackingComponent,
     TaxgroupsComponent, TaxstructuresComponent,
-    PayrollComponent, LeaveopeningbalancesComponent, LeavetypesComponent,
+    PayrollComponent,
+    LeaveopeningbalancesComponent,
+    //LeaveopeningbalanceComponent,
+    //selfserviceComponent,
+    SelfserviceComponent,
+    LeavetypeComponent,
+    LeaveopeningbalanceComponent,
+    LeavetypesComponent, ApplyodComponent,
     LeaveRequestComponent, PTMasterComponent, ComponentMasterComponent,
     StructureCreationComponent, LeaveApprovalComponent,
     PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent,
@@ -105,7 +122,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReportTableComponent,ReportsInnerTableComponent, ReportsComponent, SearchFilterTableComponent,
     CreateStockissuesComponent , StockissuesComponent, CreateStockreceiptsComponent, StockreceiptsComponent
     ,CreateStockshortsComponent, StockshortComponent, CreateOilconversionsComponent, OilconversionComponent,
-    PrintComponent
+    PrintComponent,PackageconversionComponent,MSHSDRatesComponent,StockExcessComponent,CreateStockExcessComponent,MeterReadingComponent,ProductComponent,MemberMasterComponent, VehicleComponent, PdfConverterOneComponent
   ],
   imports: [
     AppRoutingModule,
@@ -138,19 +155,26 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AccToAccClassComponent, VoucherTypesComponent,
     DeleteItemComponent, InventoryComponent, BrandModelComponent, SizesComponent, AccountingClassComponent,
     BrandComponent, NumberAssignmentComponent, MaterialGroupsComponent,
-    CompanyComponent, BranchesComponent, DivisionComponent,
+    CompanyComponent, BranchesComponent, DivisionComponent,DesignationComponent,
     SegmentComponent, ProfitCenterComponent, PartnerCreationComponent, CostCenterComponent,
     NoSeriesComponent, PartnerTypeComponent, EmployeeInBranchComponent, EmployeeComponent,
     TaxMasterComponent, UnitComponent, TanksComponent, PumpComponent, ProductpackingComponent,
     TaxgroupsComponent, TaxstructuresComponent,
-    LeaveopeningbalancesComponent, LeavetypesComponent,
-    LeaveRequestComponent, PTMasterComponent, ComponentMasterComponent,
-    StructureCreationComponent, LeaveApprovalComponent,
+    LeaveopeningbalancesComponent,
+   // LeaveopeningbalanceComponent,
+    LeavetypeComponent,
+    LeaveopeningbalanceComponent,
+    LeavetypesComponent,
+    ApplyodComponent,
+    LeaveRequestComponent,
+    PTMasterComponent, ComponentMasterComponent,
+     LeaveApprovalComponent,
     PFMasterComponent, CTCBreakupComponent, SalaryProcessComponent,CashPaymentComponent, CreateCashpaymentComponent, CashReceiptComponent,
     CreateCashreceiptComponent, BankPaymentComponent, CreateBankpaymentComponent,BankReceiptComponent,CreateBankreceiptComponent,
     JournalVoucherComponent,CreateJournalvoucherComponent,
     ReportsInnerTableComponent, SearchFilterTableComponent,
-    PrintComponent
+    PrintComponent,PackageconversionComponent,MSHSDRatesComponent,StockExcessComponent,CreateStockExcessComponent,MeterReadingComponent,ProductComponent,
+    // MemberMasterComponent, VehicleComponent
   ]
 })
 export class AppModule { }

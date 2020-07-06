@@ -50,6 +50,7 @@ export class CreateStockreceiptsComponent implements OnInit {
   getProductByProductNameArray: any[];
   receiptNo: any;
   GettoBranchesListArray: any;
+  toBranchCode: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,7 +72,7 @@ export class CreateStockreceiptsComponent implements OnInit {
       serverDateTime: [null],
       shiftId: [null],
         userId: '0',
-      operatorStockReceiptId: [null],
+      operatorStockReceiptId: '0',
       userName: [null],
       employeeId: [null],
       remarks: [null],
@@ -89,38 +90,58 @@ export class CreateStockreceiptsComponent implements OnInit {
         })
     }
   }
-
-
   ngOnInit()
   {
+    this.loadData();
+  }
+
+  loadData() {
     //debugger;
-    this.gettingtobranches();
+    const user = JSON.parse(localStorage.getItem('user'));
     this.getBranchesList();
-    this.formGroup();
     this.activatedRoute.params.subscribe(params => {
-      console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         //this.disableForm(params.id1);
         this.getStockreceiptDeatilList(params.id1);
         let billHeader = JSON.parse(localStorage.getItem('selectedStockreceipt'));
         this.branchFormData.setValue(billHeader);
-        console.log(billHeader);
-      } else {
+        this.gettingtobranches();
+      } else
+      {
         //this.disableForm();
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!isNullOrUndefined(user.fromBranchCode)) {
-          //this.frombrnchcode = user.fromBranchCode;
+        if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
-            voucherNo: user.fromBranchCode,
+            fromBranchCode: user.branchCode,
+            userId: user.seqId,
+            userName: user.userName
           });
-          this.genaratereceiptNo(user.fromBranchCode);
+          this.setBranchCode();
+          this.genaratereceiptNo(user.branchCode);
+          this.formGroup();
+          this.gettingtobranches();
+          //this.gettingtobranches();
+          // this.settoBranchCode();
         }
-       
         this.addTableRow();
       }
     });
   }
+
+  setBranchCode() {
+    const bname = this.GetBranchesListArray.filter(fromBranchCode => {
+      if (fromBranchCode.id == this.branchFormData.get('fromBranchCode').value) {
+        return fromBranchCode;
+      }
+    });
+    if (bname.length) {
+      this.branchFormData.patchValue({
+        fromBranchName: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+      });
+    }
+  }
+
+
 
   getStockreceiptDeatilList(id)
   {
@@ -200,27 +221,23 @@ export class CreateStockreceiptsComponent implements OnInit {
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-          if (!isNullOrUndefined(res.response)) {
-            if (!isNullOrUndefined(res.response['branch']) && res.response['branch'].length) {
-              this.GettoBranchesListArray = res.response['branch'];
+          if (!isNullOrUndefined(res.response))
+          {
+            console.log(res.response['branch']);
+            if (!isNullOrUndefined(res.response['branch']) && res.response['branch'].length)
+            {
+              this.toBranchCode = res.response['branch']
+              this.branchFormData.patchValue
+                ({
+                  toBranchCode: res.response['branch']
+                });
+              //this.GettoBranchesListArray = res.response['branch'];
               this.spinner.hide();
             }
           }
         }
       });
-    //const gettingtobranchesListUrl = String.Join('/', this.apiConfigService.gettingtobranchesListforstockreceipt, this.branchFormData.get('fromBranchCode').value);
-    //this.apiService.apiGetRequest(gettingtobranchesListUrl).subscribe(
-    //  response => {
-    //    const res = response.body;
-    //    if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-    //      if (!isNullOrUndefined(res.response)) {
-    //        if (!isNullOrUndefined(res.response['branch']) && res.response['branch'].length) {
-    //          this.GettoBranchesListArray = res.response['branch'];
-    //          this.spinner.hide();
-    //        }
-    //      }
-    //    }
-    //  });
+    
   }
 
   private filter(value: string): string[] {
@@ -298,10 +315,11 @@ export class CreateStockreceiptsComponent implements OnInit {
     console.log(this.dataSource);
   }
 
+
   getProductByProductCode(value) {
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode, value);
-      this.apiService.apiGetRequest(getProductByProductCodeUrl).subscribe(
+      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode);
+      this.apiService.apiPostRequest(getProductByProductCodeUrl, { productCode: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -317,12 +335,14 @@ export class CreateStockreceiptsComponent implements OnInit {
       this.getProductByProductCodeArray = [];
     }
   }
-
+  
   //Autocomplete code
-  getProductByProductName(value) {
+  getProductByProductName(value)
+  {
+    //debugger;
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName, value);
-      this.apiService.apiGetRequest(getProductByProductNameUrl).subscribe(
+      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName);
+      this.apiService.apiPostRequest(getProductByProductNameUrl, { productName: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -338,6 +358,27 @@ export class CreateStockreceiptsComponent implements OnInit {
       this.getProductByProductNameArray = [];
     }
   }
+
+  //getProductByProductName(value) {
+  //  debugger;
+  //  if (!isNullOrUndefined(value) && value != '') {
+  //    const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName, value);
+  //    this.apiService.apiGetRequest(getProductByProductNameUrl).subscribe(
+  //      response => {
+  //        const res = response.body;
+  //        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+  //          if (!isNullOrUndefined(res.response)) {
+  //            if (!isNullOrUndefined(res.response['Products'])) {
+  //              this.getProductByProductNameArray = res.response['Products'];
+  //              this.spinner.hide();
+  //            }
+  //          }
+  //        }
+  //      });
+  //  } else {
+  //    this.getProductByProductNameArray = [];
+  //  }
+  //}
 
   //Code based getting data
   getdata(productCode) {
@@ -444,7 +485,7 @@ export class CreateStockreceiptsComponent implements OnInit {
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass)
         {
           if (!isNullOrUndefined(res.response)) {
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            this.alertService.openSnackBar('Stock Receipt Created Successfully..', Static.Close, SnackBar.success);
            // this.branchFormData.reset();
           }
         }
@@ -454,10 +495,22 @@ export class CreateStockreceiptsComponent implements OnInit {
   }
 
   reset() {
-    console.log(this.branchFormData);
     this.branchFormData.reset();
-    this.dataSource = new MatTableDataSource(this.dataSource.data);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource();
+    this.formGroup();
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.genaratereceiptNo(user.branchCode);
+    this.gettingtobranches();
+    this.branchFormData = this.formBuilder.group
+      ({
+        receiptDate: [(new Date()).toISOString()],
+        fromBranchCode: !isNullOrUndefined(user.branchCode) ? user.branchCode : user.branchCode,
+        receiptNo: [null],
+        toBranchCode: [null]
+        
+      });
+    
+    this.ngOnInit();
   }
 
 }

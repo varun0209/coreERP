@@ -10,11 +10,12 @@ import { isNullOrUndefined } from 'util';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteItemComponent } from '../delete-item/delete-item.component';
 import { SearchFilterTableComponent } from '../search-filter-table/search-filter-table.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 // search
 
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ReplaySubject, Subject, pipe } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, map } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { User } from '../../models/common/user';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,13 +30,15 @@ import { ApiConfigService } from 'src/app/services/api-config.service';
 import { runInThisContext } from 'vm';
 import { ReportsService } from 'src/app/components/dashboard/reports/reports.service';
 import { StatusCodes } from 'src/app/enums/common/common';
+import * as moment from 'moment';
 @Component({
   selector: 'app-report-table',
   templateUrl: './report-table.component.html',
   styleUrls: ['./report-table.component.scss']
 })
-export class ReportTableComponent implements OnInit {
-
+export class ReportTableComponent implements OnInit, OnChanges {
+  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+  GetBankPAccountLedgerListArray=[];
   public tableMultiCtrl: FormControl = new FormControl();
   public filteredTableMulti: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -45,7 +48,7 @@ export class ReportTableComponent implements OnInit {
   dateForm: FormGroup;
   params = new HttpParams();
   @Input() tableData: any;
-  @Input() headerData: any;
+  @Input() headerData: any = [];
   @Input() footerData: any;
   @Output() generateTable = new EventEmitter();
 
@@ -74,6 +77,19 @@ export class ReportTableComponent implements OnInit {
   AccountLedgers = [];
   ReportBranches = [];
   Products = [];
+
+  tableHeaders: any = [];
+  SearchCriteria=[
+    {id:'username',parameter:'User Name'},
+    {id:'branchCode',parameter:'Branch Code'},
+    {id:'shiftId',parameter:'Shift Id'},
+    {id:'userId',parameter:'User Id'}
+  ];
+  search =[];
+  ReportsType = [
+    { id: '1', reportName: 'Product Price List All Branch Report' },
+    { id: '2', reportName: 'Product Price List By Branch Report' }
+  ];
   constructor(
     private formBuilder: FormBuilder,
     private commonService: CommonService,
@@ -84,19 +100,30 @@ export class ReportTableComponent implements OnInit {
     private apiService: ApiService,
     private apiConfigService: ApiConfigService,
     private reportsService: ReportsService,
+    private spinner: NgxSpinnerService,
   ) {
     this.user = JSON.parse(localStorage.getItem('user'));
-    activatedRoute.params.subscribe(params => {
-      this.routeParam = params.id;
-    });
+
     this.dateForm = this.formBuilder.group({
-      formDate: [''],
-      toDate: [''],
+      selected:[null],
+      formDate: ['', Validators.required],
+      toDate: ['', Validators.required],
       selectedReport: [''],
       selectedAccountLedger: [''],
       selectedBranch: [],
-      selectedProduct: []
+      selectedProduct: [],
+      selectedCriteria:[''],
+      vehicleRegNo:[null],
+      search:[null],
+      selectedReportType:['']
     }, { validator: this.checkDates });
+
+    activatedRoute.params.subscribe(params => {
+      this.routeParam = params.id;
+      this.tableHeaders = [];
+      this.dateForm.reset();
+    });
+
   }
   checkDates(group: FormGroup) {
     if (group.controls.formDate.value < group.controls.toDate.value) {
@@ -184,14 +211,52 @@ export class ReportTableComponent implements OnInit {
         });
   }
 
+  getBankPAccountLedgerList(value) {
+    if (!isNullOrUndefined(value) && value != '') {
+      const getBankPAccountLedgerListUrl = String.Join('/', this.apiConfigService.getBPAccountLedgerList, value);
+      this.apiService.apiGetRequest(getBankPAccountLedgerListUrl).subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              if (!isNullOrUndefined(res.response['AccountLedgerList']) && res.response['AccountLedgerList'].length) {
+                this.GetBankPAccountLedgerListArray = res.response['AccountLedgerList'];
+                //this.getCashPartyAccount();
+              } else {
+                this.GetBankPAccountLedgerListArray = [];
+              }
+            }
+            this.spinner.hide();
+          }
+        });
+    } else {
+      this.GetBankPAccountLedgerListArray = [];
+    }
+  }
+
+  setLedgerName(value) {
+    const lname = this.GetBankPAccountLedgerListArray.filter(lCode => {
+      if (lCode.id == this.dateForm.get('selectedAccountLedger').value) {
+        return lCode;
+      }
+    });
+    this.dateForm.patchValue({
+      selectedAccountLedger: !isNullOrUndefined(lname[0]) ? lname[0].id : null
+    });
+  }
+
   GenerateReport() {
     this.dateForm.patchValue({
-      formDate: this.commonService.formatReportDate(this.dateForm.get('formDate').value),
-      toDate: this.commonService.formatReportDate(this.dateForm.get('toDate').value),
+      formDate: this.commonService.formatReportDate(this.dateForm.value.selected.start._d),
+      toDate: this.commonService.formatReportDate(this.dateForm.value.selected.end._d),
       selectedReport: this.dateForm.get('selectedReport').value,
       selectedAccountLedger: this.dateForm.get('selectedAccountLedger').value,
       selectedBranch: this.dateForm.get('selectedBranch').value,
-      selectedProduct: this.dateForm.get('selectedProduct').value
+      selectedProduct: this.dateForm.get('selectedProduct').value,
+      vehicleRegNo:this.dateForm.get('vehicleRegNo').value,
+      selectedCriteria:this.dateForm.get('selectedCriteria').value,
+      search:this.dateForm.get('search').value,
+      selectedReportType:this.dateForm.get('selectedReportType').value
     })
     this.params = new HttpParams();
     this.params = this.params.append('UserID', 'admin');//this.user.userName);
@@ -201,7 +266,24 @@ export class ReportTableComponent implements OnInit {
     this.params = this.params.append('ledgerCode', this.dateForm.value.selectedAccountLedger);
     this.params = this.params.append('branchCode', this.dateForm.value.selectedBranch);
     this.params = this.params.append('productCode', this.dateForm.value.selectedProduct);
-    this.generateTable.emit(this.params)
+    this.params = this.params.append('selectedCriteria',this.dateForm.value.selectedCriteria);
+    this.params = this.params.append('search',this.dateForm.value.search);
+    this.params = this.params.append('vehicleRegNo', this.dateForm.value.vehicleRegNo);
+    this.params = this.params.append('reportType', this.dateForm.value.selectedReportType);
+    if(this.dateForm.value.selectedCriteria=="shiftId")
+    {
+      this.params = this.params.append('shiftId', this.dateForm.value.search);
+    }
+    
+    // else
+    // {
+    //    this.params = this.params.append('vehicleRegNo', this.dateForm.value.vehicleRegNo);
+    // }
+    
+    this.generateTable.emit(this.params);
+
+    this.dateForm.controls['formDate'].setValue(new Date(this.dateForm.controls['formDate'].value));
+    this.dateForm.controls['toDate'].setValue(new Date(this.dateForm.controls['toDate'].value));
   }
 
   exportToExcel(): void {
@@ -284,6 +366,7 @@ export class ReportTableComponent implements OnInit {
       fs.saveAs(blob, this.routeParam + 'Report.xlsx');
     });
   }
+
   exportToPdf() {
     let doc = new jsPDF('p', 'mm', 'a4');
     let columns = []; //["ID", "Name", "Country"];
@@ -299,6 +382,7 @@ export class ReportTableComponent implements OnInit {
         j++;
       }
     }
+
     doc.autoTable({
       body: [
         [{ content: this.routeParam + ' Report', colSpan: 2, rowSpan: 2, styles: { halign: 'center', fontStyle: 'bold' } }],
@@ -309,20 +393,41 @@ export class ReportTableComponent implements OnInit {
     let currentDate = new Date();
 
     let headerRows = [];
-    for (var i: number = 0; i < this.headerData.length; i++) {
+    for (var i: number = 0; i < this.tableHeaders.length; i++) {
       headerRows[i] = [];
       let j = 0;
-      for (const key in this.headerData[0]) {
-        headerRows[i][j] = this.headerData[i][key];
+      for (const key in this.tableHeaders[0]) {
+        headerRows[i][j] = this.tableHeaders[i][key];
         j++;
       }
     }
+
+    headerRows = [
+      headerRows[0] ? headerRows[0].concat(headerRows[1]) : "",
+      headerRows[2] ? headerRows[2].concat(headerRows[3]) : "",
+      headerRows[4] ? headerRows[4].concat(headerRows[5]) : "",
+      headerRows[6] ? headerRows[6].concat(headerRows[7]) : "",
+      headerRows[8] ? headerRows[8].concat(headerRows[9]) : "",
+      headerRows[10] ? headerRows[10].concat(headerRows[11]) : "",
+      headerRows[12] ? headerRows[12].concat(headerRows[13]) : "",
+      headerRows[14] ? headerRows[14].concat(headerRows[15]) : ""
+    ];
+
+    headerRows = headerRows.filter(arr => arr != "");
+
+    
+
     doc.autoTable({
       margin: { top: 10 },
+      columnStyles: {
+        1: { halign: 'right' }
+      },
       body: headerRows,
       theme: 'plain'
     })
+
     doc.autoTable(columns, rows, { startY: doc.autoTable.previous.finalY + 5 });
+
     let footerRows = [];
     for (var i: number = 0; i < this.footerData.length; i++) {
       footerRows[i] = [];
@@ -332,13 +437,29 @@ export class ReportTableComponent implements OnInit {
         j++;
       }
     }
+
+    let updatedFooterRows = [];
+
+    if (footerRows && footerRows.length) {
+      footerRows.forEach((ft) => {
+        let temp = [];
+        ft.forEach(data => {
+          if (data != "") {
+            temp.push(data);
+          }
+        });
+        updatedFooterRows.push(temp);
+      })
+    }
+
     doc.autoTable({
-      body: footerRows,
+      body: updatedFooterRows,
       theme: 'plain',
       startY: doc.autoTable.previous.finalY + 10
     })
     doc.save(this.routeParam + 'Report.pdf');
   }
+
   openDialog(val, row?) {
     if (this.routeParam == 'Shift') {
       this.dateForm.patchValue({
@@ -399,6 +520,7 @@ export class ReportTableComponent implements OnInit {
                   }, error => {
 
                   });
+                  this.spinner.hide();
             }
           }
         }
@@ -423,6 +545,9 @@ export class ReportTableComponent implements OnInit {
   }
 
   ngOnChanges() {
+    this.columnDefinitions = [];
+    this.keys = [];
+
     if (!isNullOrUndefined(this.tableData)) {
       if (this.tableData.length > 0) {
         this.dataSource = new MatTableDataSource(this.tableData);
@@ -448,6 +573,12 @@ export class ReportTableComponent implements OnInit {
         this.columnDefinitions.push(obj);
       });
     }
+
+    console.log(this.columnDefinitions);
+
+
+    this.generateTableHeaders();
+
   }
   ngAfterViewInit() {
     // this.multiSelect.open();
@@ -458,8 +589,23 @@ export class ReportTableComponent implements OnInit {
     this.getReportBranchesList();
     this.getProductsList();
   }
+
+  generateTableHeaders() {
+    this.tableHeaders = [];
+    if (this.headerData && this.headerData.length) {
+      this.headerData.forEach((header) => {
+        for (let key in header) {
+          if (header[key] != "") {
+            this.tableHeaders.push({ 'column': header[key] })
+          }
+        }
+      })
+    }
+  }
+
   ngOnDestroy() {
     this.tableData = [];
+    this.tableHeaders = [];
   }
 
 }

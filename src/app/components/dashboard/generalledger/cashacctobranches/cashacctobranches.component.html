@@ -30,7 +30,7 @@
         <mat-form-field>
           <mat-label>{{'cashacctobranches.bankGlacc' | translate }}</mat-label>
           <mat-select formControlName="bankGlacc">
-            <mat-option *ngFor="let bankacc of bankList" [value]="bankacc.id">
+            <mat-option *ngFor="let bankacc of cashaccList" [value]="bankacc.id">
               {{bankacc.text}}
             </mat-option>
           </mat-select>

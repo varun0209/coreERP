@@ -21,3 +21,7 @@ export { StockshortComponent } from './stockshort/stockshort.component';
 
 export { CreateOilconversionsComponent } from './oilconversion/create-oilconversion/create-oilconversion.component';
 export { OilconversionComponent } from './oilconversion/oilconversion.component';
+export { PackageconversionComponent} from './packageconversion/packageconversion.component';
+export { StockExcessComponent} from './stockexcess/stockexcess.component';
+export { CreateStockExcessComponent} from './stockexcess/create-stockexcess/create-stockexcess.component';
+export { MeterReadingComponent} from './meterreading/meterreading.component';

@@ -36,6 +36,8 @@ export class UnitComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.modelFormData = this.formBuilder.group({
+
+      unitId: 0,
       unitName: [null],
       narration: [null],
       noOfDecimalplaces: [null],
@@ -43,6 +45,14 @@ export class UnitComponent implements OnInit {
       extra1: [null],
       extra2: [null],
       extraDate: [null]
+      //unitName: [null],
+      //narration: [null],
+      //noOfDecimalplaces: [null],
+      //formalName: [null],
+      //extra1: [null],
+      //extra2: [null],
+      //extraDate: [null],
+      //UnitId: 0
     });
 
 

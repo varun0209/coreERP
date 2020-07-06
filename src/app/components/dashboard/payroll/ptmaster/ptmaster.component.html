@@ -27,21 +27,21 @@
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.ptlowerLimit.valid }" >
           <input matInput placeholder="{{'ptmaster.ptlowerLimit' | translate }}" formControlName="ptlowerLimit" appFocusOnEnter tabIndex="3">
           <mat-error *ngIf="formControls.ptlowerLimit.errors" class="help-block">
-            <div *ngIf="formControls.ptlowerLimit.errors.required">PT LowerLimit is required </div>
+            <div *ngIf="formControls.ptlowerLimit.errors.required">pt lowerLimit required and Only Numbers Allow </div>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.ptupperLimit.valid }" >
           <input matInput placeholder="{{'ptmaster.ptupperLimit' | translate }}" formControlName="ptupperLimit" appFocusOnEnter tabIndex="3">
           <mat-error *ngIf="formControls.ptupperLimit.errors" class="help-block">
-            <div *ngIf="formControls.ptupperLimit.errors.required">PT UpperLimit is required </div>
+            <div *ngIf="formControls.ptupperLimit.errors.required">pt upperLimit and required Only Numbers Allow </div>
           </mat-error>
         </mat-form-field>
       
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.ptamt.valid }" >
           <input matInput placeholder="{{'ptmaster.ptamt' | translate }}" formControlName="ptamt" appFocusOnEnter tabIndex="4">
           <mat-error *ngIf="formControls.ptamt.errors" class="help-block">
-            <div *ngIf="formControls.ptamt.errors.required">PT Amount is required </div>
+            <div *ngIf="formControls.ptamt.errors.required">PT Amount is required and Only Numbers Allow </div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -63,4 +63,3 @@
          </button>
   </div>
   </div>
-  

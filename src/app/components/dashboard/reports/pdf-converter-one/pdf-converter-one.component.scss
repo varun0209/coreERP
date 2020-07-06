@@ -1,0 +1,38 @@
+.adject-header:nth-child(even) {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.font-weight-600 {
+    font-weight: 600 !important;
+}
+
+thead {
+    display: none;
+}
+
+thead:first-child {
+    display: table-header-group !important;
+}
+
+
+
+table thead tr th {
+    border-top: 4px solid black; 
+    border-bottom: 4px solid black;
+        padding-left: 5%;
+}
+
+
+.padding--p td {
+    padding: 1%;
+}
+
+.boader-bottom-bold {
+    border-bottom: 3px solid black; 
+}
+
+.boader-top-bold td:nth-child(n+4) {
+    border-top: 3px solid black; 
+    text-align: center;
+}

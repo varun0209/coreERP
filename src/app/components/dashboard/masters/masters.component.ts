@@ -28,6 +28,7 @@ export class MastersComponent implements OnInit {
 
   @ViewChild(TableComponent, { static: false }) tableComponent: TableComponent;
 
+  paramId: any;
 
   constructor(
     private apiService: ApiService,
@@ -38,10 +39,16 @@ export class MastersComponent implements OnInit {
     private alertService: AlertService,
 
   ) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.mastersService.branchCode = user.branchCode;
+    this.mastersService.role = user.role;
     activatedRoute.params.subscribe(params => {
       this.tableUrl = mastersService.getRouteUrls(params.id);
+      this.paramId = params.id;
       if (!isNullOrUndefined(this.tableUrl)) {
-        this.getTableData();
+        if (params.id != 'membermaster') {
+          this.getTableData();
+        }
         if (!isNullOrUndefined(this.tableComponent)) {
           this.tableComponent.defaultValues();
         }
@@ -84,48 +91,51 @@ export class MastersComponent implements OnInit {
   }
 
   addOrUpdateEvent(value) {
-      if (value.action === 'Delete') {
-       this.deleteRecord(value);
-      } else {
-    const dialogRef = this.dialog.open(this.tableUrl.component, {
-      width: '80%',
-      data: value,
-      panelClass: 'custom-dialog-container',
-      disableClose: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (!isNullOrUndefined(result)) {
-        this.spinner.show();
-        if (result.action === 'Add') {
-         const addCompanyUrl = String.Join('/', this.tableUrl.registerUrl);
-         this.apiService.apiPostRequest(addCompanyUrl, result.item)
-          .subscribe(
-            response => {
-              const res = response.body;
-              if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-                if (!isNullOrUndefined(res.response)) {
-                  this.tableComponent.defaultValues();
-                  this.getTableData();
-                  this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
-                }
-              }
-              this.spinner.hide();
-            });
-        } else if (result.action === 'Edit') {
-         const updateCompanyUrl = String.Join('/', this.tableUrl.updateUrl);
-         this.apiService.apiUpdateRequest(updateCompanyUrl, result.item)
-          .subscribe(
-            response => {
-              const res = response.body;
-              this.spinner.hide();
-              if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
-                if (!isNullOrUndefined(res.response)) {
-                  this.tableComponent.defaultValues();
-                  this.getTableData();
-                  this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
-                }
-              }
-            });
+    if (value.action === 'Delete') {
+      this.deleteRecord(value);
+    }
+    else {
+      const dialogRef = this.dialog.open(this.tableUrl.component, {
+        width: '80%',
+        data: value,
+        panelClass: 'custom-dialog-container',
+        disableClose: true
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (!isNullOrUndefined(result)) {
+          this.spinner.show();
+          if (result.action === 'Add') {
+            const addCompanyUrl = String.Join('/', this.tableUrl.registerUrl);
+            this.apiService.apiPostRequest(addCompanyUrl, result.item)
+              .subscribe(
+                response => {
+                  const res = response.body;
+                  if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+                    if (!isNullOrUndefined(res.response)) {
+                      this.tableComponent.defaultValues();
+                      if (this.paramId != 'membermaster') {
+                        this.getTableData();
+                      }
+                      this.alertService.openSnackBar('Record Added...', 'close', SnackBar.success);
+                    }
+                  }
+                  this.spinner.hide();
+                });
+          } else if (result.action === 'Edit') {
+            const updateCompanyUrl = String.Join('/', this.tableUrl.updateUrl);
+            this.apiService.apiUpdateRequest(updateCompanyUrl, result.item)
+              .subscribe(
+                response => {
+                  const res = response.body;
+                  this.spinner.hide();
+                  if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+                    if (!isNullOrUndefined(res.response)) {
+                      this.tableComponent.defaultValues();
+                      this.getTableData();
+                      this.alertService.openSnackBar('Record Updated...', 'close', SnackBar.success);
+                    }
+                  }
+                });
           }
       }
     });

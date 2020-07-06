@@ -1,0 +1,57 @@
+{
+    "structureCreation": {
+        "structureCode": "Structure Code",
+        "companyCode": "Company Code",
+        "branchCode": "Branch Code",
+        "componentCode": "Component Code",
+        "componentName": "Component Name",
+        "componentType": "Component Type",
+        "remarks": "Remarks",
+        "amount": "Amount",
+        "percentage": "Percentage",
+        "structureName": "Structure Name",
+        "amountType": "Amount Type",
+        "active": "Active",
+        "calculateOn": "Calculate On",
+        "effectiveFrom": "Effective From"
+    },
+    "company": {
+        "companyId": "Code",
+        "companyName": "Name",
+        "mailingName": "Mailing Name",
+        "address": "Address",
+        "country": "Country",
+        "state": "State",
+        "city": "City",
+        "pin": "Pin",
+        "phone": "Phone",
+        "emailId": "Email",
+        "web": "Web",
+        "currencyId": "Currency",
+        "financialYearFrom": "Date",
+        "booksBeginingFrom": "Date",
+        "gstin": "GST"
+    },
+    "branches": {
+        "branchCode": "Code",
+        "branchName": "Name",
+        "address": "Address",
+        "city": "City",
+        "state": "State",
+        "country": "Country",
+        "pinCode": "PinCode",
+        "phone": "Phone",
+        "email": "Email",
+        "gstin": "GST"
+    },
+    "designation": {
+        "designationId": "DesignationId",
+        "designationName": "DesignationName",
+        "leaveDays": "LeaveDays",
+        "advanceAmount": "AdvanceAmount",
+        "narration": "Narration",
+        "extraDate": "Date",
+        "extra1": "Extra1",
+        "extra2": "Extra2"
+    }
+}

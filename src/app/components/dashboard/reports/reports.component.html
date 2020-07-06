@@ -1,2 +1,7 @@
-
-    <app-report-table  [tableData]="tableData" [headerData]="headerData" [footerData]="footerData" (generateTable)="generateTableEvent($event)"></app-report-table>
+<div *ngIf="!tableUrl.coustom">
+    <app-report-table [tableData]="tableData" [headerData]="headerData" [footerData]="footerData"
+        (generateTable)="generateTableEvent($event)"></app-report-table>
+</div>
+<div *ngIf="tableUrl.coustom && routeParams == 'Sales_Analysis_By_Branch'">
+    <app-pdf-converter-one></app-pdf-converter-one>
+</div>

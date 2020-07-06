@@ -18,13 +18,13 @@ import * as moment from 'moment';
   styleUrls: ['./purchase.component.scss']
 })
 export class PurchaseComponent implements OnInit {
-  selectedDate = {start : moment().add(-1, 'day'), end: moment().add(0, 'day')};
+  selectedDate = {start : moment().add(0, 'day'), end: moment().add(0, 'day')};
   dateForm: FormGroup;
   // table
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['purchaseInvNo', 'purchaseInvDate', 'ledgerCode',
-  'ledgerName', 'totalAmount', 'stateCode',
+  'ledgerName', 'totalAmount', 'purchaseReturn', 'stateCode',
   'userId', 'shiftId'];
   branchCode: any;
 
@@ -40,16 +40,21 @@ export class PurchaseComponent implements OnInit {
 
   ) {
     this.dateForm = this.formBuilder.group({
-      selected: [this.selectedDate],
+      selected: [null],
       fromDate: [null],
       toDate: [null],
-      invoiceNo: [null]
+      invoiceNo: [null],
+      Role: [null]
     });
   }
 
   ngOnInit() {
     this.branchCode = JSON.parse(localStorage.getItem('user'));
-    this.search();
+    this.dateForm.patchValue({
+      Role: this.branchCode.role
+    })
+    // this.search();
+    this.getPurchaseInvoiceList();
   }
 
   getPurchaseInvoiceList() {
@@ -69,7 +74,12 @@ export class PurchaseComponent implements OnInit {
 
   openPurchase(row) {
     localStorage.setItem('purchase', JSON.stringify(row));
-    this.router.navigate(['dashboard/sales/purchaseInvoice/CreatePurchase', row.purchaseInvNo]);
+    this.router.navigate(['dashboard/sales/purchaseInvoice/viewPurchaseInvoice', 'create', row.purchaseInvNo]);
+  }
+
+  returnPurchase(row) {
+    localStorage.setItem('purchase', JSON.stringify(row));
+    this.router.navigate(['dashboard/sales/salesInvoice/viewPurchaseInvoice', 'return',  row.purchaseInvNo]);
   }
 
   search() {

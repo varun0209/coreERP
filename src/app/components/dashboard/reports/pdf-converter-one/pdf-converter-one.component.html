@@ -1,0 +1,37 @@
+<div id="pdfDownload" style="background-color: white;" class="p-3">
+
+    <h5 class="d-flex justify-content-center font-weight-bold"> {{ pdfData.title }} </h5>
+    <h6 class="d-flex justify-content-center font-weight-bold"> {{ pdfData.subTitle }} </h6>
+
+    <div class="d-flex justify-content-between flex-wrap pl-4 pr-5 pb-2">
+        <div *ngFor="let item of pdfData.header | keyvalue: asIsOrder;" class="w-50 adject-header pb-1">
+            <strong class="pr-5"> {{item.key}}: </strong> <span class="font-weight-600">
+                {{item.value}}</span>
+        </div>
+    </div>
+
+    <div>
+        <table style="width:100%" >
+            <thead *ngFor="let row of pdfData.tableData">
+                <tr >
+                    <th *ngFor="let data of row.row[0] | keyvalue: asIsOrder;"> {{data.key}} </th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let row of pdfData.tableData">
+                <tr>
+                    <td class="pt-4 pl-4"><strong class="boader-bottom-bold">{{ row.title }}</strong></td>
+                </tr>
+                <tr class="text-center font-weight-600 padding--p" *ngFor="let data of row.row">
+                    <td *ngFor="let item of data | keyvalue: asIsOrder;"> {{item.value}} </td>
+                </tr>
+                <tr class="boader-top-bold font-weight-600">
+                    <td></td>
+                    <td></td>
+                    <td *ngFor="let tol of row.total | keyvalue"> {{ tol.value }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button (click)='downloadPDF()'> pdf download </button>
+</div>

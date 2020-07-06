@@ -1,0 +1,12 @@
+export { SelfserviceComponent } from './selfservice.component';
+export { LeavetypeComponent } from './leavetype/leavetype.component';
+export { LeaveopeningbalanceComponent } from './leaveopeningbalance/leaveopeningbalance.component';
+export { LeaveRequestComponent } from './leaverequest/leaverequest.component';
+export { ApplyodComponent } from './applyod/applyod.component';
+//export { StructureCreationComponent } from './structure-creation/structure-creation.component';
+//export { PTMasterComponent } from './ptmaster/ptmaster.component'
+//export { ComponentMasterComponent } from './componentmaster/componentmaster.component'
+export { LeaveApprovalComponent } from './leaveapproval/leaveapproval.component';
+//export { PFMasterComponent } from './pfmaster/pfmaster.component';
+//export { CTCBreakupComponent } from './ctcbreakup/ctcbreakup.component';
+//export { SalaryProcessComponent } from './salaryproces/salaryprocess.component';

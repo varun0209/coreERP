@@ -69,4 +69,17 @@ mat-card {
       border-bottom: 1px solid rgba(0,0,0,.125);
 }
 
+.fs-15 {
+  font-size: 15px;
+}
 
+.range-picker {
+  width: 200px;
+  & input {
+    border: none;
+    border-radius : unset;
+    border-bottom: 1px solid  rgba(0,0,0,.42);
+    padding: 0rem;
+    font-size: 0.9rem;
+  }
+}

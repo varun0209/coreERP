@@ -48,6 +48,7 @@ export class ProductpackingComponent implements OnInit {
     this.formData = { ...data };
     if (!isNullOrUndefined(this.formData.item)) {
       this.modelFormData.patchValue(this.formData.item);
+      this.modelFormData.controls['packingCode'].disable();
     }
 
   }
@@ -133,6 +134,7 @@ export class ProductpackingComponent implements OnInit {
     }
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
+    this.modelFormData.controls['packingCode'].enable();
   }
 
   cancel() {

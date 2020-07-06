@@ -29,14 +29,14 @@
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.employeeContribution.valid }">
           <input matInput placeholder="{{'pfmaster.employeeContribution' | translate }}" formControlName="employeeContribution" appFocusOnEnter tabIndex="2" type="number">
           <mat-error *ngIf="formControls.employeeContribution.errors" class="help-block">
-            <div *ngIf="formControls.employeeContribution.errors.required">Employee Contribution is required</div>
+            <div *ngIf="formControls.employeeContribution.errors.required">Employee Contribution is required and Number only Allow</div>
           </mat-error>
         </mat-form-field>
   
         <mat-form-field class="form-element" [ngClass]="{ 'ng--valid': formControls.employerContribution.valid }" >
           <input matInput placeholder="{{'pfmaster.employerContribution' | translate }}" formControlName="employerContribution" appFocusOnEnter tabIndex="3" type="number">
           <mat-error *ngIf="formControls.employerContribution.errors" class="help-block">
-            <div *ngIf="formControls.employerContribution.errors.required">Employer Contribution is required </div>
+            <div *ngIf="formControls.employerContribution.errors.required">Employer Contribution is required and Number only Allow</div>
           </mat-error>
         </mat-form-field>
 
@@ -76,4 +76,3 @@
       </button>
     </div>
   </div>
-  

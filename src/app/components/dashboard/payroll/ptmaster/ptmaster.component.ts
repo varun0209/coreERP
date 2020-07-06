@@ -24,12 +24,12 @@ export class PTMasterComponent  implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
       this.modelFormData  =  this.formBuilder.group({
-        id:[null],
+        id:['0'],
         ptslab: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(20)]],
         location: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-        ptlowerLimit: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
-        ptupperLimit: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
-        ptamt: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
+        ptlowerLimit: [null, [Validators.required, Validators.pattern("^[0-9\.]*$"), Validators.minLength(1), Validators.maxLength(10)]],
+        ptupperLimit: [null, [Validators.required, Validators.pattern("^[0-9\.]*$"), Validators.minLength(1), Validators.maxLength(10)]],
+        ptamt: [null, [Validators.required, Validators.pattern("^[0-9\.]*$"), Validators.minLength(1), Validators.maxLength(10)]],
         active: [null],
         ext1: [null]
       });

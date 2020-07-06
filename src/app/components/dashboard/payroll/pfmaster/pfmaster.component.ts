@@ -63,10 +63,11 @@ export class PFMasterComponent  implements OnInit {
         componentCode: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
         componentName: [null],
         employeeContribution: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
-        employerContribution: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
+        employerContribution: [null, [Validators.required,  Validators.minLength(1), Validators.maxLength(10)]],
         companyCode: [null],
         branchCode: [null], 
         active: [null],
+        id:['0'],
         contributionType: [null]
       });
 

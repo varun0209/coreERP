@@ -32,7 +32,7 @@ export class CreateOilconversionsComponent implements OnInit {
   branchesList = [];
   getmemberNamesArray = [];
 
-  displayedColumns: string[] = ['productCode', 'productName', 'hsnNo', 'unitName', 'qty', 'damageQty', 'newQty', 'batchNo', 'delete'
+  displayedColumns: string[] = ['productCode', 'productName', 'hsnNo', 'unitName', 'qty',  'damageQty', 'newQty', 'batchNo', 'delete'
   ];
 
   dataSource: MatTableDataSource<any>;
@@ -90,33 +90,46 @@ export class CreateOilconversionsComponent implements OnInit {
 
   ngOnInit()
   {
-    //debugger;
+    this.loadData();
+  }
+  loadData() {
     this.getCashPaymentBranchesList();
-    this.formGroup();
     this.activatedRoute.params.subscribe(params => {
-      console.log(params.id1);
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         //this.disableForm(params.id1);
         this.getOilconversionDeatilList(params.id1);
         let billHeader = JSON.parse(localStorage.getItem('selectedOilconversion'));
         this.branchFormData.setValue(billHeader);
-        console.log(billHeader);
       } else {
         //this.disableForm();
         const user = JSON.parse(localStorage.getItem('user'));
-        if (!isNullOrUndefined(user.fromBranchCode)) {
+        if (!isNullOrUndefined(user.branchCode)) {
           this.branchFormData.patchValue({
-            voucherNo: user.fromBranchCode,
+            branchCode: user.branchCode,
+            userId: user.seqId,
+            userName: user.userName
           });
-          this.genarateVoucherNo(user.fromBranchCode);
+          this.setBranchCode();
+          this.genarateVoucherNo(user.branchCode);
+          this.formGroup();
         }
-     
         this.addTableRow();
       }
     });
   }
-
+  setBranchCode() {
+    const bname = this.GetBranchesListArray.filter(branchCode => {
+      if (branchCode.id == this.branchFormData.get('branchCode').value) {
+        return branchCode;
+      }
+    });
+    if (bname.length) {
+      this.branchFormData.patchValue({
+        branchName: !isNullOrUndefined(bname[0]) ? bname[0].text : null
+      });
+    }
+  }
 
   getOilconversionDeatilList(id) {
     //debugger;
@@ -150,9 +163,13 @@ export class CreateOilconversionsComponent implements OnInit {
   }
 
 
-  //issueno code;
-  genarateVoucherNo(branch?) {
+   //issueno code;
+   genarateVoucherNo(branch?) {
     //debugger;
+    this.branchFormData.patchValue
+      ({
+        oilConversionVchNo: String.Empty
+      });
     let genarateVoucherNoUrl;
     if (!isNullOrUndefined(branch)) {
       genarateVoucherNoUrl = String.Join('/', this.apiConfigService.getoilconversionvocherNo, branch);
@@ -186,7 +203,7 @@ export class CreateOilconversionsComponent implements OnInit {
     //debugger;
     const tableObj =
     {
-      productCode: '', productName: '', hsnNo: '', unit: '', qty: '', damageqty: '', newqty: '',  batchNo: '', delete: '', text: 'obj'
+      productCode: '', productName: '', hsnNo: '', unit: '', qty: '',  damageqty: '', newqty: '',  batchNo: '', delete: '', text: 'obj'
     };
 
     if (!isNullOrUndefined(this.dataSource)) {
@@ -211,6 +228,7 @@ export class CreateOilconversionsComponent implements OnInit {
       hsnNo: '0',
       unit: [null],
       qty: [null],
+      availStock: [null],
       damageqty: [null],
       newqty: [null],
       delete: [null],
@@ -247,13 +265,13 @@ export class CreateOilconversionsComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.dataSource.data);
     this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    this.calculateAmount();
   }
 
   getProductByProductCode(value) {
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode, value);
-      this.apiService.apiGetRequest(getProductByProductCodeUrl).subscribe(
+      const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode);
+      this.apiService.apiPostRequest(getProductByProductCodeUrl, { productCode: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -272,9 +290,10 @@ export class CreateOilconversionsComponent implements OnInit {
 
   //Autocomplete code
   getProductByProductName(value) {
+    //debugger;
     if (!isNullOrUndefined(value) && value != '') {
-      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName, value);
-      this.apiService.apiGetRequest(getProductByProductNameUrl).subscribe(
+      const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName);
+      this.apiService.apiPostRequest(getProductByProductNameUrl, { productName: value }).subscribe(
         response => {
           const res = response.body;
           if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
@@ -290,6 +309,47 @@ export class CreateOilconversionsComponent implements OnInit {
       this.getProductByProductNameArray = [];
     }
   }
+
+  //getProductByProductCode(value) {
+  //  if (!isNullOrUndefined(value) && value != '') {
+  //    const getProductByProductCodeUrl = String.Join('/', this.apiConfigService.getProductByProductCode, value);
+  //    this.apiService.apiGetRequest(getProductByProductCodeUrl).subscribe(
+  //      response => {
+  //        const res = response.body;
+  //        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+  //          if (!isNullOrUndefined(res.response)) {
+  //            if (!isNullOrUndefined(res.response['Products'])) {
+  //              this.getProductByProductCodeArray = res.response['Products'];
+  //              this.spinner.hide();
+  //            }
+  //          }
+  //        }
+  //      });
+  //  } else {
+  //    this.getProductByProductCodeArray = [];
+  //  }
+  //}
+
+  ////Autocomplete code
+  //getProductByProductName(value) {
+  //  if (!isNullOrUndefined(value) && value != '') {
+  //    const getProductByProductNameUrl = String.Join('/', this.apiConfigService.getProductByProductName, value);
+  //    this.apiService.apiGetRequest(getProductByProductNameUrl).subscribe(
+  //      response => {
+  //        const res = response.body;
+  //        if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+  //          if (!isNullOrUndefined(res.response)) {
+  //            if (!isNullOrUndefined(res.response['Products'])) {
+  //              this.getProductByProductNameArray = res.response['Products'];
+  //              this.spinner.hide();
+  //            }
+  //          }
+  //        }
+  //      });
+  //  } else {
+  //    this.getProductByProductNameArray = [];
+  //  }
+  //}
 
   //Code based getting data
   getdata(productCode) {
@@ -340,31 +400,42 @@ export class CreateOilconversionsComponent implements OnInit {
 
 
   //Calaculating code
-  calculateAmount(row, index) {
-    //debugger;
+  calculateAmount(row?, index?) {
+    //GetBranchesListArray
     let amount = 0;
-    for (let a = 0; a < this.dataSource.data.length; a++) {
-      if (this.dataSource.data[a].qty) {
-        amount = (this.dataSource.data[a].qty) * (this.dataSource.data[a].rate);
-        this.dataSource.data[a]['grossAmount'] = amount;
+    for (let a = 0; a < this.dataSource.data.length; a++)
+    {
+      if (this.dataSource.data[a].qty)
+      {
+        amount = (this.dataSource.data[a].qty)
+       // amount = (this.dataSource.data[a].qty) * (this.dataSource.data[a].rate);
+        this.dataSource.data[a]['newQty'] = amount;
       }
     }
     this.tableFormData.patchValue
       ({
-        grossAmount: amount
+        newqty: amount
 
       });
   }
 
   //Save Code
   save() {
+  // debugger;
     var index = this.dataSource.data.indexOf(1);
     this.dataSource.data.splice(index, 1);
-    if (this.routeUrl != '') {
+    if (this.routeUrl != '')
+    {
       return;
     }
+   let a = 0;
+    //if (this.dataSource.data[a].grossAmount==0)
+    //{
+    //  this.alertService.openSnackBar(`This Product("availStock") 0 Availablilty Stock`, Static.Close, SnackBar.error);
+    //  return;
+    //}
     let availStock = this.dataSource.filteredData.filter(stock => {
-      if (stock.availStock == 0 || (isNullOrUndefined(stock.qty) && isNullOrUndefined(stock.rate)))
+      if (stock.availStock == 0 || (isNullOrUndefined(stock.qty) && isNullOrUndefined(stock.rate) && isNullOrUndefined(stock.grossAmount)))
       {
         return stock;
       }
@@ -392,19 +463,27 @@ export class CreateOilconversionsComponent implements OnInit {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            this.alertService.openSnackBar('Oil COnversion Created Successfully..', Static.Close, SnackBar.success);
           }
           this.reset();
           this.spinner.hide();
+          //location.reload();
         }
       });
   }
 
   reset() {
-    console.log(this.branchFormData);
     this.branchFormData.reset();
-    this.dataSource = new MatTableDataSource(this.dataSource.data);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource();
+    this.formGroup();
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.branchFormData = this.formBuilder.group({
+      oilConversionDate: [(new Date()).toISOString()],
+      branchCode: user.branchCode,
+      oilConversionVchNo: user.branchCode
+    });
+    this.ngOnInit();
+    this.loadData();
   }
 
 }

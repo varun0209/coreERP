@@ -20,10 +20,10 @@ export class GlAccountsComponent  implements OnInit {
   modelFormData: FormGroup;
   isSubmitted  =  false;
   formData: any;
-  stmtTypeList:any;
-  natOfAccList:any;
-  glAccBalType:any;
-  glaccgrpList:any;
+  accGrpList:any;
+  accTypeList:any;
+  paymentType:any;
+  pricingLevel:any;
 
   constructor(
     private alertService: AlertService,
@@ -37,100 +37,114 @@ export class GlAccountsComponent  implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any ) {
 
       this.modelFormData  =  this.formBuilder.group({
-        glcode: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-        glaccountName: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-        accGroup: [null, [Validators.required]],
-        active: [null],
-        accountNumber: [null],
-        ext1: [null],
-        ext2: [null],
-        balanceType: [null],
-        nactureofaccount: [null, [Validators.required]],
-        statementType: [null, [Validators.required]],
-        openingBalance: [null]
+        ledgerId:0,
+        ledgerCode: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+        ledgerName: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+        accountGroupId: [null, [Validators.required]],
+        accountTypeId: [null],
+        openingBalance: 0,
+        GetPaymentTypelist: [null],
+        crOrDr: [null],
+        mailingName: [null],
+        bankAccountNumber: [null],
+        phone: [null],
+        email:[null],
+        mobile:[null],
+        cst:[null],
+        tin:[null],
+        pan:[null],
+        creditLimit:0,
+        creditPeriod:0,
+        pricinglevelId:[null],
+        address:[null],
+        narration:[null]
       });
 
 
       this.formData = {...data};
       if (!isNullOrUndefined(this.formData.item)) {
         this.modelFormData.patchValue(this.formData.item);
-        this.modelFormData.controls['glcode'].disable();
+        this.modelFormData.controls['ledgerCode'].disable();
       }
 
   }
 
   ngOnInit() {
-this.getStatementTypes();
-this.getNaturesOfAcountsList();
-this.getGLAccBalanceTypes();
-this.getAccountGroupList();
+this.getAccountGrouplist();
+this.getAccountTypelist();
+this.getPaymentTypelist();
+this.getPricingLevellist();
   }
 
-  getStatementTypes() {
-    const getStatementTypes = String.Join('/', this.apiConfigService.getStatementTypes);
-    this.apiService.apiGetRequest(getStatementTypes)
+  getAccountGrouplist() {
+    const getAccountGrouplist = String.Join('/', this.apiConfigService.getAccountGrouplist);
+    this.apiService.apiGetRequest(getAccountGrouplist)
       .subscribe(
         response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
-            this.stmtTypeList = res.response['StatementTypesList'];
+            this.accGrpList = res.response['GetAccountGrouplist'];
           }
         }
         this.spinner.hide();
       });
   }
 
-  getNaturesOfAcountsList() {
-    const getNaturesOfAcountsList = String.Join('/', this.apiConfigService.getNaturesOfAcountsList);
-    this.apiService.apiGetRequest(getNaturesOfAcountsList)
+  getAccountTypelist() {
+    const getAccountTypelist = String.Join('/', this.apiConfigService.getAccountTypelist);
+    this.apiService.apiGetRequest(getAccountTypelist)
       .subscribe(
         response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
-            this.natOfAccList = res.response['BalanceTypesList'];
+            this.accTypeList = res.response['GetAccountTypelist'];
           }
         }
         this.spinner.hide();
       });
   }
 
-  getGLAccBalanceTypes() {
-    const getGLAccBalanceTypes = String.Join('/', this.apiConfigService.getGLAccBalanceTypes);
-    this.apiService.apiGetRequest(getGLAccBalanceTypes)
+  getPaymentTypelist() {
+    const getPaymentTypelist = String.Join('/', this.apiConfigService.getPaymentTypelist);
+    this.apiService.apiGetRequest(getPaymentTypelist)
       .subscribe(
         response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
-            this.glAccBalType = res.response['BalanceTypesList'];
+            this.paymentType = res.response['GetPaymentTypelist'];
           }
         }
         this.spinner.hide();
       });
   }
 
-  getAccountGroupList() {
-    const getAccountGroupList = String.Join('/', this.apiConfigService.getAccountGroupList);
-    this.apiService.apiGetRequest(getAccountGroupList)
+  getPricingLevellist() {
+    const getPricingLevellist = String.Join('/', this.apiConfigService.getPricingLevellist);
+    this.apiService.apiGetRequest(getPricingLevellist)
       .subscribe(
         response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
             console.log(res);
-            this.glaccgrpList = res.response['GLUnderSubGroupList'];
+            this.pricingLevel = res.response['GetPricingLevellist'];
           }
         }
         this.spinner.hide();
       });
   }
 
-
+  copyledgerName(){
+    this.modelFormData.patchValue({
+      mailingName:this.modelFormData.get('ledgerName').value
+    })
+  }
 
   get formControls() { return this.modelFormData.controls; }
 
@@ -139,7 +153,7 @@ this.getAccountGroupList();
     if (this.modelFormData.invalid) {
       return;
     }
-    this.modelFormData.controls['glcode'].enable();
+    this.modelFormData.controls['ledgerCode'].enable();
     this.formData.item = this.modelFormData.value;
     this.dialogRef.close(this.formData);
   }

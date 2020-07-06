@@ -14,11 +14,17 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../../../../../directives/format-datepicker';
 
 @Component({
   selector: 'app-create-cashpayment',
   templateUrl: './create-cashpayment.component.html',
-  styleUrls: ['./create-cashpayment.component.scss']
+  styleUrls: ['./create-cashpayment.component.scss'],
+  providers: [
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS}
+  ]
 })
 export class CreateCashpaymentComponent implements OnInit {
 
@@ -56,7 +62,6 @@ export class CreateCashpaymentComponent implements OnInit {
   ) {
     this.branchFormData = this.formBuilder.group({
       voucherNo: [null],
-      voucherTypeId: [null],
       cashPaymentDate: [(new Date()).toISOString()],
       branchCode: [null],
       branchName: [null],
@@ -66,47 +71,31 @@ export class CreateCashpaymentComponent implements OnInit {
       employeeId: [null],
       totalAmount: [null],
       narration: [null],
-      printBill: [false],
+      //printBill: [false],
+      cashPaymentMasterId:[null],
+      branchId:[null],
+      cashPaymentVchNo:[null],
+      fromLedgerId:[null],
+      fromLedgerCode:[null],
+      fromLedgerName:[null],
+      serverDate:[null]
     });
 
   }
 
   ngOnInit() {
     this.loadData();
-    // this.formGroup();
-    // this.activatedRoute.params.subscribe(params => {
-    //   console.log(params.id1);
-    //   if (!isNullOrUndefined(params.id1)) {
-    //     this.routeUrl = params.id1;
-    //     this.disableForm(params.id1);
-    //     this.getInvoiceDeatilList(params.id1);
-    //     let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
-    //     this.branchFormData.setValue(billHeader);
-    //     console.log(billHeader);
-    //   } else {
-    //     this.disableForm();
-    //     const user = JSON.parse(localStorage.getItem('user'));
-    //     if (!isNullOrUndefined(user.branchCode)) {
-    //       this.branchFormData.patchValue({
-    //         voucherNo: user.branchCode,
-    //       });
-    //       this.genarateVoucherNo(user.branchCode);
-    //     }
-    //     this.setBranchCode();
-    //     this.getCashPaymentBranchesList();
-    //     this.addTableRow();
-    //   }
-    // });
+   
   }
 
   loadData() {
-    
+    this.getCashPaymentBranchesList();
     this.activatedRoute.params.subscribe(params => {
       if (!isNullOrUndefined(params.id1)) {
         this.routeUrl = params.id1;
         this.disableForm(params.id1);
         this.getCashPaymentDetailsList(params.id1);
-        const billHeader = JSON.parse(localStorage.getItem('selectedBill'));
+        let billHeader = JSON.parse(localStorage.getItem('selectedBill'));
         this.branchFormData.setValue(billHeader);
       } else {
         this.disableForm();
@@ -121,8 +110,7 @@ export class CreateCashpaymentComponent implements OnInit {
           this.genarateVoucherNo(user.branchCode);
           this.formGroup();
         }
-        this.getCashPaymentBranchesList();
-        this.addTableRow();
+	this.addTableRow();
       }
     });
   }
@@ -147,9 +135,9 @@ export class CreateCashpaymentComponent implements OnInit {
       //this.branchFormData.controls['ledgerCode'].disable();
       this.branchFormData.controls['branchCode'].disable();
       this.branchFormData.controls['cashPaymentDate'].disable();
-      //this.branchFormData.controls['ledgerName'].disable();
+      this.branchFormData.controls['userName'].disable();
       this.branchFormData.controls['narration'].disable();
-      //this.branchFormData.controls['suppliedTo'].disable();
+      this.branchFormData.controls['totalAmount'].disable();
     }
 
     //this.branchFormData.controls['voucherNo'].disable();
@@ -267,7 +255,7 @@ export class CreateCashpaymentComponent implements OnInit {
     });
     this.dataSource = new MatTableDataSource(this.dataSource.data);
     this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource);
+    this.calculateAmount();
   }
 
   getAccountByAccountCode(value) {
@@ -290,7 +278,27 @@ export class CreateCashpaymentComponent implements OnInit {
     }
   }
 
-  calculateAmount(row, index) {
+  getAccountByAccountName(value) {
+    if (!isNullOrUndefined(value) && value != '') {
+      const getAccountLedgerListUrl = String.Join('/', this.apiConfigService.getAccountLedgerListByName, value);
+      this.apiService.apiGetRequest(getAccountLedgerListUrl).subscribe(
+        response => {
+          const res = response.body;
+          if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
+            if (!isNullOrUndefined(res.response)) {
+              if (!isNullOrUndefined(res.response['AccountLedgerList'])) {
+                this.getAccountLedgerListArray = res.response['AccountLedgerList'];
+                this.spinner.hide();
+              }
+            }
+          }
+        });
+    } else {
+      this.getAccountLedgerListArray = [];
+    }
+  }
+
+  calculateAmount(row?, index?) {
     let amount = 0;
     for (let a = 0; a < this.dataSource.data.length; a++) {
       if (this.dataSource.data[a].amount) {
@@ -301,6 +309,43 @@ export class CreateCashpaymentComponent implements OnInit {
       totalAmount : amount
     });
   
+  }
+
+  setAccountCode(value) {
+    let flag = true;
+    for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
+      if (this.getAccountLedgerListArray[t]['text'] == value.value) {
+        for (let d = 0; d < this.dataSource.data.length; d++) {
+          if (this.dataSource.data[d]['toLedgerName'] == this.getAccountLedgerListArray[t]['text']) {
+            this.dataSource.data[d]['toLedgerCode'] = this.getAccountLedgerListArray[t]['id'];
+            this.tableFormData.patchValue({
+              toLedgerCode : this.getAccountLedgerListArray[t].id,
+              toLedgerName : this.getAccountLedgerListArray[t].text
+            });
+            flag = false;
+            break;
+          }
+        }
+      }
+    }
+    if(flag) {
+        this.dataSource.data[this.dataSource.data.length - 1].toLedgerName = value.value;
+        for (let t = 0; t < this.getAccountLedgerListArray.length; t++) {
+          if (this.getAccountLedgerListArray[t]['text'] == value.value) {
+            for (let d = 0; d < this.dataSource.data.length; d++) {
+              if (this.dataSource.data[d]['toLedgerName'] == this.getAccountLedgerListArray[t]['text']) {
+                this.dataSource.data[d]['toLedgerCode'] = this.getAccountLedgerListArray[t]['id'];
+                this.tableFormData.patchValue({
+                  toLedgerCode : this.getAccountLedgerListArray[t].id,
+                  toLedgerName : this.getAccountLedgerListArray[t].text
+                        });
+                break;
+              }
+            }
+          }
+        }
+    }
+    this.dataSource = new MatTableDataSource(this.dataSource.data);
   }
 
   setAccountName(value) {
@@ -344,10 +389,20 @@ export class CreateCashpaymentComponent implements OnInit {
 
   }
   save() {
-    if (!this.tableFormObj) {
-      this.dataSource.data.pop();
-      console.log(this.dataSource.data);
+    // if (!this.tableFormObj) {
+    //   this.dataSource.data.pop();
+    //   console.log(this.dataSource.data);
+    // }
+    if (this.routeUrl != '' || this.dataSource.data.length == 0) {
+      return;
     }
+    let tableData = [];
+    for (let d = 0; d < this.dataSource.data.length; d++) {
+      if (this.dataSource.data[d]['toLedgerCode'] != '') {
+        tableData.push(this.dataSource.data[d]);
+      }
+    }
+    let content = '';
     let totalAmount = null;
     this.dataSource.data.forEach(element => {
       totalAmount = element.amount + totalAmount;
@@ -355,25 +410,29 @@ export class CreateCashpaymentComponent implements OnInit {
   
     console.log(this.branchFormData, this.dataSource.data);
 
-    this.registerCashPayment();
+    this.registerCashPayment(tableData);
   }
 
   reset() {
-    console.log(this.branchFormData);
     this.branchFormData.reset();
-    this.dataSource = new MatTableDataSource(this.dataSource.data);
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource();
+    this.formGroup();
+    this.loadData();
   }
 
-  registerCashPayment() {
+  registerCashPayment(data) {
+    this.branchFormData.patchValue({
+      cashPaymentMasterId: 0,
+      cashPaymentDate:this.commonService.formatDate(this.branchFormData.get('cashPaymentDate').value)
+    });
     const registerCashPaymentUrl = String.Join('/', this.apiConfigService.registerCashPayment);
-    const requestObj = { CashpaymentHdr: this.branchFormData.value, CashpaymentDetail: this.dataSource.data };
+    const requestObj = { CashpaymentHdr: this.branchFormData.value, CashpaymentDetail: data };
     this.apiService.apiPostRequest(registerCashPaymentUrl, requestObj).subscribe(
       response => {
         const res = response.body;
         if (!isNullOrUndefined(res) && res.status === StatusCodes.pass) {
           if (!isNullOrUndefined(res.response)) {
-            this.alertService.openSnackBar(Static.LoginSussfull, Static.Close, SnackBar.success);
+            this.alertService.openSnackBar('Cash Payment Created Successfully..', Static.Close, SnackBar.success);
           }
           this.reset();
           this.spinner.hide();

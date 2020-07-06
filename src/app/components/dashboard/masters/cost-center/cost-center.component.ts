@@ -39,11 +39,11 @@ export class CostCenterComponent implements OnInit {
       this.modelFormData  =  this.formBuilder.group({
         code: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(4)]],
         name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+        compCode: [null],
         address1: [null],
         address2: [null],
         address3: [null],
         address4: [null],
-        compCode: [null],
         place: [null],
         state: [null],
         pinCode: [null],
@@ -53,7 +53,7 @@ export class CostCenterComponent implements OnInit {
         email: [null],
         responsiblePerson: [null],
         active: ['Y'],
-        compCodeNavigation: [null]
+        //compCodeNavigation: [null]
       });
 
       this.formData = {...data};
