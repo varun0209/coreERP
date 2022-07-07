@@ -33,7 +33,7 @@
     "jquery": "^3.4.1",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.2.13",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "multilingual-number-to-words": "^5.0.3",
     "ngx-bootstrap": "^5.3.2",
     "ngx-daterangepicker-material": "^2.2.0",
